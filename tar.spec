@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.25
-Release: 11
+Release: 12
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -125,6 +125,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Wed Jan 22 2003 Tim Powers <timp@redhat.com>
 - rebuilt
 

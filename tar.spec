@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.25
-Release: 12
+Release: 14
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -14,7 +14,7 @@ Patch8: tar-1.13.19-absolutenames.patch
 Patch9: tar-1.13.25-argv.patch
 Patch10: tar-1.13.25-dots.patch
 Prereq: info
-BuildRequires: autoconf automake15
+BuildRequires: autoconf automake
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -125,6 +125,13 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Feb 13 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Tue Jun 17 2003 Jeff Johnson <jbj@redhat.com> 1.13.25-13
+- rebuilt because of crt breakage on ppc64.
+- dump automake15 requirement.
+
 * Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 

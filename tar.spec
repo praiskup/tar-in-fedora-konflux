@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 2
+Release: 3
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -105,6 +105,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jan 31 2005 Peter Vrabec <pvrabec@redhat.com>
+- rebuild 1.15.1-3
+
 * Mon Jan 17 2005 Peter Vrabec <pvrabec@redhat.com>
 - fix tests/testsuite
 

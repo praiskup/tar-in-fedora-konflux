@@ -11,6 +11,7 @@ Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
 Patch7: tar-1.14-err.patch
 Patch8: tar-1.14-loneZeroWarning.patch
+Patch9: tar-1.14-fixSparseHeader.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -29,10 +30,11 @@ the rmt package.
 
 %prep
 %setup -q
-%patch0 -p1 -b .manpage
+%patch0 -p1
 %patch6 -p1 -b .librt
 %patch7 -p1 -b .err
 %patch8 -p1 -b .loneZeroWarning
+%patch9 -p1 -b .fixSparseHeader
 
 %build
 

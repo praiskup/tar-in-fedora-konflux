@@ -1,18 +1,14 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.13.25
-Release: 14
+Version: 1.14
+Release: 1
 License: GPL
 Group: Applications/Archiving
-Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
+Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
+Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
 Patch0: tar-1.13.18-manpage.patch
-Patch1: tar-1.13.25-sock.patch
-Patch2: tar-1.13.25-autoconf.patch
-Patch6: tar-1.13.22-nolibrt.patch
-Patch7: tar-1.13.19-error.patch
-Patch8: tar-1.13.19-absolutenames.patch
-Patch9: tar-1.13.25-argv.patch
-Patch10: tar-1.13.25-dots.patch
+Patch6: tar-1.14-nolibrt.patch
+Patch7: tar-1.14-err.patch
 Prereq: info
 BuildRequires: autoconf automake
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -32,28 +28,12 @@ the rmt package.
 %prep
 %setup -q
 %patch0 -p1 -b .manpage
-%patch1 -p1 -b .sock
-%patch2 -p1 -b .253
 %patch6 -p1 -b .librt
 %patch7 -p1 -b .err
-%patch8 -p1 -b .absn
-%patch9 -p1 -b .argv
-%patch10 -p1 -b .dots
 
 %build
 
 %ifos linux
-unset LINGUAS || :
-%define optflags $RPM_OPT_FLAGS -DHAVE_STRERROR -D_GNU_SOURCE
-########### Start workaround for legacy auto* tools ############
-for i in autoconf autoheader autom4te autoreconf autoscan autoupdate ifnames; do
-	ln -s %{_bindir}/$i-2.53 $i
-done
-for i in aclocal automake; do
-	ln -s %{_bindir}/$i-1.5 $i
-done
-export PATH="`pwd`:$PATH"
-########### End workaround ###########
 %configure --bindir=/bin --libexecdir=/sbin
 make LIBS=-lbsd
 %else
@@ -99,6 +79,12 @@ rm -f ${RPM_BUILD_ROOT}/sbin/rmt
 
 %find_lang %name
 
+%check
+make check
+
+%clean
+rm -rf ${RPM_BUILD_ROOT}
+
 %post
 /sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir
 
@@ -106,9 +92,6 @@ rm -f ${RPM_BUILD_ROOT}/sbin/rmt
 if [ $1 = 0 ]; then
    /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir
 fi
-
-%clean
-rm -rf ${RPM_BUILD_ROOT}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
@@ -125,6 +108,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jun  7 2004 Jeff Johnson <jbj@jbj.org> 1.14-1
+- upgrade to 1.14.
+
 * Fri Feb 13 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 

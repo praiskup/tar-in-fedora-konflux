@@ -1,0 +1,223 @@
+--- tar-1.14/configure.librt	2004-06-07 17:22:05.777889401 -0400
++++ tar-1.14/configure	2004-06-07 17:22:50.460419882 -0400
+@@ -9907,20 +9907,20 @@
+   # dnl Persuade glibc <time.h> to declare these functions.
+ 
+ 
+-  # Solaris 2.5.1 needs -lposix4 to get the clock_gettime function.
++  # Solaris 2.5.1 needs -lposix4 to get the clock_gettyme function.
+   # Solaris 7 prefers the library name -lrt to the obsolescent name -lposix4.
+ 
+   # Save and restore LIBS so e.g., -lrt, isn't added to it.  Otherwise, *all*
+   # programs in the package would end up linked with that potentially-shared
+   # library, inducing unnecessary run-time overhead.
+   fetish_saved_libs=$LIBS
+-    echo "$as_me:$LINENO: checking for library containing clock_gettime" >&5
+-echo $ECHO_N "checking for library containing clock_gettime... $ECHO_C" >&6
+-if test "${ac_cv_search_clock_gettime+set}" = set; then
++    echo "$as_me:$LINENO: checking for library containing clock_gettyme" >&5
++echo $ECHO_N "checking for library containing clock_gettyme... $ECHO_C" >&6
++if test "${ac_cv_search_clock_gettyme+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+   ac_func_search_save_LIBS=$LIBS
+-ac_cv_search_clock_gettime=no
++ac_cv_search_clock_gettyme=no
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -9934,11 +9934,11 @@
+ #endif
+ /* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+-char clock_gettime ();
++char clock_gettyme ();
+ int
+ main ()
+ {
+-clock_gettime ();
++clock_gettyme ();
+   ;
+   return 0;
+ }
+@@ -9965,7 +9965,7 @@
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+-  ac_cv_search_clock_gettime="none required"
++  ac_cv_search_clock_gettyme="none required"
+ else
+   echo "$as_me: failed program was:" >&5
+ sed 's/^/| /' conftest.$ac_ext >&5
+@@ -9973,7 +9973,7 @@
+ fi
+ rm -f conftest.err conftest.$ac_objext \
+       conftest$ac_exeext conftest.$ac_ext
+-if test "$ac_cv_search_clock_gettime" = no; then
++if test "$ac_cv_search_clock_gettyme" = no; then
+   for ac_lib in rt posix4; do
+     LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
+     cat >conftest.$ac_ext <<_ACEOF
+@@ -9989,11 +9989,11 @@
+ #endif
+ /* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+-char clock_gettime ();
++char clock_gettyme ();
+ int
+ main ()
+ {
+-clock_gettime ();
++clock_gettyme ();
+   ;
+   return 0;
+ }
+@@ -10020,7 +10020,7 @@
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+-  ac_cv_search_clock_gettime="-l$ac_lib"
++  ac_cv_search_clock_gettyme="-l$ac_lib"
+ break
+ else
+   echo "$as_me: failed program was:" >&5
+@@ -10033,18 +10033,18 @@
+ fi
+ LIBS=$ac_func_search_save_LIBS
+ fi
+-echo "$as_me:$LINENO: result: $ac_cv_search_clock_gettime" >&5
+-echo "${ECHO_T}$ac_cv_search_clock_gettime" >&6
+-if test "$ac_cv_search_clock_gettime" != no; then
+-  test "$ac_cv_search_clock_gettime" = "none required" || LIBS="$ac_cv_search_clock_gettime $LIBS"
+-  test "$ac_cv_search_clock_gettime" = "none required" ||
+-                    LIB_CLOCK_GETTIME=$ac_cv_search_clock_gettime
++echo "$as_me:$LINENO: result: $ac_cv_search_clock_gettyme" >&5
++echo "${ECHO_T}$ac_cv_search_clock_gettyme" >&6
++if test "$ac_cv_search_clock_gettyme" != no; then
++  test "$ac_cv_search_clock_gettyme" = "none required" || LIBS="$ac_cv_search_clock_gettyme $LIBS"
++  test "$ac_cv_search_clock_gettyme" = "none required" ||
++                    LIB_CLOCK_GETTIME=$ac_cv_search_clock_gettyme
+ fi
+ 
+ 
+ 
+ 
+-for ac_func in clock_gettime clock_settime
++for ac_func in clock_gettyme clock_settime
+ do
+ as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
+ echo "$as_me:$LINENO: checking for $ac_func" >&5
+@@ -13823,7 +13823,7 @@
+ 
+ # gettime
+ 
+-    # Need clock_gettime.
++    # Need clock_gettyme.
+ 
+ 
+ 
+@@ -17829,17 +17829,17 @@
+ # programs in the package would end up linked with that potentially-shared
+ # library, inducing unnecessary run-time overhead.
+ 
+-# Solaris 2.5.1 needs -lposix4 to get the clock_gettime function.
++# Solaris 2.5.1 needs -lposix4 to get the clock_gettyme function.
+ # Solaris 7 prefers the library name -lrt to the obsolescent name -lposix4.
+ tar_save_LIBS=$LIBS
+   LIB_CLOCK_GETTIME=
+-  echo "$as_me:$LINENO: checking for library containing clock_gettime" >&5
+-echo $ECHO_N "checking for library containing clock_gettime... $ECHO_C" >&6
+-if test "${ac_cv_search_clock_gettime+set}" = set; then
++  echo "$as_me:$LINENO: checking for library containing clock_gettyme" >&5
++echo $ECHO_N "checking for library containing clock_gettyme... $ECHO_C" >&6
++if test "${ac_cv_search_clock_gettyme+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+   ac_func_search_save_LIBS=$LIBS
+-ac_cv_search_clock_gettime=no
++ac_cv_search_clock_gettyme=no
+ cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -17853,11 +17853,11 @@
+ #endif
+ /* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+-char clock_gettime ();
++char clock_gettyme ();
+ int
+ main ()
+ {
+-clock_gettime ();
++clock_gettyme ();
+   ;
+   return 0;
+ }
+@@ -17884,7 +17884,7 @@
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+-  ac_cv_search_clock_gettime="none required"
++  ac_cv_search_clock_gettyme="none required"
+ else
+   echo "$as_me: failed program was:" >&5
+ sed 's/^/| /' conftest.$ac_ext >&5
+@@ -17892,7 +17892,7 @@
+ fi
+ rm -f conftest.err conftest.$ac_objext \
+       conftest$ac_exeext conftest.$ac_ext
+-if test "$ac_cv_search_clock_gettime" = no; then
++if test "$ac_cv_search_clock_gettyme" = no; then
+   for ac_lib in rt posix4; do
+     LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
+     cat >conftest.$ac_ext <<_ACEOF
+@@ -17908,11 +17908,11 @@
+ #endif
+ /* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+-char clock_gettime ();
++char clock_gettyme ();
+ int
+ main ()
+ {
+-clock_gettime ();
++clock_gettyme ();
+   ;
+   return 0;
+ }
+@@ -17939,7 +17939,7 @@
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+-  ac_cv_search_clock_gettime="-l$ac_lib"
++  ac_cv_search_clock_gettyme="-l$ac_lib"
+ break
+ else
+   echo "$as_me: failed program was:" >&5
+@@ -17952,19 +17952,19 @@
+ fi
+ LIBS=$ac_func_search_save_LIBS
+ fi
+-echo "$as_me:$LINENO: result: $ac_cv_search_clock_gettime" >&5
+-echo "${ECHO_T}$ac_cv_search_clock_gettime" >&6
+-if test "$ac_cv_search_clock_gettime" != no; then
+-  test "$ac_cv_search_clock_gettime" = "none required" || LIBS="$ac_cv_search_clock_gettime $LIBS"
++echo "$as_me:$LINENO: result: $ac_cv_search_clock_gettyme" >&5
++echo "${ECHO_T}$ac_cv_search_clock_gettyme" >&6
++if test "$ac_cv_search_clock_gettyme" != no; then
++  test "$ac_cv_search_clock_gettyme" = "none required" || LIBS="$ac_cv_search_clock_gettyme $LIBS"
+ 
+ fi
+ 
+-  case "$ac_cv_search_clock_gettime" in
+-    -l*) LIB_CLOCK_GETTIME=$ac_cv_search_clock_gettime;;
++  case "$ac_cv_search_clock_gettyme" in
++    -l*) LIB_CLOCK_GETTIME=$ac_cv_search_clock_gettyme;;
+   esac
+ 
+ 
+-for ac_func in clock_gettime
++for ac_func in clock_gettyme
+ do
+ as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
+ echo "$as_me:$LINENO: checking for $ac_func" >&5

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.25
-Release: 7
+Release: 8
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -12,6 +12,7 @@ Patch6: tar-1.13.22-nolibrt.patch
 Patch7: tar-1.13.19-error.patch
 Patch8: tar-1.13.19-absolutenames.patch
 Patch9: tar-1.13.25-argv.patch
+Patch10: tar-1.13.25-dots.patch
 Prereq: info
 BuildRequires: autoconf253 automake15
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -37,6 +38,7 @@ the rmt package.
 %patch7 -p1 -b .err
 %patch8 -p1 -b .absn
 %patch9 -p1 -b .argv
+%patch10 -p1 -b .dots
 
 %build
 
@@ -120,6 +122,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Aug 23 2002 Phil Knirsch <pknirsch@redhat.com> 1.13.25-8
+- Included security patch from errata release.
+
 * Mon Jul  1 2002 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.25-7
 - Fix argv NULL termination (#64869)
 

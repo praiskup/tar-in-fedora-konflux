@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.25
-Release: 4
+Release: 4.7.1
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -11,8 +11,9 @@ Patch2: tar-1.13.25-autoconf.patch
 Patch6: tar-1.13.22-nolibrt.patch
 Patch7: tar-1.13.19-error.patch
 Patch8: tar-1.13.19-absolutenames.patch
+Patch9: tar-dots.patch
 Prereq: info
-BuildRequires: autoconf253 automake15
+BuildRequires: autoconf automake
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -31,31 +32,17 @@ the rmt package.
 %setup -q
 %patch0 -p1 -b .manpage
 %patch1 -p1 -b .sock
-%patch2 -p1 -b .253
-%patch6 -p1 -b .librt
+#%patch2 -p1 -b .253
+#%patch6 -p1 -b .librt
 %patch7 -p1 -b .err
 %patch8 -p1 -b .absn
+%patch9 -p1 -b .dots
 
 %build
 
-%ifos linux
-unset LINGUAS || :
 %define optflags $RPM_OPT_FLAGS -DHAVE_STRERROR -D_GNU_SOURCE
-########### Start workaround for legacy auto* tools ############
-for i in autoconf autoheader autom4te autoreconf autoscan autoupdate ifnames; do
-	ln -s %{_bindir}/$i-2.53 $i
-done
-for i in aclocal automake; do
-	ln -s %{_bindir}/$i-1.5 $i
-done
-export PATH="`pwd`:$PATH"
-########### End workaround ###########
 %configure --bindir=/bin --libexecdir=/sbin
 make LIBS=-lbsd
-%else
-%configure
-make
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -117,6 +104,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Jun 18 2002 Trond Eivind Glomsrød <teg@redhat.com> 1.13.25-4.7
+- Security fix for path vulnerabilities
+
 * Tue Apr  9 2002 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.25-4
 - Fix build with autoconf253 (LIBOBJ change; autoconf252 worked)
 

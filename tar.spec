@@ -1,17 +1,18 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.13.17
-Release: 8
+Version: 1.13.19
+Release: 4
 Copyright: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
-Patch0: tar-1.13.14-manpage.patch
-Patch1: tar-1.13.17-fnmatch.patch
-Patch2: tar-1.3.17-excluded_name.patch
+Patch0: tar-1.13.18-manpage.patch
+Patch1: tar-1.13.19-I.patch
+Patch2: tar-1.13.18-excluded_name.patch
 Patch3: tar-1.13.17-ia64.patch
-Patch4: tar-1.13.17-exitcode.patch
-Prereq: /sbin/install-info
-Buildroot: /var/tmp/%{name}-root
+Patch5: tar-1.13.17-fail.patch
+Patch6: tar-1.13.19-nolibrt.patch
+Prereq: info
+Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
 The GNU tar program saves many files together into one archive and can
@@ -27,10 +28,11 @@ the rmt package.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch4 -p1 -b .exitcode
+%patch0 -p1 -b .manpage
+%patch1 -p1 -b .I
+%patch2 -p1 -b .excname
+%patch5 -p1 -b .fail
+%patch6 -p1 -b .librt
 
 %build
 
@@ -79,6 +81,8 @@ make prefix=${RPM_BUILD_ROOT}%{_prefix} \
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
 install -c -m644 tar.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 
+%find_lang %name
+
 %post
 /sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir
 
@@ -90,7 +94,7 @@ fi
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root)
 %ifos linux
 /bin/tar
@@ -103,9 +107,32 @@ rm -rf ${RPM_BUILD_ROOT}
 %endif
 
 %{_infodir}/tar.info*
-%{_prefix}/share/locale/*/LC_MESSAGES/*
 
 %changelog
+* Tue Mar  6 2001 Bernhard Rosenkraenzer <bero@redhat.com>
+- Don't depend on librt.
+
+* Fri Feb 23 2001 Trond Eivind Glomsrød <teg@redhat.com>
+- langify
+
+* Thu Feb 22 2001 Bernhard Rosenkraenzer <bero@redhat.com>
+- Fix up the man page (#28915)
+
+* Wed Feb 21 2001 Bernhard Rosenkraenzer <bero@redhat.com>
+- 1.3.19, nukes -I and fixes up -N
+- Add -I back in as an alias to -j with a nice loud warning
+
+* Mon Oct 30 2000 Bernhard Rosenkraenzer <bero@redhat.com>
+- 1.3.18
+- Update man page to reflect changes
+
+* Thu Oct  5 2000 Bernhard Rosenkraenzer <bero@redhat.com>
+- Fix the "ignore failed read" option (Bug #8330)
+
+* Mon Sep 25 2000 Bernhard Rosenkraenzer <bero@redhat.com>
+- fix hang on tar tvzf - <something.tar.gz, introduced by
+  exit code fix (Bug #15448), Patch from Tim Waugh <twaugh@redhat.com>
+
 * Fri Aug 18 2000 Bernhard Rosenkraenzer <bero@redhat.com>
 - really fix exit code (Bug #15448)
 

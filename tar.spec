@@ -1,17 +1,16 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.14
-Release: 4
+Version: 1.15.1
+Release: 1
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
-Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
-Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
+Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
+Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
 Patch7: tar-1.14-err.patch
 Patch8: tar-1.14-loneZeroWarning.patch
-Patch9: tar-1.14-fixSparseHeader.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -31,10 +30,9 @@ the rmt package.
 %prep
 %setup -q
 %patch0 -p1
-%patch6 -p1 -b .librt
+%patch6 -p1 -b .nolibrt
 %patch7 -p1 -b .err
 %patch8 -p1 -b .loneZeroWarning
-%patch9 -p1 -b .fixSparseHeader
 
 %build
 
@@ -90,6 +88,7 @@ fi
 
 %files -f %{name}.lang
 %defattr(-,root,root)
+%doc AUTHORS ChangeLog ChangeLog.1 NEWS README THANKS TODO
 %ifos linux
 /bin/tar
 /bin/gtar
@@ -103,6 +102,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Jan 07 2005 Peter Vrabec <pvrabec@redhat.com>
+- upgrade to 1.15.1
+
 * Mon Oct 11 2004 Peter Vrabec <pvrabec@redhat.com>
 - patch to stop issuing lone zero block warnings
 - rebuilt

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.14
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/Archiving
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -108,6 +108,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Mon Jun  7 2004 Jeff Johnson <jbj@jbj.org> 1.14-1
 - upgrade to 1.14.
 

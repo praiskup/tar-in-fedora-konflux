@@ -1,20 +1,18 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.13.19
-Release: 6
+Version: 1.13.25
+Release: 4
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
 Patch0: tar-1.13.18-manpage.patch
-Patch1: tar-1.13.19-I.patch
-Patch2: tar-1.13.18-excluded_name.patch
-Patch3: tar-1.13.17-ia64.patch
-Patch4: tar-1.13.19-ac215.patch
-Patch5: tar-1.13.17-fail.patch
-Patch6: tar-1.13.19-nolibrt.patch
+Patch1: tar-1.13.25-sock.patch
+Patch2: tar-1.13.25-autoconf.patch
+Patch6: tar-1.13.22-nolibrt.patch
 Patch7: tar-1.13.19-error.patch
 Patch8: tar-1.13.19-absolutenames.patch
 Prereq: info
+BuildRequires: autoconf253 automake15
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -32,10 +30,8 @@ the rmt package.
 %prep
 %setup -q
 %patch0 -p1 -b .manpage
-%patch1 -p1 -b .I
-%patch2 -p1 -b .excname
-%patch4 -p1 -b .ac
-%patch5 -p1 -b .fail
+%patch1 -p1 -b .sock
+%patch2 -p1 -b .253
 %patch6 -p1 -b .librt
 %patch7 -p1 -b .err
 %patch8 -p1 -b .absn
@@ -45,10 +41,16 @@ the rmt package.
 %ifos linux
 unset LINGUAS || :
 %define optflags $RPM_OPT_FLAGS -DHAVE_STRERROR -D_GNU_SOURCE
+########### Start workaround for legacy auto* tools ############
+for i in autoconf autoheader autom4te autoreconf autoscan autoupdate ifnames; do
+	ln -s %{_bindir}/$i-2.53 $i
+done
+for i in aclocal automake; do
+	ln -s %{_bindir}/$i-1.5 $i
+done
+export PATH="`pwd`:$PATH"
+########### End workaround ###########
 %configure --bindir=/bin --libexecdir=/sbin
-%ifarch ia64
-patch -p1 < %{PATCH3}
-%endif
 make LIBS=-lbsd
 %else
 %configure
@@ -115,6 +117,21 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Apr  9 2002 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.25-4
+- Fix build with autoconf253 (LIBOBJ change; autoconf252 worked)
+
+* Wed Jan 09 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
+* Tue Oct 23 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.25-2
+- Don't include hardlinks to sockets in a tar file (#54827)
+
+* Thu Sep 27 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.25-1
+- 1.13.25
+
+* Tue Sep 18 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.22-1
+- Update to 1.13.22, adapt patches
+
 * Mon Aug 27 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.19-6
 - Fix #52084
 

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -11,6 +11,7 @@ Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
 Patch7: tar-1.14-err.patch
 Patch8: tar-1.14-loneZeroWarning.patch
+Patch9: tar-1.15.1-makeCheck.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -33,6 +34,7 @@ the rmt package.
 %patch6 -p1 -b .nolibrt
 %patch7 -p1 -b .err
 %patch8 -p1 -b .loneZeroWarning
+%patch9 -p1 -b .makeCheck
 
 %build
 
@@ -73,6 +75,7 @@ rm -f ${RPM_BUILD_ROOT}/sbin/rmt
 %find_lang %name
 
 %check
+rm -f ${RPM_BUILD_ROOT}/test/testsuite
 make check
 
 %clean
@@ -102,6 +105,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jan 17 2005 Peter Vrabec <pvrabec@redhat.com>
+- fix tests/testsuite
+
 * Fri Jan 07 2005 Peter Vrabec <pvrabec@redhat.com>
 - upgrade to 1.15.1
 

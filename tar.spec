@@ -1,16 +1,18 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.19
-Release: 4
-Copyright: GPL
+Release: 5
+License: GPL
 Group: Applications/Archiving
-Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
+Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
 Patch0: tar-1.13.18-manpage.patch
 Patch1: tar-1.13.19-I.patch
 Patch2: tar-1.13.18-excluded_name.patch
 Patch3: tar-1.13.17-ia64.patch
+Patch4: tar-1.13.19-ac215.patch
 Patch5: tar-1.13.17-fail.patch
 Patch6: tar-1.13.19-nolibrt.patch
+Patch7: tar-1.13.19-error.patch
 Prereq: info
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
@@ -31,8 +33,10 @@ the rmt package.
 %patch0 -p1 -b .manpage
 %patch1 -p1 -b .I
 %patch2 -p1 -b .excname
+%patch4 -p1 -b .ac
 %patch5 -p1 -b .fail
 %patch6 -p1 -b .librt
+%patch7 -p1 -b .err
 
 %build
 
@@ -109,6 +113,11 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Thu May 17 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.19-5
+- Fix build with current autoconf (stricter checking on AC_DEFINE)
+- Fix segfault when tarring directories without having read permissions
+  (#40802)
+
 * Tue Mar  6 2001 Bernhard Rosenkraenzer <bero@redhat.com>
 - Don't depend on librt.
 

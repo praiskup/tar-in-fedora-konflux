@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.14
-Release: 3
+Release: 4
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -10,6 +10,7 @@ Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
 Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
 Patch7: tar-1.14-err.patch
+Patch8: tar-1.14-loneZeroWarning.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -31,6 +32,7 @@ the rmt package.
 %patch0 -p1 -b .manpage
 %patch6 -p1 -b .librt
 %patch7 -p1 -b .err
+%patch8 -p1 -b .loneZeroWarning
 
 %build
 
@@ -99,6 +101,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Oct 11 2004 Peter Vrabec <pvrabec@redhat.com>
+- patch to stop issuing lone zero block warnings
+- rebuilt
+
 * Mon Oct 11 2004 Peter Vrabec <pvrabec@redhat.com>
 - URL added to spec file
 - spec file clean up

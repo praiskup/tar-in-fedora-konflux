@@ -1,16 +1,17 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.14
-Release: 2
+Release: 3
 License: GPL
 Group: Applications/Archiving
+URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
 Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
 Patch7: tar-1.14-err.patch
 Prereq: info
-BuildRequires: autoconf automake
+BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -45,24 +46,14 @@ make
 rm -rf $RPM_BUILD_ROOT
 
 %ifos linux
-make prefix=${RPM_BUILD_ROOT}%{_prefix} \
-    localedir=${RPM_BUILD_ROOT}%{_prefix}/share/locale \
-    bindir=${RPM_BUILD_ROOT}/bin \
-    libexecdir=${RPM_BUILD_ROOT}/sbin \
-    mandir=${RPM_BUILD_ROOT}%{_mandir} \
-    infodir=${RPM_BUILD_ROOT}%{_infodir} \
-	install
+%makeinstall bindir=$RPM_BUILD_ROOT/bin libexecdir=$RPM_BUILD_ROOT/sbin
 ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
 %else
-make prefix=${RPM_BUILD_ROOT}%{_prefix} \
-    localedir=${RPM_BUILD_ROOT}%{_prefix}/share/locale \
-    mandir=${RPM_BUILD_ROOT}%{_mandir} \
-    infodir=${RPM_BUILD_ROOT}%{_infodir} \
-	install
+%makeinstall
 %endif
 
 ( cd $RPM_BUILD_ROOT
-  for dir in ./bin ./sbin .%{_prefix}/bin .%{_prefix}/libexec
+  for dir in ./bin ./sbin .%{_bindir} .%{_libexecdir}
   do
     [ -d $dir ] || continue
     strip $dir/* || :
@@ -100,14 +91,18 @@ fi
 /bin/gtar
 %{_mandir}/man1/tar.1*
 %else
-%{_prefix}/bin/*
-%{_prefix}/libexec/*
+%{_bindir}/*
+%{_libexecdir}/*
 %{_mandir}/man*/*
 %endif
 
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Oct 11 2004 Peter Vrabec <pvrabec@redhat.com>
+- URL added to spec file
+- spec file clean up
+
 * Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 

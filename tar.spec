@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.13.19
-Release: 5
+Release: 6
 License: GPL
 Group: Applications/Archiving
 Source: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
@@ -13,19 +13,20 @@ Patch4: tar-1.13.19-ac215.patch
 Patch5: tar-1.13.17-fail.patch
 Patch6: tar-1.13.19-nolibrt.patch
 Patch7: tar-1.13.19-error.patch
+Patch8: tar-1.13.19-absolutenames.patch
 Prereq: info
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 
 %description
-The GNU tar program saves many files together into one archive and can
-restore individual files (or all of the files) from the archive.  Tar
+The GNU tar program saves many files together in one archive and can
+restore individual files (or all of the files) from that archive. Tar
 can also be used to add supplemental files to an archive and to update
 or list files in the archive. Tar includes multivolume support,
 automatic archive compression/decompression, the ability to perform
-remote archives and the ability to perform incremental and full
+remote archives, and the ability to perform incremental and full
 backups.
 
-If you want to use tar for remote backups, you'll also need to install
+If you want to use tar for remote backups, you also need to install
 the rmt package.
 
 %prep
@@ -37,6 +38,7 @@ the rmt package.
 %patch5 -p1 -b .fail
 %patch6 -p1 -b .librt
 %patch7 -p1 -b .err
+%patch8 -p1 -b .absn
 
 %build
 
@@ -113,6 +115,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Aug 27 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.19-6
+- Fix #52084
+
 * Thu May 17 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.13.19-5
 - Fix build with current autoconf (stricter checking on AC_DEFINE)
 - Fix segfault when tarring directories without having read permissions

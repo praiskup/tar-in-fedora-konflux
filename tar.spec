@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 5
+Release: 6
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -9,7 +9,6 @@ Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Patch0: tar-1.13.18-manpage.patch
 Patch6: tar-1.14-nolibrt.patch
-Patch7: tar-1.14-err.patch
 Patch8: tar-1.14-loneZeroWarning.patch
 Patch9: tar-1.15.1-makeCheck.patch
 Patch10: tar-1.15.1-gcc4.patch
@@ -34,7 +33,6 @@ the rmt package.
 %setup -q
 %patch0 -p1
 %patch6 -p1 -b .nolibrt
-%patch7 -p1 -b .err
 %patch8 -p1 -b .loneZeroWarning
 %patch9 -p1 -b .makeCheck
 %patch10 -p1 -b .gcc4
@@ -109,6 +107,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Jul 22 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-6
+- remove tar-1.14-err.patch, not needed (158743)
+
 * Fri Apr 15 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-5
 - extract sparse files even if the output fd is not seekable.(#154882)
 - (sparse_scan_file): Bugfix. offset had incorrect type.

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 7
+Release: 8
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -13,6 +13,7 @@ Patch8: tar-1.14-loneZeroWarning.patch
 Patch9: tar-1.15.1-makeCheck.patch
 Patch10: tar-1.15.1-gcc4.patch
 Patch11: tar-1.15.1-lseek.patch
+Patch12: tar-1.15.1-sparseTotals.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -37,6 +38,7 @@ the rmt package.
 %patch9 -p1 -b .makeCheck
 %patch10 -p1 -b .gcc4
 %patch11 -p1 -b .lseek
+%patch12 -p1 -b .sparseTotals
 
 %build
 
@@ -107,6 +109,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Jul 27 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-8
+- A file is dumpable if it is sparse and both --sparse
+  and --totals are specified (#154882)
+ 
 * Tue Jul 26 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-7
 - exclude listed02.at from testsuite
 

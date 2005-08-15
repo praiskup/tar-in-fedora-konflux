@@ -1,0 +1,11 @@
+--- tar-1.15.1/src/create.c.newerOption	2005-08-15 15:53:27.000000000 +0000
++++ tar-1.15.1/src/create.c	2005-08-15 15:53:51.000000000 +0000
+@@ -1387,7 +1387,7 @@
+       && OLDER_STAT_TIME (st->stat, m)
+       && (!after_date_option || OLDER_STAT_TIME (st->stat, c)))
+     {
+-      if (!incremental_option)
++      if (!incremental_option && verbose_option)
+ 	WARN ((0, 0, _("%s: file is unchanged; not dumped"),
+ 	       quotearg_colon (p)));
+       return;

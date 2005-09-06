@@ -1,13 +1,13 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 9
+Release: 10
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
-Patch0: tar-1.13.18-manpage.patch
+Source2: tar.1
 Patch6: tar-1.14-nolibrt.patch
 Patch8: tar-1.14-loneZeroWarning.patch
 Patch9: tar-1.15.1-makeCheck.patch
@@ -33,7 +33,6 @@ the rmt package.
 
 %prep
 %setup -q
-%patch0 -p1
 %patch6 -p1 -b .nolibrt
 %patch8 -p1 -b .loneZeroWarning
 %patch9 -p1 -b .makeCheck
@@ -73,7 +72,7 @@ ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
 )
 
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
-install -c -m644 tar.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
+install -c -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 # XXX Nuke unpackaged files.
 rm -f ${RPM_BUILD_ROOT}/sbin/rmt
@@ -111,6 +110,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Sep 06 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-10
+- provide man page (#163709, #54243, #56041)
+
 * Mon Aug 15 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-9
 - silence newer option (#164902)
 

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 11.1
+Release: 12
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -16,6 +16,7 @@ Patch11: tar-1.15.1-lseek.patch
 Patch12: tar-1.15.1-sparseTotals.patch
 Patch13: tar-1.15.1-newerOption.patch
 Patch14: tar-1.15.1-padCorrectly.patch
+Patch15: tar-1.15.1-vfatTruncate.patch
 
 Prereq: info
 BuildRequires: autoconf automake gzip
@@ -43,6 +44,7 @@ the rmt package.
 %patch12 -p1 -b .sparseTotals
 %patch13 -p1 -b .newerOption
 %patch14 -p1 -b .padCorrectly
+%patch15 -p1 -b .vfatTruncate
 
 %build
 
@@ -113,6 +115,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Feb 06 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-12
+- fix extracting sparse files to a filesystem like vfat,
+  when ftruncate may fail to grow the size of a file.(#179507)
+
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
 

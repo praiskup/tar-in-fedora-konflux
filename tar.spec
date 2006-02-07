@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 12
+Release: 12.1
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -115,6 +115,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 1.15.1-12.1
+- rebuilt for new gcc4.1 snapshot and glibc changes
+
 * Mon Feb 06 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-12
 - fix extracting sparse files to a filesystem like vfat,
   when ftruncate may fail to grow the size of a file.(#179507)

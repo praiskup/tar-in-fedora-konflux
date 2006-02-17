@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 12.2
+Release: 13
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -17,6 +17,7 @@ Patch12: tar-1.15.1-sparseTotals.patch
 Patch13: tar-1.15.1-newerOption.patch
 Patch14: tar-1.15.1-padCorrectly.patch
 Patch15: tar-1.15.1-vfatTruncate.patch
+Patch16: tar-1.15.1-heapOverflow.patch
 
 Prereq: info
 BuildRequires: autoconf automake gzip
@@ -45,6 +46,7 @@ the rmt package.
 %patch13 -p1 -b .newerOption
 %patch14 -p1 -b .padCorrectly
 %patch15 -p1 -b .vfatTruncate
+%patch16 -p0 -b .heapOverflow
 
 %build
 
@@ -115,6 +117,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Feb 17 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-13
+- fix heap overlfow bug CVE-2006-0300 (#181773)
+
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 1.15.1-12.2
 - bump again for double-long bug on ppc(64)
 

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 13
+Release: 14
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -18,6 +18,7 @@ Patch13: tar-1.15.1-newerOption.patch
 Patch14: tar-1.15.1-padCorrectly.patch
 Patch15: tar-1.15.1-vfatTruncate.patch
 Patch16: tar-1.15.1-heapOverflow.patch
+Patch17: tar-1.15.1-hugeSparse.patch
 
 Prereq: info
 BuildRequires: autoconf automake gzip
@@ -47,6 +48,7 @@ the rmt package.
 %patch14 -p1 -b .padCorrectly
 %patch15 -p1 -b .vfatTruncate
 %patch16 -p0 -b .heapOverflow
+%patch17 -p1 -b .hugeSparse
 
 %build
 
@@ -117,6 +119,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Mar 22 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-14
+- fix problems with extracting large sparse archive members (#185460)
+
 * Fri Feb 17 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-13
 - fix heap overlfow bug CVE-2006-0300 (#181773)
 

@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 14
+Release: 15
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -119,6 +119,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Apr 13 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-15
+- fix segmentation faul introduced with hugeSparse.patch
+
 * Wed Mar 22 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-14
 - fix problems with extracting large sparse archive members (#185460)
 

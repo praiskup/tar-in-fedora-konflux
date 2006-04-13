@@ -1,5 +1,5 @@
---- tar-1.15.1/src/sparse.c.hugeSparse	2006-03-22 13:18:53.000000000 -0500
-+++ tar-1.15.1/src/sparse.c	2006-03-22 13:24:54.000000000 -0500
+--- tar-1.15.1/src/sparse.c.hugeSparse	2006-04-13 15:29:19.000000000 +0200
++++ tar-1.15.1/src/sparse.c	2006-04-13 15:32:29.000000000 +0200
 @@ -47,9 +47,9 @@
  {
    int fd;                           /* File descriptor */
@@ -231,11 +231,12 @@
    
    if (!sparse_select_optab (&file)
        || !tar_sparse_init (&file))
-@@ -456,15 +434,14 @@
+@@ -456,15 +434,15 @@
    struct tar_sparse_file file;
    size_t i;
  
-+  if (!tar_sparse_init (&file))
++  if (!sparse_select_optab (&file)
++      || !tar_sparse_init (&file))
 +    return dump_status_not_implemented;
 +
    file.stat_info = st;
@@ -250,7 +251,7 @@
    rc = tar_sparse_decode_header (&file);
    for (i = 0; rc && i < file.stat_info->sparse_map_avail; i++)
      rc = tar_sparse_extract_region (&file, i);
-@@ -491,8 +468,6 @@
+@@ -491,8 +469,6 @@
  }
  
  
@@ -259,7 +260,7 @@
  static bool
  check_sparse_region (struct tar_sparse_file *file, off_t beg, off_t end)
  {
-@@ -502,11 +477,9 @@
+@@ -502,11 +478,9 @@
    while (beg < end)
      {
        size_t bytes_read;
@@ -273,7 +274,7 @@
        bytes_read = safe_read (file->fd, diff_buffer, rdsize);
        if (bytes_read == SAFE_READ_ERROR)
  	{
-@@ -539,6 +512,7 @@
+@@ -539,6 +513,7 @@
      {
        size_t bytes_read;
        size_t rdsize = (size_left > BLOCKSIZE) ? BLOCKSIZE : size_left;
@@ -281,7 +282,7 @@
  
        union block *blk = find_next_block ();
        if (!blk)
-@@ -551,9 +525,9 @@
+@@ -551,9 +526,9 @@
        if (bytes_read == SAFE_READ_ERROR)
  	{
            read_diag_details (file->stat_info->orig_file_name,
@@ -294,7 +295,7 @@
  			     rdsize);
  	  return false;
  	}
-@@ -647,7 +621,7 @@
+@@ -647,7 +622,7 @@
        || file->stat_info->archive_file_size < 0)
      return add_fail;
  
@@ -303,7 +304,7 @@
    return add_ok;
  }
  
-@@ -669,7 +643,7 @@
+@@ -669,7 +644,7 @@
    size_t i;
    union block *h = current_header;
    int ext_p;
@@ -312,7 +313,7 @@
  
    file->stat_info->sparse_map_avail = 0;
    for (i = 0; i < SPARSES_IN_OLDGNU_HEADER; i++)
-@@ -756,7 +730,7 @@
+@@ -756,7 +731,7 @@
    return true;
  }
  
@@ -321,7 +322,7 @@
    NULL,  /* No init function */
    NULL,  /* No done function */
    oldgnu_sparse_member_p,
-@@ -795,7 +769,7 @@
+@@ -795,7 +770,7 @@
    size_t i;
    union block *h = current_header;
    int ext_p;
@@ -330,7 +331,7 @@
  
    file->stat_info->sparse_map_avail = 0;
  
-@@ -837,7 +811,7 @@
+@@ -837,7 +812,7 @@
  }
  
  
@@ -339,7 +340,7 @@
    NULL,  /* No init function */
    NULL,  /* No done function */
    star_sparse_member_p,
-@@ -890,7 +864,7 @@
+@@ -890,7 +865,7 @@
    return true;
  }
  

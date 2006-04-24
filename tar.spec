@@ -1,25 +1,16 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.15.1
-Release: 16
+Version: 1.15.90
+Release: 1
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Source2: tar.1
-Patch6: tar-1.14-nolibrt.patch
-Patch8: tar-1.14-loneZeroWarning.patch
-Patch9: tar-1.15.1-makeCheck.patch
-Patch10: tar-1.15.1-gcc4.patch
-Patch11: tar-1.15.1-lseek.patch
-Patch12: tar-1.15.1-sparseTotals.patch
-Patch13: tar-1.15.1-newerOption.patch
-Patch14: tar-1.15.1-padCorrectly.patch
-Patch15: tar-1.15.1-vfatTruncate.patch
-Patch16: tar-1.15.1-heapOverflow.patch
-Patch17: tar-1.15.1-hugeSparse.patch
-Patch18: tar-1.15.1-optionsOrder.patch
+Patch1: tar-1.14-nolibrt.patch
+Patch2: tar-1.14-loneZeroWarning.patch
+Patch3: tar-1.15.1-vfatTruncate.patch
 
 Prereq: info
 BuildRequires: autoconf automake gzip
@@ -39,18 +30,9 @@ the rmt package.
 
 %prep
 %setup -q
-%patch6 -p1 -b .nolibrt
-%patch8 -p1 -b .loneZeroWarning
-%patch9 -p1 -b .makeCheck
-%patch10 -p1 -b .gcc4
-%patch11 -p1 -b .lseek
-%patch12 -p1 -b .sparseTotals
-%patch13 -p1 -b .newerOption
-%patch14 -p1 -b .padCorrectly
-%patch15 -p1 -b .vfatTruncate
-%patch16 -p0 -b .heapOverflow
-%patch17 -p1 -b .hugeSparse
-%patch18 -p1 -b .optionsOrder
+#%patch1 -p1 -b .nolibrt
+%patch2 -p1 -b .loneZeroWarning
+%patch3 -p1 -b .vfatTruncate
 
 %build
 
@@ -121,6 +103,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Apr 25 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-1
+- upgrade
+
 * Mon Apr 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-16
 - fix problem when options at the end of command line were 
   not recognized (#188707)

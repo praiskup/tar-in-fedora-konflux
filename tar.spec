@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.1
-Release: 15
+Release: 16
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -19,6 +19,7 @@ Patch14: tar-1.15.1-padCorrectly.patch
 Patch15: tar-1.15.1-vfatTruncate.patch
 Patch16: tar-1.15.1-heapOverflow.patch
 Patch17: tar-1.15.1-hugeSparse.patch
+Patch18: tar-1.15.1-optionsOrder.patch
 
 Prereq: info
 BuildRequires: autoconf automake gzip
@@ -49,6 +50,7 @@ the rmt package.
 %patch15 -p1 -b .vfatTruncate
 %patch16 -p0 -b .heapOverflow
 %patch17 -p1 -b .hugeSparse
+%patch18 -p1 -b .optionsOrder
 
 %build
 
@@ -119,6 +121,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Apr 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-16
+- fix problem when options at the end of command line were 
+  not recognized (#188707)
+
 * Thu Apr 13 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-15
 - fix segmentation faul introduced with hugeSparse.patch
 

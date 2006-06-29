@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.90
-Release: 2
+Release: 3
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -105,6 +105,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jun 29 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-3
+- fix typo in tar.1 man page
+
 * Tue Apr 25 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-2
 - exclude listed02.at from testsuite again, because it 
   still fails on s390

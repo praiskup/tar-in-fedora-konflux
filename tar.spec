@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.90
-Release: 3
+Release: 3.1
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -105,6 +105,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 1.15.90-3.1
+- rebuild
+
 * Thu Jun 29 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-3
 - fix typo in tar.1 man page
 

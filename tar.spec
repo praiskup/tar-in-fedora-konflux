@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.90
-Release: 4
+Release: 5
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -13,7 +13,7 @@ Patch2: tar-1.14-loneZeroWarning.patch
 Patch3: tar-1.15.1-vfatTruncate.patch
 Patch4: tar-1.15.90-makeCheck.patch
 Patch5: tar-1.15.90-permissions.patch
-
+Patch6: tar-1.15.90-incompatibility.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -37,6 +37,8 @@ the rmt package.
 %patch3 -p1 -b .vfatTruncate
 %patch4 -p1 -b .makeCheck
 %patch5 -p1 -b .permissions
+%patch6 -p1 -b .incompatibility
+
 %build
 
 %ifos linux
@@ -106,6 +108,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jul 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-5
+- fix incompatibilities in appending files to the end 
+  of an archive (#199515)
+
 * Tue Jul 18 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-4
 - fix problem with unpacking archives in a directory for which 
   one has write permission but does not own (such as /tmp) (#149686)

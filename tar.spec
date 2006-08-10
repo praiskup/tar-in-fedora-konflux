@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.90
-Release: 5
+Release: 6
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -14,6 +14,7 @@ Patch3: tar-1.15.1-vfatTruncate.patch
 Patch4: tar-1.15.90-makeCheck.patch
 Patch5: tar-1.15.90-permissions.patch
 Patch6: tar-1.15.90-incompatibility.patch
+Patch7: tar-1.15.90-xattrSupport.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -38,16 +39,11 @@ the rmt package.
 %patch4 -p1 -b .makeCheck
 %patch5 -p1 -b .permissions
 %patch6 -p1 -b .incompatibility
+%patch7 -p1 -b .xattrSupport
 
 %build
-
-%ifos linux
 %configure --bindir=/bin --libexecdir=/sbin
-make LIBS=-lbsd
-%else
-%configure
 make
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -108,6 +104,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Aug 10 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-6
+- add xattr support (#200925), patch from james.antill@redhat.com
+
 * Mon Jul 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-5
 - fix incompatibilities in appending files to the end 
   of an archive (#199515)

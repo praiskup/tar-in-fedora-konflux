@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.90
-Release: 6
+Release: 7
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -55,15 +55,7 @@ ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
 %makeinstall
 %endif
 
-( cd $RPM_BUILD_ROOT
-  for dir in ./bin ./sbin .%{_bindir} .%{_libexecdir}
-  do
-    [ -d $dir ] || continue
-    strip $dir/* || :
-  done
-  gzip -9nf .%{_infodir}/tar.info*
-  rm -f .%{_infodir}/dir
-)
+rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
 install -c -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
@@ -104,6 +96,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Sep 08 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-7
+- fix tar-debuginfo package (#205615)
+
 * Thu Aug 10 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-6
 - add xattr support (#200925), patch from james.antill@redhat.com
 

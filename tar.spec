@@ -34,8 +34,8 @@ the rmt package.
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
 %patch3 -p1 -b .makeCheck
-%patch4 -p1 -b .incompatibility
-%patch5 -p1 -b .xattrSupport
+#%patch4 -p1 -b .incompatibility
+#%patch5 -p1 -b .xattrSupport
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin

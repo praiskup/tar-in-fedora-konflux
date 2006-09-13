@@ -1,20 +1,18 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.15.90
-Release: 7
+Version: 1.15.91
+Release: 1
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Source2: tar.1
-Patch1: tar-1.14-nolibrt.patch
-Patch2: tar-1.14-loneZeroWarning.patch
-Patch3: tar-1.15.1-vfatTruncate.patch
-Patch4: tar-1.15.90-makeCheck.patch
-Patch5: tar-1.15.90-permissions.patch
-Patch6: tar-1.15.90-incompatibility.patch
-Patch7: tar-1.15.90-xattrSupport.patch
+Patch1: tar-1.14-loneZeroWarning.patch
+Patch2: tar-1.15.1-vfatTruncate.patch
+Patch3: tar-1.15.91-makeCheck.patch
+Patch4: tar-1.15.90-incompatibility.patch
+Patch5: tar-1.15.90-xattrSupport.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -33,13 +31,11 @@ the rmt package.
 
 %prep
 %setup -q
-#%patch1 -p1 -b .nolibrt
-%patch2 -p1 -b .loneZeroWarning
-%patch3 -p1 -b .vfatTruncate
-%patch4 -p1 -b .makeCheck
-%patch5 -p1 -b .permissions
-%patch6 -p1 -b .incompatibility
-%patch7 -p1 -b .xattrSupport
+%patch1 -p1 -b .loneZeroWarning
+%patch2 -p1 -b .vfatTruncate
+%patch3 -p1 -b .makeCheck
+%patch4 -p1 -b .incompatibility
+%patch5 -p1 -b .xattrSupport
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -96,6 +92,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Sep 13 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.91-1
+- upgrade, which also fix incremental backup (#206121)
+
 * Fri Sep 08 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-7
 - fix tar-debuginfo package (#205615)
 

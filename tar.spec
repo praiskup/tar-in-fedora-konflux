@@ -1,7 +1,7 @@
 Summary: A GNU file archiving program.
 Name: tar
 Version: 1.15.91
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -34,8 +34,8 @@ the rmt package.
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
 %patch3 -p1 -b .makeCheck
-#%patch4 -p1 -b .incompatibility
-#%patch5 -p1 -b .xattrSupport
+%patch4 -p1 -b .incompatibility
+%patch5 -p1 -b .xattrSupport
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -92,6 +92,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Sep 19 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.91-2
+- apply patches, which were forgotten during upgrade
+
 * Wed Sep 13 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.91-1
 - upgrade, which also fix incremental backup (#206121)
 

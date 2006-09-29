@@ -1,0 +1,12 @@
+--- tar-1.15.1/src/create.c.incompatibilities	2006-09-19 22:23:32.000000000 +0200
++++ tar-1.15.1/src/create.c	2006-09-19 22:24:02.000000000 +0200
+@@ -254,7 +254,8 @@
+       && S_IROTH == TOREAD && S_IWOTH == TOWRITE && S_IXOTH == TOEXEC
+       && archive_format != POSIX_FORMAT
+       && archive_format != USTAR_FORMAT
+-      && archive_format != GNU_FORMAT)
++      && archive_format != GNU_FORMAT
++      && archive_format != OLDGNU_FORMAT)
+     {
+       negative = v < 0;
+       u = v;

@@ -1,18 +1,29 @@
 Summary: A GNU file archiving program.
 Name: tar
-Version: 1.15.91
-Release: 2
+Epoch: 2
+Version: 1.15.1
+Release: 17
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Source2: tar.1
-Patch1: tar-1.14-loneZeroWarning.patch
-Patch2: tar-1.15.1-vfatTruncate.patch
-Patch3: tar-1.15.91-makeCheck.patch
-Patch4: tar-1.15.90-incompatibility.patch
-Patch5: tar-1.15.90-xattrSupport.patch
+Patch1: tar-1.14-nolibrt.patch
+Patch2: tar-1.14-loneZeroWarning.patch
+Patch3: tar-1.15.1-makeCheck.patch
+Patch4: tar-1.15.1-gcc4.patch
+Patch5: tar-1.15.1-lseek.patch
+Patch6: tar-1.15.1-sparseTotals.patch
+Patch7: tar-1.15.1-newerOption.patch
+Patch8: tar-1.15.1-padCorrectly.patch
+Patch9: tar-1.15.1-vfatTruncate.patch
+Patch10: tar-1.15.1-heapOverflow.patch
+Patch11: tar-1.15.1-hugeSparse.patch
+Patch12: tar-1.15.1-optionsOrder.patch
+Patch13: tar-1.15.1-permissions.patch
+Patch14: tar-1.15.1-incompatibilities.patch
+Patch15: tar-1.15.1-xattrs.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -31,11 +42,21 @@ the rmt package.
 
 %prep
 %setup -q
-%patch1 -p1 -b .loneZeroWarning
-%patch2 -p1 -b .vfatTruncate
+%patch1 -p1 -b .nolibrt
+%patch2 -p1 -b .loneZeroWarning
 %patch3 -p1 -b .makeCheck
-%patch4 -p1 -b .incompatibility
-%patch5 -p1 -b .xattrSupport
+%patch4 -p1 -b .gcc4
+%patch5 -p1 -b .lseek
+%patch6 -p1 -b .sparseTotals
+%patch7 -p1 -b .newerOption
+%patch8 -p1 -b .padCorrectly
+%patch9 -p1 -b .vfatTruncate
+%patch10 -p0 -b .heapOverflow
+%patch11 -p1 -b .hugeSparse
+%patch12 -p1 -b .optionsOrder
+%patch13 -p1 -b .permissions
+%patch14 -p1 -b .incompatibilities
+%patch15 -p1 -b .xattrs
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -92,6 +113,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Sep 19 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-17
+- start new epoch, downgrade to solid stable 1.15.1-16 (#206979), 
+- all patches are backported
+
 * Tue Sep 19 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.91-2
 - apply patches, which were forgotten during upgrade
 

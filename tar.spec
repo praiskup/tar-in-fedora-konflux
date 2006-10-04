@@ -2,7 +2,7 @@ Summary: A GNU file archiving program.
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 18
+Release: 19
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -113,6 +113,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Oct 04 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-19
+- another fix of tar-1.15.1-xattrs.patch from James Antill
+
 * Sun Oct 01 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-18
 - fix tar-1.15.1-xattrs.patch (#208701)
 

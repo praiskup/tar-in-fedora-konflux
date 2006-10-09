@@ -1998,7 +1998,7 @@
 +                goto next_attr; /* only store normal xattrs */
 +              
 +              while (((fd == -1) ? 
-+                      ((xret = getxattr (file_name, attr, val, asz)) == -1) :
++                      ((aret = getxattr (file_name, attr, val, asz)) == -1) :
 +                      ((aret = fgetxattr (fd, attr, val, asz)) == -1)) &&
 +                     (errno == ERANGE))
 +                {

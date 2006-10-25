@@ -113,7 +113,7 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Wed Sep 25 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-21
+* Wed Oct 25 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-21
 - build with dist-tag
 
 * Mon Oct 09 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-20

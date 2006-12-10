@@ -1,8 +1,8 @@
-Summary: A GNU file archiving program.
+Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 21%{?dist}
+Release: 22%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -113,6 +113,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Dec 10 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-22
+- fix some rpmlint spec file issues
+
 * Wed Oct 25 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-21
 - build with dist-tag
 
@@ -291,7 +294,7 @@ fi
 * Tue Mar  6 2001 Bernhard Rosenkraenzer <bero@redhat.com>
 - Don't depend on librt.
 
-* Fri Feb 23 2001 Trond Eivind Glomsr¯d <teg@redhat.com>
+* Fri Feb 23 2001 Trond Eivind Glomsr√∂d <teg@redhat.com>
 - langify
 
 * Thu Feb 22 2001 Bernhard Rosenkraenzer <bero@redhat.com>
@@ -327,7 +330,7 @@ fi
 * Fri Apr 28 2000 Bill Nottingham <notting@redhat.com>
 - fix for ia64
 
-* Wed Feb  9 2000 Bernhard Rosenkr‰nzer <bero@redhat.com>
+* Wed Feb  9 2000 Bernhard Rosenkr√§nzer <bero@redhat.com>
 - Fix the exclude bug (#9201)
 
 * Wed Feb 02 2000 Cristian Gafton <gafton@redhat.com>
@@ -335,20 +338,20 @@ fi
 - fix description
 - fix fnmatch build problems
 
-* Sun Jan  9 2000 Bernhard Rosenkr‰nzer <bero@redhat.com>
+* Sun Jan  9 2000 Bernhard Rosenkr√§nzer <bero@redhat.com>
 - 1.13.17
 - remove dotbug patch (fixed in base)
 - update download URL
 
-* Fri Jan  7 2000 Bernhard Rosenkr‰nzer <bero@redhat.com>
+* Fri Jan  7 2000 Bernhard Rosenkr√§nzer <bero@redhat.com>
 - Fix a severe bug (tar xf any_package_containing_. would delete the
   current directory)
 
-* Wed Jan  5 2000 Bernhard Rosenkr‰nzer <bero@redhat.com>
+* Wed Jan  5 2000 Bernhard Rosenkr√§nzer <bero@redhat.com>
 - 1.3.16
 - unset LINGUAS before running configure
 
-* Tue Nov  9 1999 Bernhard Rosenkr‰nzer <bero@redhat.com>
+* Tue Nov  9 1999 Bernhard Rosenkr√§nzer <bero@redhat.com>
 - 1.13.14
 - Update man page to know about -I / --bzip
 - Remove dependancy on rmt - tar can be used for anything local

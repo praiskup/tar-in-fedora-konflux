@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 22%{?dist}
+Release: 23%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -24,6 +24,7 @@ Patch12: tar-1.15.1-optionsOrder.patch
 Patch13: tar-1.15.1-permissions.patch
 Patch14: tar-1.15.1-incompatibilities.patch
 Patch15: tar-1.15.1-xattrs.patch
+Patch16: tar-1.15.1-mangling.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
 Buildroot: %{_tmppath}/%{name}-%{version}-root
@@ -57,6 +58,7 @@ the rmt package.
 %patch13 -p1 -b .permissions
 %patch14 -p1 -b .incompatibilities
 %patch15 -p1 -b .xattrs
+%patch16 -p1 -b .mangling
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -113,6 +115,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Dec 12 2006 Florian La Roche <laroche@redhat.com> 2:1.15.1-23
+- fix CVE-2006-6097 GNU tar directory traversal (#216937)
+
 * Sat Dec 10 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-22
 - fix some rpmlint spec file issues
 

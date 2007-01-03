@@ -114,7 +114,7 @@ fi
 
 %{_infodir}/tar.info*
 
-%changelog\
+%changelog
 * Wed Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-24
 - supply tar man page (#219375)
 

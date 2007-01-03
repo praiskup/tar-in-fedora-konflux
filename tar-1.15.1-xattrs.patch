@@ -721,7 +721,7 @@
 +@opindex xattrs
 +@item --xattrs
 +This option causes @command{tar} to store each file's extended attributes in
-+the archive. This option also enables @option{--acls} and @option{--selinux} if+they haven't been set already, due to the fact that the data for those are
++the archive. This option also enables @option{--acls} and @option{--selinux} if they haven't been set already, due to the fact that the data for those are
 +stored in special xattrs.
 +
 +The @option{--xattrs} option has no equivalent short option name.
@@ -745,7 +745,7 @@
 +@item --no-xattrs
 +This option causes @command{tar} not to store each file's extended attributes in
 +the archive and not to extract any extended attributes in an archive. This
-+option also enables @option{--acls} and @option{--selinux} if
++option also enables @option{--no-acls} and @option{--no-selinux} if
 +they haven't been set already.
 +
 +The @option{--xattrs} option has no equivalent short option name.

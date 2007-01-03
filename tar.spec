@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 23%{?dist}
+Release: 24%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -114,7 +114,10 @@ fi
 
 %{_infodir}/tar.info*
 
-%changelog
+%changelog\
+* Wed Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-24
+- supply tar man page (#219375)
+
 * Tue Dec 12 2006 Florian La Roche <laroche@redhat.com> 2:1.15.1-23
 - fix CVE-2006-6097 GNU tar directory traversal (#216937)
 

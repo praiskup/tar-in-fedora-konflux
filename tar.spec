@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 24%{?dist}
+Release: 25%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -92,11 +92,11 @@ make check
 rm -rf ${RPM_BUILD_ROOT}
 
 %post
-/sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir
+/sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir || :
 
 %preun
 if [ $1 = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir
+   /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir || :
 fi
 
 %files -f %{name}.lang
@@ -115,6 +115,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-25
+- fix non-failsafe install-info use in scriptlets (#223718)
+
 * Wed Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-24
 - supply tar man page (#219375)
 

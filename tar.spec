@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.15.1
-Release: 25%{?dist}
+Release: 26%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -27,7 +27,9 @@ Patch15: tar-1.15.1-xattrs.patch
 Patch16: tar-1.15.1-mangling.patch
 Prereq: info
 BuildRequires: autoconf automake gzip
-Buildroot: %{_tmppath}/%{name}-%{version}-root
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires(post): /sbin/install-info
+Requires(preun): /sbin/install-info
 
 %description
 The GNU tar program saves many files together in one archive and can
@@ -66,18 +68,12 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
+make DESTDIR=$RPM_BUILD_ROOT bindir=/bin libexecdir=/sbin install
 
-%ifos linux
-%makeinstall bindir=$RPM_BUILD_ROOT/bin libexecdir=$RPM_BUILD_ROOT/sbin
 ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
-%else
-%makeinstall
-%endif
-
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
-
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
-install -c -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
+install -c -p -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 # XXX Nuke unpackaged files.
 rm -f ${RPM_BUILD_ROOT}/sbin/rmt
@@ -115,6 +111,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Feb 06 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-26
+- fix spec file to meet Fedora standards (#226478)
+
 * Mon Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-25
 - fix non-failsafe install-info use in scriptlets (#223718)
 

@@ -1,32 +1,20 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.15.1
-Release: 26%{?dist}
+Version: 1.17
+Release: 1%{?dist}
 License: GPL
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
-Source2: tar.1
-Patch1: tar-1.14-nolibrt.patch
-Patch2: tar-1.14-loneZeroWarning.patch
-Patch3: tar-1.15.1-makeCheck.patch
-Patch4: tar-1.15.1-gcc4.patch
-Patch5: tar-1.15.1-lseek.patch
-Patch6: tar-1.15.1-sparseTotals.patch
-Patch7: tar-1.15.1-newerOption.patch
-Patch8: tar-1.15.1-padCorrectly.patch
-Patch9: tar-1.15.1-vfatTruncate.patch
-Patch10: tar-1.15.1-heapOverflow.patch
-Patch11: tar-1.15.1-hugeSparse.patch
-Patch12: tar-1.15.1-optionsOrder.patch
-Patch13: tar-1.15.1-permissions.patch
-Patch14: tar-1.15.1-incompatibilities.patch
-Patch15: tar-1.15.1-xattrs.patch
-Patch16: tar-1.15.1-mangling.patch
+Patch1: tar-1.14-loneZeroWarning.patch
+Patch2: tar-1.15.1-vfatTruncate.patch
+Patch3: tar-1.17-testsuite.patch
+Patch4: tar-1.17-xattrs.patch
+Patch5: tar-1.17-wildcards.patch
 Prereq: info
-BuildRequires: autoconf automake gzip
+BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -45,22 +33,11 @@ the rmt package.
 
 %prep
 %setup -q
-%patch1 -p1 -b .nolibrt
-%patch2 -p1 -b .loneZeroWarning
-%patch3 -p1 -b .makeCheck
-%patch4 -p1 -b .gcc4
-%patch5 -p1 -b .lseek
-%patch6 -p1 -b .sparseTotals
-%patch7 -p1 -b .newerOption
-%patch8 -p1 -b .padCorrectly
-%patch9 -p1 -b .vfatTruncate
-%patch10 -p0 -b .heapOverflow
-%patch11 -p1 -b .hugeSparse
-%patch12 -p1 -b .optionsOrder
-%patch13 -p1 -b .permissions
-%patch14 -p1 -b .incompatibilities
-%patch15 -p1 -b .xattrs
-%patch16 -p1 -b .mangling
+%patch1 -p1 -b .loneZeroWarning
+%patch2 -p1 -b .vfatTruncate
+%patch3 -p1 -b .testsuite
+%patch4 -p1 -b .xattrs
+%patch5 -p1 -b .wildcards
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -111,6 +88,14 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jun 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-1
+- new upstream version
+- patch for wildcards incompatibility (#206841), restoring old behavior
+- patch for testsuite
+  (http://lists.gnu.org/archive/html/bug-tar/2007-06/msg00010.html)
+- update -xattrs patch
+- drop 13 obsolete patches
+
 * Tue Feb 06 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-26
 - fix spec file to meet Fedora standards (#226478)
 

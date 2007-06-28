@@ -8,6 +8,7 @@ Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
+Source2: tar.1
 Patch1: tar-1.14-loneZeroWarning.patch
 Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.17-testsuite.patch

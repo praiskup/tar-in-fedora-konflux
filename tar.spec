@@ -91,9 +91,8 @@ fi
 %changelog
 * Thu Jun 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-1
 - new upstream version
-- patch for wildcards incompatibility (#206841), restoring old behavior
+- patch for wildcards (#206841), restoring old behavior
 - patch for testsuite
-  (http://lists.gnu.org/archive/html/bug-tar/2007-06/msg00010.html)
 - update -xattrs patch
 - drop 13 obsolete patches
 

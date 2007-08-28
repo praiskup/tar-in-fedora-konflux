@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.17
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -16,7 +16,7 @@ Patch4: tar-1.17-xattrs.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.17-dot_dot_vuln.patch
 Prereq: info
-BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel
+BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -91,6 +91,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Aug 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-3
+- gawk build dependency
+
 * Tue Aug 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-2
 - updated license tag
 - fixed CVE-2007-4131 tar directory traversal vulnerability (#251921)

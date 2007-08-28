@@ -2,8 +2,8 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.17
-Release: 1%{?dist}
-License: GPL
+Release: 2%{?dist}
+License: GPLv2+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
@@ -14,6 +14,7 @@ Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.17-testsuite.patch
 Patch4: tar-1.17-xattrs.patch
 Patch5: tar-1.17-wildcards.patch
+Patch6: tar-1.17-dot_dot_vuln.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -39,6 +40,7 @@ the rmt package.
 %patch3 -p1 -b .testsuite
 %patch4 -p1 -b .xattrs
 %patch5 -p1 -b .wildcards
+%patch6 -p1 -b .dot_dot_vuln.patch
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -89,6 +91,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Aug 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-2
+- updated license tag
+- fixed CVE-2007-4131 tar directory traversal vulnerability (#251921)
+
 * Thu Jun 28 2007 Radek Brich <rbrich@redhat.com> 2:1.17-1
 - new upstream version
 - patch for wildcards (#206841), restoring old behavior

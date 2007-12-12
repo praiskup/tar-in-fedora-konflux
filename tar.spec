@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.17
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv2+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -16,6 +16,7 @@ Patch4: tar-1.17-xattrs.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.17-dot_dot_vuln.patch
 Patch7: tar-1.17-safer_name_suffix.patch
+Patch8: tar-1.17-xattrs-conf.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -43,6 +44,7 @@ the rmt package.
 %patch5 -p1 -b .wildcards
 %patch6 -p1 -b .dot_dot_vuln
 %patch7 -p1 -b .safer_name_suffix
+%patch8 -p1 -b .xattrs-conf
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -93,6 +95,15 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Dec 12 2007 Radek Brich <rbrich@redhat.com> 2:1.17-5
+- fix (non)detection of xattrs
+- move configure stuff from -xattrs patch to -xattrs-conf,
+  so the original patch could be easily read
+- fix -xattrs patch to work with zero length files and show
+  warnings when xattrs not available (fixes by James Antill)
+- possible corruption (#408621) - add warning to man page
+  for now, may be actually fixed later, depending on upstream
+
 * Tue Oct 23 2007 Radek Brich <rbrich@redhat.com> 2:1.17-4
 - upstream patch for CVE-2007-4476
   (tar stack crashing in safer_name_suffix)

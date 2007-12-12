@@ -357,7 +357,9 @@ delete from the archive (not for use on mag tapes!)
 change to directory DIR
 .TP
 .B -f, --file [HOSTNAME:]F
-use archive file or device F (default "-", meaning stdin/stdout)
+Use archive file or device F (default "-", meaning stdin/stdout).
+Note that "/dev/stdout" is not equivalent to "-". Using "/dev/stdout"
+explicitly can lead to corrupted archive, especially when coupled with "-v".
 .TP
 .B -j, --bzip2
 filter archive through bzip2, use to decompress .bz2 files
@@ -399,7 +401,9 @@ number of links recorded in the archive
 print directory names while reading the archive
 .TP
 .B -f, --file [HOSTNAME:]F
-use archive file or device F (default "-", meaning stdin/stdout)
+Use archive file or device F (default "-", meaning stdin/stdout).
+Note that "/dev/stdout" is not equivalent to "-". Using "/dev/stdout"
+explicitly can lead to corrupted archive, especially when coupled with "-v".
 .TP
 .B -F, --info-script F --new-volume-script F
 run script at end of each tape (implies \fI--multi-volume\fR)

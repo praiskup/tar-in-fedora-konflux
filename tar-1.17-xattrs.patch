@@ -1,310 +1,6 @@
---- tar-1.17/configure.xattrs	2007-06-08 10:36:00.000000000 +0200
-+++ tar-1.17/configure	2007-06-27 17:18:14.000000000 +0200
-@@ -514,19 +514,29 @@ else
-   as_mkdir_p=false
- fi
- 
--# Find out whether ``test -x'' works.  Don't use a zero-byte file, as
--# systems may use methods other than mode bits to determine executability.
--cat >conf$$.file <<_ASEOF
--#! /bin/sh
--exit 0
--_ASEOF
--chmod +x conf$$.file
--if test -x conf$$.file >/dev/null 2>&1; then
--  as_executable_p="test -x"
-+if test -x / >/dev/null 2>&1; then
-+  as_test_x='test -x'
- else
--  as_executable_p=:
-+  if ls -dL / >/dev/null 2>&1; then
-+    as_ls_L_option=L
-+  else
-+    as_ls_L_option=
-+  fi
-+  as_test_x='
-+    eval sh -c '\''
-+      if test -d "$1"; then
-+        test -d "$1/.";
-+      else
-+	case $1 in
-+        -*)set "./$1";;
-+	esac;
-+	case `ls -ld'$as_ls_L_option' "$1" 2>/dev/null` in
-+	???[sx]*):;;*)false;;esac;fi
-+    '\'' sh
-+  '
- fi
--rm -f conf$$.file
-+as_executable_p=$as_test_x
-+
- 
- # Sed expression to map a string onto a valid CPP name.
- as_tr_cpp="eval sed 'y%*$as_cr_letters%P$as_cr_LETTERS%;s%[^_$as_cr_alnum]%_%g'"
-@@ -1925,6 +1935,9 @@ ac_header_list="$ac_header_list sys/tpri
- ac_header_list="$ac_header_list sys/tape.h"
- ac_header_list="$ac_header_list unistd.h"
- ac_header_list="$ac_header_list locale.h"
-+ac_header_list="$ac_header_list selinux/selinux.h"
-+ac_header_list="$ac_header_list attr/xattr.h"
-+ac_header_list="$ac_header_list sys/acl.h"
- ac_func_list="$ac_func_list flockfile"
- ac_func_list="$ac_func_list funlockfile"
- ac_header_list="$ac_header_list features.h"
-@@ -34101,6 +34114,251 @@ _ACEOF
- fi
- done
- 
-+
-+for ac_func in getxattr  fgetxattr  lgetxattr \
-+               setxattr  fsetxattr  lsetxattr \
-+               listxattr flistxattr llistxattr
-+do
-+as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
-+{ echo "$as_me:$LINENO: checking for $ac_func" >&5
-+echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6; }
-+if { as_var=$as_ac_var; eval "test \"\${$as_var+set}\" = set"; }; then
-+  echo $ECHO_N "(cached) $ECHO_C" >&6
-+else
-+  cat >conftest.$ac_ext <<_ACEOF
-+/* confdefs.h.  */
-+_ACEOF
-+cat confdefs.h >>conftest.$ac_ext
-+cat >>conftest.$ac_ext <<_ACEOF
-+/* end confdefs.h.  */
-+/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
-+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-+#define $ac_func innocuous_$ac_func
-+
-+/* System header to define __stub macros and hopefully few prototypes,
-+    which can conflict with char $ac_func (); below.
-+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-+    <limits.h> exists even on freestanding compilers.  */
-+
-+#ifdef __STDC__
-+# include <limits.h>
-+#else
-+# include <assert.h>
-+#endif
-+
-+#undef $ac_func
-+
-+/* Override any GCC internal prototype to avoid an error.
-+   Use char because int might match the return type of a GCC
-+   builtin and then its argument prototype would still apply.  */
-+#ifdef __cplusplus
-+extern "C"
-+#endif
-+char $ac_func ();
-+/* The GNU C library defines this for functions which it implements
-+    to always fail with ENOSYS.  Some functions are actually named
-+    something starting with __ and the normal name is an alias.  */
-+#if defined __stub_$ac_func || defined __stub___$ac_func
-+choke me
-+#endif
-+
-+int
-+main ()
-+{
-+return $ac_func ();
-+  ;
-+  return 0;
-+}
-+_ACEOF
-+rm -f conftest.$ac_objext conftest$ac_exeext
-+if { (ac_try="$ac_link"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_link") 2>conftest.er1
-+  ac_status=$?
-+  grep -v '^ *+' conftest.er1 >conftest.err
-+  rm -f conftest.er1
-+  cat conftest.err >&5
-+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-+  (exit $ac_status); } && {
-+	 test -z "$ac_c_werror_flag" ||
-+	 test ! -s conftest.err
-+       } && test -s conftest$ac_exeext &&
-+       $as_test_x conftest$ac_exeext; then
-+  eval "$as_ac_var=yes"
-+else
-+  echo "$as_me: failed program was:" >&5
-+sed 's/^/| /' conftest.$ac_ext >&5
-+
-+	eval "$as_ac_var=no"
-+fi
-+
-+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-+      conftest$ac_exeext conftest.$ac_ext
-+fi
-+ac_res=`eval echo '${'$as_ac_var'}'`
-+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-+echo "${ECHO_T}$ac_res" >&6; }
-+if test `eval echo '${'$as_ac_var'}'` = yes; then
-+  cat >>confdefs.h <<_ACEOF
-+#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
-+_ACEOF
-+
-+cat >>confdefs.h <<\_ACEOF
-+#define HAVE_XATTRS
-+_ACEOF
-+
-+fi
-+done
-+
-+
-+{ echo "$as_me:$LINENO: checking for getfilecon in -lselinux" >&5
-+echo $ECHO_N "checking for getfilecon in -lselinux... $ECHO_C" >&6; }
-+if test "${ac_cv_lib_selinux_getfilecon+set}" = set; then
-+  echo $ECHO_N "(cached) $ECHO_C" >&6
-+else
-+  ac_check_lib_save_LIBS=$LIBS
-+LIBS="-lselinux  $LIBS"
-+cat >conftest.$ac_ext <<_ACEOF
-+/* confdefs.h.  */
-+_ACEOF
-+cat confdefs.h >>conftest.$ac_ext
-+cat >>conftest.$ac_ext <<_ACEOF
-+/* end confdefs.h.  */
-+
-+/* Override any GCC internal prototype to avoid an error.
-+   Use char because int might match the return type of a GCC
-+   builtin and then its argument prototype would still apply.  */
-+#ifdef __cplusplus
-+extern "C"
-+#endif
-+char getfilecon ();
-+int
-+main ()
-+{
-+return getfilecon ();
-+  ;
-+  return 0;
-+}
-+_ACEOF
-+rm -f conftest.$ac_objext conftest$ac_exeext
-+if { (ac_try="$ac_link"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_link") 2>conftest.er1
-+  ac_status=$?
-+  grep -v '^ *+' conftest.er1 >conftest.err
-+  rm -f conftest.er1
-+  cat conftest.err >&5
-+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-+  (exit $ac_status); } && {
-+	 test -z "$ac_c_werror_flag" ||
-+	 test ! -s conftest.err
-+       } && test -s conftest$ac_exeext &&
-+       $as_test_x conftest$ac_exeext; then
-+  ac_cv_lib_selinux_getfilecon=yes
-+else
-+  echo "$as_me: failed program was:" >&5
-+sed 's/^/| /' conftest.$ac_ext >&5
-+
-+	ac_cv_lib_selinux_getfilecon=no
-+fi
-+
-+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-+      conftest$ac_exeext conftest.$ac_ext
-+LIBS=$ac_check_lib_save_LIBS
-+fi
-+{ echo "$as_me:$LINENO: result: $ac_cv_lib_selinux_getfilecon" >&5
-+echo "${ECHO_T}$ac_cv_lib_selinux_getfilecon" >&6; }
-+if test $ac_cv_lib_selinux_getfilecon = yes; then
-+  cat >>confdefs.h <<_ACEOF
-+#define HAVE_LIBSELINUX 1
-+_ACEOF
-+
-+  LIBS="-lselinux $LIBS"
-+
-+fi
-+
-+
-+{ echo "$as_me:$LINENO: checking for acl_get_fd in -lacl" >&5
-+echo $ECHO_N "checking for acl_get_fd in -lacl... $ECHO_C" >&6; }
-+if test "${ac_cv_lib_acl_acl_get_fd+set}" = set; then
-+  echo $ECHO_N "(cached) $ECHO_C" >&6
-+else
-+  ac_check_lib_save_LIBS=$LIBS
-+LIBS="-lacl  $LIBS"
-+cat >conftest.$ac_ext <<_ACEOF
-+/* confdefs.h.  */
-+_ACEOF
-+cat confdefs.h >>conftest.$ac_ext
-+cat >>conftest.$ac_ext <<_ACEOF
-+/* end confdefs.h.  */
-+
-+/* Override any GCC internal prototype to avoid an error.
-+   Use char because int might match the return type of a GCC
-+   builtin and then its argument prototype would still apply.  */
-+#ifdef __cplusplus
-+extern "C"
-+#endif
-+char acl_get_fd ();
-+int
-+main ()
-+{
-+return acl_get_fd ();
-+  ;
-+  return 0;
-+}
-+_ACEOF
-+rm -f conftest.$ac_objext conftest$ac_exeext
-+if { (ac_try="$ac_link"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_link") 2>conftest.er1
-+  ac_status=$?
-+  grep -v '^ *+' conftest.er1 >conftest.err
-+  rm -f conftest.er1
-+  cat conftest.err >&5
-+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-+  (exit $ac_status); } && {
-+	 test -z "$ac_c_werror_flag" ||
-+	 test ! -s conftest.err
-+       } && test -s conftest$ac_exeext &&
-+       $as_test_x conftest$ac_exeext; then
-+  ac_cv_lib_acl_acl_get_fd=yes
-+else
-+  echo "$as_me: failed program was:" >&5
-+sed 's/^/| /' conftest.$ac_ext >&5
-+
-+	ac_cv_lib_acl_acl_get_fd=no
-+fi
-+
-+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-+      conftest$ac_exeext conftest.$ac_ext
-+LIBS=$ac_check_lib_save_LIBS
-+fi
-+{ echo "$as_me:$LINENO: result: $ac_cv_lib_acl_acl_get_fd" >&5
-+echo "${ECHO_T}$ac_cv_lib_acl_acl_get_fd" >&6; }
-+if test $ac_cv_lib_acl_acl_get_fd = yes; then
-+  cat >>confdefs.h <<_ACEOF
-+#define HAVE_LIBACL 1
-+_ACEOF
-+
-+  LIBS="-lacl $LIBS"
-+
-+fi
-+
-+
-+
-+
- { echo "$as_me:$LINENO: checking whether getgrgid is declared" >&5
- echo $ECHO_N "checking whether getgrgid is declared... $ECHO_C" >&6; }
- if test "${ac_cv_have_decl_getgrgid+set}" = set; then
+diff -up tar-1.17/configure.ac.xattrs tar-1.17/configure.ac
 --- tar-1.17/configure.ac.xattrs	2007-06-08 10:28:04.000000000 +0200
-+++ tar-1.17/configure.ac	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/configure.ac	2007-12-10 15:31:54.000000000 +0100
 @@ -40,7 +40,7 @@ AC_CHECK_HEADERS_ONCE(fcntl.h linux/fd.h
    sys/param.h sys/device.h sys/filio.h sys/gentape.h \
    sys/inet.h sys/io/trioctl.h \
@@ -337,8 +33,9 @@
  AC_CHECK_TYPE(iconv_t,:,
                AC_DEFINE(iconv_t, int,
                          [Conversion descriptor type]),
+diff -up tar-1.17/doc/tar.texi.xattrs tar-1.17/doc/tar.texi
 --- tar-1.17/doc/tar.texi.xattrs	2007-06-08 10:25:19.000000000 +0200
-+++ tar-1.17/doc/tar.texi	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/doc/tar.texi	2007-12-10 15:31:54.000000000 +0100
 @@ -7845,6 +7845,8 @@ implementation able to read @samp{ustar}
  most @samp{posix} archives as well, with the only exception that any
  additional information (such as long file names etc.) will in such
@@ -400,8 +97,9 @@
  @end table
  
  @node Portability
+diff -up tar-1.17/src/Makefile.in.xattrs tar-1.17/src/Makefile.in
 --- tar-1.17/src/Makefile.in.xattrs	2007-06-08 10:35:58.000000000 +0200
-+++ tar-1.17/src/Makefile.in	2007-06-27 17:11:28.000000000 +0200
++++ tar-1.17/src/Makefile.in	2007-12-10 15:31:54.000000000 +0100
 @@ -1,8 +1,8 @@
 -# Makefile.in generated by automake 1.10a from Makefile.am.
 +# Makefile.in generated by automake 1.10 from Makefile.am.
@@ -472,8 +170,9 @@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xheader.Po@am__quote@
  
  .c.o:
+diff -up tar-1.17/src/common.h.xattrs tar-1.17/src/common.h
 --- tar-1.17/src/common.h.xattrs	2007-06-08 10:14:42.000000000 +0200
-+++ tar-1.17/src/common.h	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/common.h	2007-12-10 15:31:54.000000000 +0100
 @@ -255,6 +255,15 @@ GLOBAL int same_owner_option;
  /* If positive, preserve permissions when extracting.  */
  GLOBAL int same_permissions_option;
@@ -513,9 +212,10 @@
  
  /* Module system.c */
  
---- /dev/null	2007-06-25 09:32:25.472134050 +0200
-+++ tar-1.17/src/xattrs.c	2007-06-27 17:10:56.000000000 +0200
-@@ -0,0 +1,457 @@
+diff -up /dev/null tar-1.17/src/xattrs.c
+--- /dev/null	2007-12-10 11:30:31.504001819 +0100
++++ tar-1.17/src/xattrs.c	2007-12-10 15:31:54.000000000 +0100
+@@ -0,0 +1,491 @@
 +/* Create a tar archive.
 +
 +   Copyright (C) 2006 Free Software Foundation, Inc.
@@ -675,6 +375,12 @@
 +{
 +  if (acls_option > 0)
 +    {
++#ifndef HAVE_LIBACL
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("ACL support requested, but not available")));
++      done = 1;
++#endif
 +      xattrs__acls_get_a (st, file_name, fd,
 +                          &st->acls_a_ptr, &st->acls_a_len);
 +      if (!xisfile)
@@ -685,8 +391,14 @@
 +
 +void xattrs_selinux_get(struct tar_stat_info *st, char const *file_name, int fd)
 +{
-+#ifdef HAVE_LIBSELINUX
 +  if (selinux_context_option > 0)
++  {
++#ifndef HAVE_LIBSELINUX
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("SELinux support requested, but not available")));
++      done = 1;
++#else
 +    if (fd == -1)
 +    {
 +      if (lgetfilecon (file_name, &st->cntx_name) == -1)
@@ -695,11 +407,11 @@
 +    else if (fgetfilecon (fd, &st->cntx_name) == -1)
 +      call_arg_warn ("fgetfilecon", file_name);
 +#endif
++  }
 +}
 +
 +void xattrs_xattrs_get(struct tar_stat_info *st, char const *file_name, int fd)
 +{
-+#ifdef HAVE_XATTRS
 +  if (xattrs_option > 0)
 +    { /* get all xattrs ... this include security.* and system.* if
 +         available. We filter them here, but we have to filter them
@@ -708,6 +420,13 @@
 +      static ssize_t xsz = 1024;
 +      static char *xatrs = NULL;
 +      ssize_t xret = -1;
++
++#ifndef HAVE_XATTRS
++      static int done = 0;
++      if ((xattrs_option > 0) && !done)
++          WARN ((0, 0, _("Xattr support requested, but not available")));
++      done = 1;
++#else
 +
 +      if (!xatrs) xatrs = xmalloc (xsz);
 +              
@@ -758,8 +477,8 @@
 +              xret -= len + 1;
 +            }
 +        }
-+    }
 +#endif
++    }
 +}
 +
 +static void xattrs__fd_set(struct tar_stat_info const *st,
@@ -908,7 +627,12 @@
 +{
 +  if ((acls_option >= 0) && (typeflag != SYMTYPE))
 +    {
-+#ifdef HAVE_LIBACL
++#ifndef HAVE_LIBACL
++      static int done = 0;
++      if (!done)
++        WARN ((0, 0, _("ACL support requested, but not available")));
++      done = 1;
++#else
 +      xattrs__acls_set (st, file_name, ACL_TYPE_ACCESS,
 +                        st->acls_a_ptr, st->acls_a_len);
 +      if (S_ISDIR (st->stat.st_mode))
@@ -921,12 +645,17 @@
 +void xattrs_selinux_set(struct tar_stat_info const *st,
 +                        char const *file_name, char typeflag)
 +{
-+#ifdef HAVE_LIBSELINUX
 +  if ((selinux_context_option >= 0) && st->cntx_name)
 +    {
 +      const char *sysname = "setfilecon";
 +      int ret = -1;
-+      
++
++#ifndef HAVE_LIBSELINUX
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("SELinux support requested, but not available")));
++      done = 1;
++#else
 +      if (typeflag != SYMTYPE)
 +        ret = setfilecon (file_name, st->cntx_name);
 +      else
@@ -939,18 +668,23 @@
 +        call_arg_warn(sysname, file_name);
 +      else if ((ret == -1) && (errno != EOPNOTSUPP))
 +        call_arg_error(sysname, file_name);
-+    }
 +#endif
++    }
 +}
 +
 +void xattrs_xattrs_set(struct tar_stat_info const *st,
 +                       char const *file_name, char typeflag)
 +{
-+#ifdef HAVE_XATTRS
 +  if ((xattrs_option >= 0) && st->xattr_map_size)
 +    {
 +      size_t scan = 0;
-+      
++
++#ifndef HAVE_XATTRS
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("Xattr support requested, but not available")));
++      done = 1;
++#else
 +      while (scan < st->xattr_map_size)
 +        {
 +          char *keyword = st->xattr_map[scan].xkey;
@@ -969,12 +703,13 @@
 +      
 +          ++scan;
 +        }
-+    }
 +#endif
++    }
 +}
 +
+diff -up tar-1.17/src/tar.c.xattrs tar-1.17/src/tar.c
 --- tar-1.17/src/tar.c.xattrs	2007-06-01 12:17:10.000000000 +0200
-+++ tar-1.17/src/tar.c	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/tar.c	2007-12-10 15:31:54.000000000 +0100
 @@ -247,7 +247,8 @@ tar_set_quoting_style (char *arg)
  
  enum
@@ -1133,8 +868,9 @@
    free (st->sparse_map);
    free (st->dumpdir);
    xheader_destroy (&st->xhdr);
+diff -up tar-1.17/src/xheader.c.xattrs tar-1.17/src/xheader.c
 --- tar-1.17/src/xheader.c.xattrs	2007-06-01 12:17:10.000000000 +0200
-+++ tar-1.17/src/xheader.c	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/xheader.c	2007-12-10 15:31:54.000000000 +0100
 @@ -419,6 +419,74 @@ xheader_write_global (struct xheader *xh
    free (name);
  }
@@ -1434,8 +1170,9 @@
 +  
    { NULL, NULL, NULL, false }
  };
---- tar-1.17/src/list.c.xattrs	2007-06-27 17:10:56.000000000 +0200
-+++ tar-1.17/src/list.c	2007-06-27 17:10:56.000000000 +0200
+diff -up tar-1.17/src/list.c.xattrs tar-1.17/src/list.c
+--- tar-1.17/src/list.c.xattrs	2007-12-10 15:31:54.000000000 +0100
++++ tar-1.17/src/list.c	2007-12-10 15:31:54.000000000 +0100
 @@ -567,6 +567,13 @@ decode_header (union block *header, stru
    assign_string (&stat_info->gname,
  		 header->header.gname[0] ? header->header.gname : NULL);
@@ -1450,8 +1187,9 @@
    if (format == OLDGNU_FORMAT && incremental_option)
      {
        stat_info->atime.tv_sec = TIME_FROM_HEADER (header->oldgnu_header.atime);
+diff -up tar-1.17/src/Makefile.am.xattrs tar-1.17/src/Makefile.am
 --- tar-1.17/src/Makefile.am.xattrs	2006-12-05 08:37:59.000000000 +0100
-+++ tar-1.17/src/Makefile.am	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/Makefile.am	2007-12-10 15:31:54.000000000 +0100
 @@ -20,7 +20,7 @@
  
  bin_PROGRAMS = tar
@@ -1475,8 +1213,9 @@
  
 -tar_LDADD = $(LDADD) $(LIB_CLOCK_GETTIME)
 +tar_LDADD = $(LIBS) $(LDADD) $(LIB_CLOCK_GETTIME)
+diff -up tar-1.17/src/create.c.xattrs tar-1.17/src/create.c
 --- tar-1.17/src/create.c.xattrs	2007-06-01 12:17:10.000000000 +0200
-+++ tar-1.17/src/create.c	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/create.c	2007-12-10 15:31:54.000000000 +0100
 @@ -24,6 +24,7 @@
  #include <quotearg.h>
  
@@ -1516,19 +1255,20 @@
    return header;
  }
  
-@@ -1570,6 +1595,10 @@ dump_file0 (struct tar_stat_info *st, co
- 		open_diag (p);
- 	      return;
+@@ -1572,6 +1597,10 @@ dump_file0 (struct tar_stat_info *st, co
  	    }
-+
-+          xattrs_acls_get(st, p, fd, !is_dir);
-+          xattrs_selinux_get(st, p, fd);
-+          xattrs_xattrs_get(st, p, fd);
  	}
  
++      xattrs_acls_get(st, p, fd, !is_dir);
++      xattrs_selinux_get(st, p, fd);
++      xattrs_xattrs_get(st, p, fd);
++
        if (is_dir)
---- /dev/null	2007-06-25 09:32:25.472134050 +0200
-+++ tar-1.17/src/xattrs.h	2007-06-27 17:10:56.000000000 +0200
+ 	{
+ 	  const char *tag_file_name;
+diff -up /dev/null tar-1.17/src/xattrs.h
+--- /dev/null	2007-12-10 11:30:31.504001819 +0100
++++ tar-1.17/src/xattrs.h	2007-12-10 15:31:54.000000000 +0100
 @@ -0,0 +1,14 @@
 +
 +extern void xattrs_acls_get(struct tar_stat_info *st,
@@ -1544,8 +1284,9 @@
 +                               char const *file_name, char typeflag);
 +extern void xattrs_xattrs_set(struct tar_stat_info const *st,
 +                              char const *file_name, char typeflag);
+diff -up tar-1.17/src/extract.c.xattrs tar-1.17/src/extract.c
 --- tar-1.17/src/extract.c.xattrs	2007-06-08 10:14:42.000000000 +0200
-+++ tar-1.17/src/extract.c	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/extract.c	2007-12-10 15:31:54.000000000 +0100
 @@ -69,6 +69,13 @@ struct delayed_set_stat
      mode_t invert_permissions;
      enum permstatus permstatus;
@@ -1665,8 +1406,9 @@
  		  set_stat (source, &st1, NULL, 0, 0, SYMTYPE);
  		  valid_source = source;
  		}
+diff -up tar-1.17/src/tar.h.xattrs tar-1.17/src/tar.h
 --- tar-1.17/src/tar.h.xattrs	2007-06-01 12:17:10.000000000 +0200
-+++ tar-1.17/src/tar.h	2007-06-27 17:10:56.000000000 +0200
++++ tar-1.17/src/tar.h	2007-12-10 15:31:54.000000000 +0100
 @@ -276,6 +276,14 @@ struct xheader
    uintmax_t string_length;
  };

@@ -1,8 +1,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.17
-Release: 5%{?dist}
+Version: 1.19
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -11,12 +11,10 @@ Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
 Source2: tar.1
 Patch1: tar-1.14-loneZeroWarning.patch
 Patch2: tar-1.15.1-vfatTruncate.patch
-Patch3: tar-1.17-testsuite.patch
-Patch4: tar-1.17-xattrs.patch
+Patch3: tar-1.19-xattrs.patch
+Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
-Patch6: tar-1.17-dot_dot_vuln.patch
-Patch7: tar-1.17-safer_name_suffix.patch
-Patch8: tar-1.17-xattrs-conf.patch
+
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -39,12 +37,9 @@ the rmt package.
 %setup -q
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
-%patch3 -p1 -b .testsuite
-%patch4 -p1 -b .xattrs
+%patch3 -p1 -b .xattrs
+%patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
-%patch6 -p1 -b .dot_dot_vuln
-%patch7 -p1 -b .safer_name_suffix
-%patch8 -p1 -b .xattrs-conf
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -95,6 +90,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Dec 17 2007 Radek Brich <rbrich@redhat.com> 2:1.19-1
+- upgrade to 1.19
+- updated xattrs patch, removed 3 upstream patches
+
 * Wed Dec 12 2007 Radek Brich <rbrich@redhat.com> 2:1.17-5
 - fix (non)detection of xattrs
 - move configure stuff from -xattrs patch to -xattrs-conf,

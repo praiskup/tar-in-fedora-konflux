@@ -2,8 +2,8 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.19
-Release: 1%{?dist}
-License: GPLv2+
+Release: 2%{?dist}
+License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
@@ -90,6 +90,13 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jan 21 2008 Radek Brich <rbrich@redhat.com> 2:1.19-2
+- fix errors in man page
+  * fix definition of --occurrence (bz#416661, patch by Jonathan Wakely)
+  * update meaning of -l: it has changed from --one-filesystem
+    to --check-links (bz#426717)
+- update license tag, tar 1.19 is GPLv3+
+
 * Mon Dec 17 2007 Radek Brich <rbrich@redhat.com> 2:1.19-1
 - upgrade to 1.19
 - updated xattrs patch, removed 3 upstream patches

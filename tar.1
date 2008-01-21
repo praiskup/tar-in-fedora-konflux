@@ -48,7 +48,7 @@ tar \- The GNU version of the tar archiving utility
 .B -C, --directory DIR
 ]
 [
-.B --check-links
+.B -l, --check-links
 ]
 [
 .B --checkpoint
@@ -105,7 +105,7 @@ tar \- The GNU version of the tar archiving utility
 .B --keep-newer-files
 ]
 [
-.B -l, --one-file-system
+.B --one-file-system
 ]
 [
 .B -L, --tape-length N
@@ -156,7 +156,7 @@ tar \- The GNU version of the tar archiving utility
 .B -O, --to-stdout
 ]
 [
-.B --occurrence NUM
+.B --occurrence[=NUM]
 ]
 [
 .B --overwrite
@@ -393,7 +393,7 @@ block the output of compression program for tapes
 .B -C, --directory DIR
 change to directory DIR
 .TP
-.B --check-links
+.B -l, --check-links
 warn if number of hard links to the file on the filesystem mismatch the 
 number of links recorded in the archive
 .TP
@@ -457,7 +457,7 @@ begin at file F in the archive
 .B --keep-newer-files
 do not overwrite files which are newer than the archive
 .TP
-.B -l, --one-file-system
+.B --one-file-system
 stay in local file system when creating an archive
 .TP
 .B -L, --tape-length N
@@ -513,9 +513,10 @@ this behavior when extracting an archive
 .B -O, --to-stdout
 extract files to standard output
 .TP
-.B --occurrence NUM
-process only NUM occurrences of each named file; used with 
-\fI--delete\fR, \fI--diff\fR, \fI--extract\fR, or \fI--list\fR
+.B --occurrence[=NUM]
+process only the NUMth occurrence of each named file; used with
+\fI--delete\fR, \fI--diff\fR, \fI--extract\fR, or \fI--list\fR.
+NUM defaults to 1.
 .TP
 .B --overwrite
 overwrite existing files and directory metadata when extracting

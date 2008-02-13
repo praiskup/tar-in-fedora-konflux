@@ -231,6 +231,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +{ /* "system.posix_acl_access" */
 +#ifdef HAVE_LIBACL
 +  char *val = NULL;
++  size_t len;
 +  acl_t acl;
 +
 +  if (fd != -1)
@@ -250,7 +251,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +  }
 +  
 +  
-+  val = acl_to_text(acl, NULL);
++  val = acl_to_text(acl, &len);
 +  acl_free (acl);
 +  
 +  if (val == NULL)
@@ -259,8 +260,8 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +    return;
 +  }
 +  
-+  *ret_ptr = xstrdup (val);
-+  *ret_len = strlen (val);
++  *ret_ptr = xstrndup (val, len);
++  *ret_len = len;
 +  
 +  acl_free (val);
 +#endif
@@ -272,6 +273,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +{ /* "system.posix_acl_default" */
 +#ifdef HAVE_LIBACL
 +  char *val = NULL;
++  size_t len;
 +  acl_t acl;
 +  
 +  if ((acl = acl_get_file (file_name, ACL_TYPE_DEFAULT)) == (acl_t)NULL)
@@ -281,7 +283,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +    return;
 +  }
 +  
-+  val = acl_to_text(acl, NULL);
++  val = acl_to_text(acl, &len);
 +  acl_free (acl);
 +  
 +  if (val == NULL)
@@ -290,8 +292,8 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +    return;
 +  }
 +  
-+  *ret_ptr = xstrdup (val);
-+  *ret_len = strlen (val);
++  *ret_ptr = xstrndup (val, len);
++  *ret_len = len;
 +  
 +  acl_free (val);
 +#endif
@@ -328,10 +330,10 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +#else
 +    if (fd == -1)
 +    {
-+      if (lgetfilecon (file_name, &st->cntx_name) == -1)
++      if ((lgetfilecon (file_name, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
 +        call_arg_warn ("lgetfilecon", file_name);
 +    }
-+    else if (fgetfilecon (fd, &st->cntx_name) == -1)
++    else if ((fgetfilecon (fd, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
 +      call_arg_warn ("fgetfilecon", file_name);
 +#endif
 +  }
@@ -427,9 +429,8 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +          ret = lsetxattr (file_name, attr, ptr, len, 0);
 +        }
 +
-+      if ((ret == -1) && (errno == EPERM))
-+        call_arg_warn(sysname, file_name);
-+      else if ((ret == -1) && (errno != EOPNOTSUPP))
++      /* do not print warnings when SELinux is disabled */
++      if ((ret == -1) && (errno != EPERM) && (errno != ENOTSUP))
 +        call_arg_error(sysname, file_name);
 +    }
 +#endif

@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.19
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -90,6 +90,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Feb 12 2008 Radek Brich <rbrich@redhat.com> 2:1.19-3
+- do not print getfilecon/setfilecon warnings when SELinux is disabled
+  or SELinux data are not available (bz#431879)
+
 * Mon Jan 21 2008 Radek Brich <rbrich@redhat.com> 2:1.19-2
 - fix errors in man page
   * fix definition of --occurrence (bz#416661, patch by Jonathan Wakely)

@@ -14,7 +14,7 @@ Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.19-xattrs.patch
 Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
-
+Patch6: tar-1.19-gcc43.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -40,6 +40,7 @@ the rmt package.
 %patch3 -p1 -b .xattrs
 %patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
+%patch6 -p1 -b .gcc43
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -93,6 +94,7 @@ fi
 * Tue Feb 12 2008 Radek Brich <rbrich@redhat.com> 2:1.19-3
 - do not print getfilecon/setfilecon warnings when SELinux is disabled
   or SELinux data are not available (bz#431879)
+- fix for GCC 4.3
 
 * Mon Jan 21 2008 Radek Brich <rbrich@redhat.com> 2:1.19-2
 - fix errors in man page

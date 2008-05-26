@@ -1,8 +1,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.19
-Release: 3%{?dist}
+Version: 1.20
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -14,7 +14,6 @@ Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.19-xattrs.patch
 Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
-Patch6: tar-1.19-gcc43.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -40,7 +39,6 @@ the rmt package.
 %patch3 -p1 -b .xattrs
 %patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
-%patch6 -p1 -b .gcc43
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -91,6 +89,12 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon May 26 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-1
+- new upstream release 1.20 (lzma support, few new options
+  and bugfixes)
+- heavily modified xattrs patches(as tar-1.20 now uses automake
+  1.10.1)
+
 * Tue Feb 12 2008 Radek Brich <rbrich@redhat.com> 2:1.19-3
 - do not print getfilecon/setfilecon warnings when SELinux is disabled
   or SELinux data are not available (bz#431879)

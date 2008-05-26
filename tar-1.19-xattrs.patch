@@ -13,7 +13,7 @@ diff -up tar-1.17/configure.ac.xattrs tar-1.17/configure.ac
 @@ -88,6 +88,13 @@ gl_INIT
  tar_PAXUTILS
  
- AC_CHECK_FUNCS(fsync getdtablesize lstat mkfifo readlink strerror symlink setlocale utimes)
+ AC_CHECK_FUNCS(fsync getdtablesize lstat mkfifo readlink symlink setlocale utimes)
 +AC_CHECK_FUNCS(getxattr  fgetxattr  lgetxattr \
 +               setxattr  fsetxattr  lsetxattr \
 +               listxattr flistxattr llistxattr,

@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.20
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -89,6 +89,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Aug 29 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-2
+- patch fuzz clean up
+
 * Mon May 26 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-1
 - new upstream release 1.20 (lzma support, few new options
   and bugfixes)

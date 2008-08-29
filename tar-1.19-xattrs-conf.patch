@@ -74,7 +74,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
 --- tar-1.19/config.hin.xattrs-conf	2007-10-10 13:01:17.000000000 +0200
 +++ tar-1.19/config.hin	2007-12-17 11:47:38.000000000 +0100
 @@ -121,6 +121,9 @@
-    includes <alloca.h> only if HAVE_ALLOCA_H is defined. */
+    */
  #undef HAVE_ALLOCA_H
  
 +/* Define to 1 if you have the <attr/xattr.h> header file. */
@@ -112,8 +112,8 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
 +/* Define to 1 if you have the `getxattr' function. */
 +#undef HAVE_GETXATTR
 +
- /* Define if you have the iconv() function and it works. */
- #undef HAVE_ICONV
+ /* Define to 1 if you have the <grp.h> header file. */
+ #undef HAVE_GRP_H
  
 @@ -444,12 +459,27 @@
  /* Define to 1 if you have the `lchown' function. */

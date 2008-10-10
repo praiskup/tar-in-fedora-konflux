@@ -36,6 +36,74 @@ diff -up tar-1.17/configure.ac.xattrs tar-1.17/configure.ac
 diff -up tar-1.17/doc/tar.texi.xattrs tar-1.17/doc/tar.texi
 --- tar-1.17/doc/tar.texi.xattrs	2007-06-08 10:25:19.000000000 +0200
 +++ tar-1.17/doc/tar.texi	2007-12-10 15:31:54.000000000 +0100
+@@ -2345,6 +2345,10 @@ Normally when creating an archive, @comm
+ @samp{/} from member names.  This option disables that behavior.
+ @xref{absolute}.
+ 
++@opsummary{acl}
++@item --acls
++Causes @command{tar} to store ACL's.  @xref{Attributes}.
++
+ @opsummary{after-date}
+ @item --after-date
+ 
+@@ -2838,6 +2842,10 @@ contents have changed (as opposed to jus
+ also back up files for which any status information has
+ changed).  @xref{after}.
+ 
++@opsummary{no-acl}
++@item --no-acls
++Causes @command{tar} not to store and not to extract ACL's.  @xref{Attributes}.
++
+ @opsummary{no-anchored}
+ @item --no-anchored
+ An exclude pattern can match any subsequence of the name's components.
+@@ -2900,11 +2908,21 @@ When extracting an archive, subtract the
+ the permissions specified in the archive.  This is the default behavior
+ for ordinary users.
+ 
++@opsummary{no-selinux}
++@item --no-selinux
++Causes @command{tar} not to store and not to extract SELinux security context.
++@xref{Attributes}.
++
+ @opsummary{no-unquote}
+ @item --no-unquote
+ Treat all input file or member names literally, do not interpret
+ escape sequences.  @xref{input name quoting}.
+ 
++@opsummary{no-xattrs}
++@item --no-xattrs
++Causes @command{tar} not to store and not to extract xattrs. This option also
++enables @option{--no-selinux} and @option{--no-acls}.  @xref{Attributes}.
++
+ @opsummary{no-wildcards}
+ @item --no-wildcards
+ Do not use wildcards.
+@@ -3132,6 +3150,11 @@ locations.  Usually @command{tar} determ
+ the archive can be seeked or not.  This option is intended for use
+ in cases when such recognition fails.
+ 
++@opsummary{selinux}
++@item --selinux
++Causes @command{tar} to store SElinux security context.  @xref{Attributes}.
++
++
+ @opsummary{show-defaults}
+ @item --show-defaults
+ 
+@@ -3328,6 +3351,11 @@ Used in conjunction with @option{--multi
+ keep track of which volume of a multi-volume archive it is working in
+ @var{file}.  @xref{volno-file}.
+ 
++@opsummary{xattrs}
++@item --xattrs
++Causes @command{tar} to store xattrs. This option also enables
++@option{--selinux} and @option{--acls}.  @xref{Attributes}.
++
+ @opsummary{wildcards}
+ @item --wildcards
+ Use wildcards when matching member names with patterns.
 @@ -7845,6 +7845,8 @@ implementation able to read @samp{ustar}
  most @samp{posix} archives as well, with the only exception that any
  additional information (such as long file names etc.) will in such
@@ -75,7 +143,7 @@ diff -up tar-1.17/doc/tar.texi.xattrs tar-1.17/doc/tar.texi
 +This option causes @command{tar} not to store the current ACL in the archive
 +and not to extract any ACL information in an archive.
 +
-+The @option{--acls} option has no equivalent short option name.
++The @option{--no-acls} option has no equivalent short option name.
 +
 +@opindex no-selinux
 +@item --no-selinux
@@ -83,16 +151,16 @@ diff -up tar-1.17/doc/tar.texi.xattrs tar-1.17/doc/tar.texi
 +context information in the archive and not to extract any SELinux information in
 +an archive.
 +
-+The @option{--selinux} option has no equivalent short option name.
++The @option{--no-selinux} option has no equivalent short option name.
 +
-+@opindex xattrs
-+@item --xattrs
++@opindex no-xattrs
++@item --no-xattrs
 +This option causes @command{tar} not to store the current extended attributes in
 +the archive and not to extract any extended attributes in an archive. This
-+option also enables @option{--acls} and @option{--selinux} if
++option also enables @option{--no-acls} and @option{--no-selinux} if
 +they haven't been set already.
 +
-+The @option{--xattrs} option has no equivalent short option name.
++The @option{--no-xattrs} option has no equivalent short option name.
 +
  @end table
  

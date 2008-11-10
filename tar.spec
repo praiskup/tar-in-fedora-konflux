@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.20
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -15,6 +15,7 @@ Patch3: tar-1.19-xattrs.patch
 Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.19-null-terminator.patch
+Patch7: tar-1.16-multiVolLabels.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -41,6 +42,7 @@ the rmt package.
 %patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
 %patch6 -p1 -b .nullterm
+%patch7 -p1 -b .multiVolLabels
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -91,6 +93,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Nov 10 2008 Kamil Dudka <kdudka@redhat.com> 2:1.20-4
+- fixed bug #465803: labels with --multi-volume (upstream patch)
+
 * Fri Oct 10 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-3
 - Fixed wrong documentation for xattrs options (#466517)
 - fixed bug with null file terminator and change dirs

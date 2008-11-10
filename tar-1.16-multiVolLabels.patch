@@ -1,0 +1,12 @@
+diff -ruNp tar-1.20.orig/src/buffer.c tar-1.20/src/buffer.c
+--- tar-1.20.orig/src/buffer.c	2008-11-07 19:16:05.578337476 +0100
++++ tar-1.20/src/buffer.c	2008-11-07 19:16:39.415962458 +0100
+@@ -1290,7 +1290,7 @@ _write_volume_label (const char *str)
+ 
+       memset (label, 0, BLOCKSIZE);
+ 
+-      strcpy (label->header.name, volume_label_option);
++      strcpy (label->header.name, str);
+       assign_string (&current_stat_info.file_name,
+ 		     label->header.name);
+       current_stat_info.had_trailing_slash =

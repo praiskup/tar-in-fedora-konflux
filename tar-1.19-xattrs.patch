@@ -284,7 +284,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +  
 +  if (ret != -1)
 +    {
-+      *ret_ptr = xmemdup (val, ret);
++      *ret_ptr = xmemdup (val, ret + 1);
 +      *ret_len = ret;
 +    }
 +  else if (errno != ENOATTR)
@@ -1370,21 +1370,27 @@ diff -up tar-1.17/src/tar.h.xattrs tar-1.17/src/tar.h
    if (0 < same_owner_option && permstatus != INTERDIR_PERMSTATUS)
      {
        /* When lchown exists, it should be used to change the attributes of
-@@ -352,6 +375,23 @@ delay_set_stat (char const *file_name, s
+@@ -352,6 +375,29 @@ delay_set_stat (char const *file_name, s
    data->invert_permissions = invert_permissions;
    data->permstatus = permstatus;
    data->after_links = 0;
 +  data->cntx_name = NULL;
 +  assign_string (&data->cntx_name, st->cntx_name);
 +  if (st->acls_a_ptr)
-+    data->acls_a_ptr = xmemdup(st->acls_a_ptr, st->acls_a_len);
++    {
++      data->acls_a_ptr = xmemdup(st->acls_a_ptr, st->acls_a_len + 1);
++      data->acls_a_len = st->acls_a_len;
++    }
 +  else
 +    {
 +      data->acls_a_ptr = NULL;
 +      data->acls_a_len = 0;
 +    }
 +  if (st->acls_d_ptr)
-+    data->acls_d_ptr = xmemdup(st->acls_d_ptr, st->acls_d_len);
++    {
++      data->acls_d_ptr = xmemdup(st->acls_d_ptr, st->acls_d_len + 1);
++      data->acls_d_len = st->acls_d_len;
++    }
 +  else
 +    {
 +      data->acls_d_ptr = NULL;

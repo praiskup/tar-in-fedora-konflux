@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.20
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -93,6 +93,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Nov 21 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-5
+- fix off-by-one errors in xattrs patch (#472355)
+
 * Mon Nov 10 2008 Kamil Dudka <kdudka@redhat.com> 2:1.20-4
 - fixed bug #465803: labels with --multi-volume (upstream patch)
 

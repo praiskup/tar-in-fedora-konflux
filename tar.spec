@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.20
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -17,7 +17,7 @@ Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.19-null-terminator.patch
 Patch7: tar-1.16-multiVolLabels.patch
 Prereq: info
-BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk
+BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -93,6 +93,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Dec 11 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-6
+- add BuildRequires for rsh (#475950)
+
 * Fri Nov 21 2008 Ondrej Vasik <ovasik@redhat.com> 2:1.20-5
 - fix off-by-one errors in xattrs patch (#472355)
 

@@ -115,7 +115,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the <grp.h> header file. */
  #undef HAVE_GRP_H
  
-@@ -444,12 +459,27 @@
+@@ -444,15 +459,30 @@
  /* Define to 1 if you have the `lchown' function. */
  #undef HAVE_LCHOWN
  
@@ -125,9 +125,12 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
 +/* Define to 1 if you have the `acl' library (-lacl). */
 +#undef HAVE_LIBACL
 +
+ /* Define to 1 if you have the <libintl.h> header file. */
+ #undef HAVE_LIBINTL_H
++
 +/* Define to 1 if you have the `selinux' library (-lselinux). */
 +#undef HAVE_LIBSELINUX
-+
+ 
  /* Define to 1 if you have the <linewrap.h> header file. */
  #undef HAVE_LINEWRAP_H
  

@@ -1,20 +1,19 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.21
-Release: 2%{?dist}
+Version: 1.22
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
-Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz
-Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.gz.sig
+Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
+Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
 Source2: tar.1
 Patch1: tar-1.14-loneZeroWarning.patch
 Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.19-xattrs.patch
 Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
-Patch6: tar-1.21-testsuite.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -40,7 +39,6 @@ the rmt package.
 %patch3 -p1 -b .xattrs
 %patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
-%patch6 -p1 -b .testsuite
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -91,6 +89,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Mar 02 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-1
+- New upstream release 1.22, removed applied patch
+
 * Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.21-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 

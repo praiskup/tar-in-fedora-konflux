@@ -1,7 +1,7 @@
-diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
---- tar-1.19/config.hin.xattrs-conf	2007-10-10 13:01:17.000000000 +0200
-+++ tar-1.19/config.hin	2007-12-17 11:47:38.000000000 +0100
-@@ -121,6 +121,9 @@
+diff -urNp tar-1.22-orig/config.hin tar-1.22/config.hin
+--- tar-1.22-orig/config.hin	2009-03-05 08:08:07.000000000 +0100
++++ tar-1.22/config.hin	2009-03-05 09:57:06.000000000 +0100
+@@ -131,6 +131,9 @@
     */
  #undef HAVE_ALLOCA_H
  
@@ -11,7 +11,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the `btowc' function. */
  #undef HAVE_BTOWC
  
-@@ -354,12 +357,21 @@
+@@ -372,12 +375,21 @@
  /* Define to 1 if you have the <features.h> header file. */
  #undef HAVE_FEATURES_H
  
@@ -33,7 +33,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
  #undef HAVE_FSEEKO
  
-@@ -399,6 +411,9 @@
+@@ -423,6 +435,9 @@
  /* Define to 1 if you have the `gettimeofday' function. */
  #undef HAVE_GETTIMEOFDAY
  
@@ -43,7 +43,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the <grp.h> header file. */
  #undef HAVE_GRP_H
  
-@@ -444,15 +459,30 @@
+@@ -468,15 +483,30 @@
  /* Define to 1 if you have the `lchown' function. */
  #undef HAVE_LCHOWN
  
@@ -55,10 +55,10 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
 +
  /* Define to 1 if you have the <libintl.h> header file. */
  #undef HAVE_LIBINTL_H
-+
+ 
 +/* Define to 1 if you have the `selinux' library (-lselinux). */
 +#undef HAVE_LIBSELINUX
- 
++
  /* Define to 1 if you have the <linewrap.h> header file. */
  #undef HAVE_LINEWRAP_H
  
@@ -74,7 +74,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the <locale.h> header file. */
  #undef HAVE_LOCALE_H
  
-@@ -462,6 +492,9 @@
+@@ -486,6 +516,9 @@
  /* Define to 1 if the system has the type `long long int'. */
  #undef HAVE_LONG_LONG_INT
  
@@ -84,7 +84,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the `lstat' function. */
  #undef HAVE_LSTAT
  
-@@ -568,12 +601,18 @@
+@@ -589,12 +622,18 @@
  /* Define to 1 if you have the <search.h> header file. */
  #undef HAVE_SEARCH_H
  
@@ -103,7 +103,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the <sgtty.h> header file. */
  #undef HAVE_SGTTY_H
  
-@@ -713,6 +752,9 @@
+@@ -734,6 +773,9 @@
  /* Define to 1 if you have the <sysexits.h> header file. */
  #undef HAVE_SYSEXITS_H
  
@@ -113,7 +113,7 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if you have the <sys/bitypes.h> header file. */
  #undef HAVE_SYS_BITYPES_H
  
-@@ -861,6 +903,9 @@
+@@ -891,6 +933,9 @@
  /* Define if utimes works properly. */
  #undef HAVE_WORKING_UTIMES
  
@@ -123,10 +123,10 @@ diff -up tar-1.19/config.hin.xattrs-conf tar-1.19/config.hin
  /* Define to 1 if the system has the type `_Bool'. */
  #undef HAVE__BOOL
  
-diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
---- tar-1.19/configure.xattrs-conf	2007-10-10 13:00:16.000000000 +0200
-+++ tar-1.19/configure	2007-12-17 11:47:14.000000000 +0100
-@@ -1963,6 +1964,9 @@ ac_header_list="$ac_header_list sys/tpri
+diff -urNp tar-1.22-orig/configure tar-1.22/configure
+--- tar-1.22-orig/configure	2009-03-05 08:05:20.000000000 +0100
++++ tar-1.22/configure	2009-03-05 09:57:06.000000000 +0100
+@@ -2127,6 +2127,9 @@ ac_header_list="$ac_header_list sys/tpri
  ac_header_list="$ac_header_list sys/tape.h"
  ac_header_list="$ac_header_list unistd.h"
  ac_header_list="$ac_header_list locale.h"
@@ -136,7 +136,7 @@ diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
  ac_func_list="$ac_func_list flockfile"
  ac_func_list="$ac_func_list funlockfile"
  ac_header_list="$ac_header_list features.h"
-@@ -5614,7 +5633,14 @@ return strerror ();
+@@ -6022,7 +6025,14 @@ return strerror ();
    return 0;
  }
  _ACEOF
@@ -152,7 +152,7 @@ diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
  if { (ac_try="$ac_link"
  case "(($ac_try" in
    *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-@@ -5632,25 +5658,35 @@ eval "echo \"\$as_me:$LINENO: $ac_try_ec
+@@ -6040,25 +6050,35 @@ eval "echo \"\$as_me:$LINENO: $ac_try_ec
  	 test ! -s conftest.err
         } && test -s conftest$ac_exeext &&
         $as_test_x conftest$ac_exeext; then
@@ -197,7 +197,7 @@ diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
  
  { echo "$as_me:$LINENO: checking for inline" >&5
  echo $ECHO_N "checking for inline... $ECHO_C" >&6; }
-@@ -32646,6 +32690,257 @@ _ACEOF
+@@ -38773,6 +38793,257 @@ _ACEOF
  fi
  done
  
@@ -455,7 +455,7 @@ diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
  { echo "$as_me:$LINENO: checking whether getgrgid is declared" >&5
  echo $ECHO_N "checking whether getgrgid is declared... $ECHO_C" >&6; }
  if test "${ac_cv_have_decl_getgrgid+set}" = set; then
-@@ -34374,6 +34669,296 @@ fi
+@@ -40571,6 +40842,296 @@ fi
  
  done
  
@@ -752,10 +752,10 @@ diff -up tar-1.19/configure.xattrs-conf tar-1.19/configure
  { echo "$as_me:$LINENO: checking for iconv_t" >&5
  echo $ECHO_N "checking for iconv_t... $ECHO_C" >&6; }
  if test "${ac_cv_type_iconv_t+set}" = set; then
-diff -urNp tar-1.20-orig/src/Makefile.in tar-1.20/src/Makefile.in
---- tar-1.20-orig/src/Makefile.in	2008-04-14 14:04:00.000000000 +0200
-+++ tar-1.20/src/Makefile.in	2008-05-26 18:18:42.000000000 +0200
-@@ -137,7 +137,8 @@ am_tar_OBJECTS = buffer.$(OBJEXT) checkp
+diff -urNp tar-1.22-orig/src/Makefile.in tar-1.22/src/Makefile.in
+--- tar-1.22-orig/src/Makefile.in	2009-03-05 08:05:26.000000000 +0100
++++ tar-1.22/src/Makefile.in	2009-03-05 09:57:06.000000000 +0100
+@@ -143,7 +143,8 @@ am_tar_OBJECTS = buffer.$(OBJEXT) checkp
  	extract.$(OBJEXT) xheader.$(OBJEXT) incremen.$(OBJEXT) \
  	list.$(OBJEXT) misc.$(OBJEXT) names.$(OBJEXT) sparse.$(OBJEXT) \
  	suffix.$(OBJEXT) system.$(OBJEXT) tar.$(OBJEXT) \
@@ -765,7 +765,7 @@ diff -urNp tar-1.20-orig/src/Makefile.in tar-1.20/src/Makefile.in
  tar_OBJECTS = $(am_tar_OBJECTS)
  am__DEPENDENCIES_1 =
  am__DEPENDENCIES_2 = ../lib/libtar.a $(am__DEPENDENCIES_1) \
-@@ -526,7 +527,7 @@ sysconfdir = @sysconfdir@
+@@ -653,7 +654,7 @@ sysconfdir = @sysconfdir@
  target_alias = @target_alias@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
@@ -774,7 +774,7 @@ diff -urNp tar-1.20-orig/src/Makefile.in tar-1.20/src/Makefile.in
  tar_SOURCES = \
   buffer.c\
   checkpoint.c\
-@@ -545,11 +546,12 @@ tar_SOURCES = \
+@@ -672,11 +673,12 @@ tar_SOURCES = \
   tar.c\
   transform.c\
   update.c\
@@ -789,7 +789,7 @@ diff -urNp tar-1.20-orig/src/Makefile.in tar-1.20/src/Makefile.in
  all: all-am
  
  .SUFFIXES:
-@@ -649,6 +651,7 @@ distclean-compile:
+@@ -776,6 +778,7 @@ distclean-compile:
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/transform.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utf8.Po@am__quote@

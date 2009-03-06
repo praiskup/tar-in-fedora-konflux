@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -89,6 +89,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Mar 06 2009 Kamil Dudka <kdudka@redhat.com> 2:1.22-2
+- improve tar-1.14-loneZeroWarning.patch (#487315)
+
 * Mon Mar 02 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-1
 - New upstream release 1.22, removed applied patch
 

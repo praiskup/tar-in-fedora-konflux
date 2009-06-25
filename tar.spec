@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -15,6 +15,7 @@ Patch3: tar-1.19-xattrs.patch
 Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.22-atime-rofs.patch
+Patch7: tar-1.22-shortreadbuffer.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -41,6 +42,7 @@ the rmt package.
 %patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
 %patch6 -p1 -b .rofs
+%patch7 -p1 -b .shortread
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -91,6 +93,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jun 25 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-4
+- Report record size only if the archive refers to a device
+  (#487760)
+
 * Fri May 15 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-3
 - ignore errors from setting utime() for source file
   on read-only filesystem (#500742)

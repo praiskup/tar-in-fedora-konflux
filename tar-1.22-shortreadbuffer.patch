@@ -1,0 +1,59 @@
+diff -urNp tar-1.22-orig/src/buffer.c tar-1.22/src/buffer.c
+--- tar-1.22-orig/src/buffer.c	2009-03-05 08:04:13.000000000 +0100
++++ tar-1.22/src/buffer.c	2009-06-25 21:42:34.000000000 +0200
+@@ -679,6 +679,19 @@ archive_read_error (void)
+   return;
+ }
+ 
++static bool
++archive_is_dev ()
++{
++ struct stat st;
++
++ if (fstat (archive, &st))
++ {
++ stat_diag (*archive_name_cursor);
++ return false;
++ }
++ return S_ISBLK (st.st_mode) || S_ISCHR (st.st_mode);
++}
++
+ static void
+ short_read (size_t status)
+ {
+@@ -690,7 +703,8 @@ short_read (size_t status)
+ 
+   if (left && left % BLOCKSIZE == 0
+       && verbose_option
+-      && record_start_block == 0 && status != 0)
++      && record_start_block == 0 && status != 0
++      && archive_is_dev ())
+     {
+       unsigned long rsize = status / BLOCKSIZE;
+       WARN ((0, 0,
+diff -urNp tar-1.22-orig/tests/sparsemvp.at tar-1.22/tests/sparsemvp.at
+--- tar-1.22-orig/tests/sparsemvp.at	2008-10-19 23:56:00.000000000 +0200
++++ tar-1.22/tests/sparsemvp.at	2009-06-25 21:55:43.000000000 +0200
+@@ -56,7 +56,5 @@ Test archive
+ sparsefile
+ Compare archive
+ ],
+-[tar: Record size = 12 blocks
+-tar: Record size = 12 blocks
+-],[],[],[pax])])
++[],[],[],[pax])])
+ 
+diff -urNp tar-1.22-orig/tests/volsize.at tar-1.22/tests/volsize.at
+--- tar-1.22-orig/tests/volsize.at	2008-10-19 23:54:53.000000000 +0200
++++ tar-1.22/tests/volsize.at	2009-06-25 21:56:08.000000000 +0200
+@@ -52,9 +52,7 @@ Extracted directory
+ abc
+ abc/CCC
+ ],
+-[tar: Record size = 5 blocks
+-tar: Record size = 5 blocks
+-])
++[])
+ 
+ AT_CLEANUP
+ 

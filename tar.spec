@@ -16,6 +16,7 @@ Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.22-atime-rofs.patch
 Patch7: tar-1.22-shortreadbuffer.patch
+Patch8: tar-1.22-fortifysourcessigabrt.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -43,6 +44,7 @@ the rmt package.
 %patch5 -p1 -b .wildcards
 %patch6 -p1 -b .rofs
 %patch7 -p1 -b .shortread
+%patch8 -p1 -b .headerblackmagic
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -96,6 +98,8 @@ fi
 * Thu Jun 25 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-4
 - Report record size only if the archive refers to a device
   (#487760)
+- Do not sigabrt with new gcc/glibc because of writing to
+  struct members of gnutar header at once via strcpy
 
 * Fri May 15 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-3
 - ignore errors from setting utime() for source file

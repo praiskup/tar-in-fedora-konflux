@@ -45,9 +45,9 @@ the rmt package.
 %patch6 -p1 -b .rofs
 %patch7 -p1 -b .shortread
 %patch8 -p1 -b .headerblackmagic
-autoreconf
 
 %build
+autoreconf
 %configure --bindir=/bin --libexecdir=/sbin
 make
 

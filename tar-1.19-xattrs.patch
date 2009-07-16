@@ -1362,7 +1362,7 @@ diff -up /dev/null tar-1.17/src/xattrs.c
 +#else
 +      xattrs__acls_set (st, file_name, ACL_TYPE_ACCESS,
 +                        st->acls_a_ptr, st->acls_a_len);
-+      if (S_ISDIR (st->stat.st_mode))
++      if ((typeflag == DIRTYPE) || (typeflag == GNUTYPE_DUMPDIR))
 +        xattrs__acls_set (st, file_name, ACL_TYPE_DEFAULT,
 +                          st->acls_d_ptr, st->acls_d_len);
 +#endif

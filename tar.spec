@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -45,6 +45,7 @@ the rmt package.
 %patch6 -p1 -b .rofs
 %patch7 -p1 -b .shortread
 %patch8 -p1 -b .headerblackmagic
+autoreconf
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin
@@ -95,6 +96,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jul 16 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-5
+- Fix restoring of directory default acls(#511145)
+- Do not patch generated autotools files
+
 * Thu Jun 25 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-4
 - Report record size only if the archive refers to a device
   (#487760)

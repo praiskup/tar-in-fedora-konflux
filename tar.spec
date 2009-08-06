@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -73,11 +73,15 @@ make check
 rm -rf ${RPM_BUILD_ROOT}
 
 %post
-/sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir || :
+if [ -f %{_infodir}/tar.info.gz ]; then
+   /sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir || :
+fi
 
 %preun
 if [ $1 = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir || :
+   if [ -f %{_infodir}/tar.info.gz ]; then
+      /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir || :
+   fi
 fi
 
 %files -f %{name}.lang
@@ -96,6 +100,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Aug 06 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-7
+- do process install-info only without --excludedocs(#515923)
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.22-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 

@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -59,6 +59,7 @@ ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
 install -c -p -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
+ln -s tar.1.gz ${RPM_BUILD_ROOT}%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
 rm -f ${RPM_BUILD_ROOT}/sbin/rmt
@@ -91,6 +92,7 @@ fi
 /bin/tar
 /bin/gtar
 %{_mandir}/man1/tar.1*
+%{_mandir}/man1/gtar.1*
 %else
 %{_bindir}/*
 %{_libexecdir}/*
@@ -100,6 +102,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Aug 27 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-8
+- provide symlink manpage for gtar
+
 * Thu Aug 06 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-7
 - do process install-info only without --excludedocs(#515923)
 

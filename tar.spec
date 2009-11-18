@@ -12,7 +12,6 @@ Source2: tar.1
 Patch1: tar-1.14-loneZeroWarning.patch
 Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.19-xattrs.patch
-Patch4: tar-1.19-xattrs-conf.patch
 Patch5: tar-1.17-wildcards.patch
 Patch6: tar-1.22-atime-rofs.patch
 Patch7: tar-1.22-shortreadbuffer.patch
@@ -40,7 +39,6 @@ the rmt package.
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
 %patch3 -p1 -b .xattrs
-%patch4 -p1 -b .xattrs-conf
 %patch5 -p1 -b .wildcards
 %patch6 -p1 -b .rofs
 %patch7 -p1 -b .shortread

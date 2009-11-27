@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -12,11 +12,11 @@ Source2: tar.1
 Patch1: tar-1.14-loneZeroWarning.patch
 Patch2: tar-1.15.1-vfatTruncate.patch
 Patch3: tar-1.19-xattrs.patch
-Patch4: tar-1.22-store-lnk-selinux.patch
-Patch5: tar-1.17-wildcards.patch
-Patch6: tar-1.22-atime-rofs.patch
-Patch7: tar-1.22-shortreadbuffer.patch
-Patch8: tar-1.22-fortifysourcessigabrt.patch
+Patch4: tar-1.17-wildcards.patch
+Patch5: tar-1.22-atime-rofs.patch
+Patch6: tar-1.22-shortreadbuffer.patch
+Patch7: tar-1.22-fortifysourcessigabrt.patch
+Patch8: tar-1.22-xheaderleak.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -40,11 +40,11 @@ the rmt package.
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
 %patch3 -p1 -b .xattrs
-%patch4 -p1 -b .store-lnk-selinux
-%patch5 -p1 -b .wildcards
-%patch6 -p1 -b .rofs
-%patch7 -p1 -b .shortread
-%patch8 -p1 -b .headerblackmagic
+%patch4 -p1 -b .wildcards
+%patch5 -p1 -b .rofs
+%patch6 -p1 -b .shortread
+%patch7 -p1 -b .headerblackmagic
+%patch8 -p1 -b .xheaderleak
 
 %build
 autoreconf
@@ -102,6 +102,11 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Nov 27 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-10
+- store xattrs for symlinks (#525992) - by Kamil Dudka
+- update tar(1) manpage (#539787)
+- fix memory leak in xheader (#518079)
+
 * Wed Nov 18 2009 Kamil Dudka <kdudka@redhat.com> 2:1.22-9
 - store SELinux context for symlinks (#525992)
 

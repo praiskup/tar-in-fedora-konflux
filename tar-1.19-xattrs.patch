@@ -1,6 +1,6 @@
-diff -urp tar-1.22-orig/configure.ac tar-1.22/configure.ac
+diff -urNp tar-1.22-orig/configure.ac tar-1.22/configure.ac
 --- tar-1.22-orig/configure.ac	2009-03-05 08:01:58.000000000 +0100
-+++ tar-1.22/configure.ac	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/configure.ac	2009-11-23 14:48:00.000000000 +0100
 @@ -40,7 +40,7 @@ AC_CHECK_HEADERS_ONCE(fcntl.h linux/fd.h
    sys/param.h sys/device.h sys/filio.h sys/gentape.h \
    sys/inet.h sys/io/trioctl.h \
@@ -33,9 +33,9 @@ diff -urp tar-1.22-orig/configure.ac tar-1.22/configure.ac
  AC_CHECK_TYPE(iconv_t,:,
                AC_DEFINE(iconv_t, int,
                          [Conversion descriptor type]),
-diff -urp tar-1.22-orig/doc/tar.texi tar-1.22/doc/tar.texi
+diff -urNp tar-1.22-orig/doc/tar.texi tar-1.22/doc/tar.texi
 --- tar-1.22-orig/doc/tar.texi	2009-03-05 08:04:13.000000000 +0100
-+++ tar-1.22/doc/tar.texi	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/doc/tar.texi	2009-11-23 14:48:00.000000000 +0100
 @@ -2345,6 +2345,10 @@ Normally when creating an archive, @comm
  @samp{/} from member names.  This option disables that behavior.
  @xref{absolute}.
@@ -165,9 +165,9 @@ diff -urp tar-1.22-orig/doc/tar.texi tar-1.22/doc/tar.texi
  @end table
  
  @node Portability
-diff -urp tar-1.22-orig/src/common.h tar-1.22/src/common.h
+diff -urNp tar-1.22-orig/src/common.h tar-1.22/src/common.h
 --- tar-1.22-orig/src/common.h	2008-11-30 13:30:29.000000000 +0100
-+++ tar-1.22/src/common.h	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/common.h	2009-11-23 14:48:00.000000000 +0100
 @@ -248,6 +248,15 @@ GLOBAL int same_owner_option;
  /* If positive, preserve permissions when extracting.  */
  GLOBAL int same_permissions_option;
@@ -207,9 +207,9 @@ diff -urp tar-1.22-orig/src/common.h tar-1.22/src/common.h
  
  /* Module system.c */
  
-diff -urp tar-1.22-orig/src/create.c tar-1.22/src/create.c
+diff -urNp tar-1.22-orig/src/create.c tar-1.22/src/create.c
 --- tar-1.22-orig/src/create.c	2008-10-30 11:58:04.000000000 +0100
-+++ tar-1.22/src/create.c	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/create.c	2009-11-23 14:48:33.000000000 +0100
 @@ -24,6 +24,7 @@
  #include <quotearg.h>
  
@@ -260,9 +260,19 @@ diff -urp tar-1.22-orig/src/create.c tar-1.22/src/create.c
        if (is_dir)
  	{
  	  const char *tag_file_name;
-diff -urp tar-1.22-orig/src/extract.c tar-1.22/src/extract.c
+@@ -1709,6 +1738,9 @@ dump_file0 (struct tar_stat_info *st, co
+       if (NAME_FIELD_SIZE - (archive_format == OLDGNU_FORMAT) < size)
+ 	write_long_link (st);
+ 
++      xattrs_selinux_get(st, p, -1);
++      xattrs_xattrs_get(st, p, -1);
++
+       block_ordinal = current_block_ordinal ();
+       st->stat.st_size = 0;	/* force 0 size on symlink */
+       header = start_header (st);
+diff -urNp tar-1.22-orig/src/extract.c tar-1.22/src/extract.c
 --- tar-1.22-orig/src/extract.c	2008-10-30 15:10:28.000000000 +0100
-+++ tar-1.22/src/extract.c	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/extract.c	2009-11-23 14:48:33.000000000 +0100
 @@ -69,6 +69,13 @@ struct delayed_set_stat
      mode_t invert_permissions;
      enum permstatus permstatus;
@@ -365,12 +375,12 @@ diff -urp tar-1.22-orig/src/extract.c tar-1.22/src/extract.c
        p->sources->next = 0;
        strcpy (p->sources->string, file_name);
 +      p->cntx_name = NULL;
++      assign_string (&p->cntx_name, current_stat_info.cntx_name);
 +      p->acls_a_ptr = NULL;
 +      p->acls_a_len = 0;
 +      p->acls_d_ptr = NULL;
 +      p->acls_d_len = 0;
-+      p->xattr_map = NULL;
-+      p->xattr_map_size = 0;
++      xheader_xattr_copy (&current_stat_info, &p->xattr_map, &p->xattr_map_size);
        strcpy (p->target, current_stat_info.link_name);
  
        h = delayed_set_stat_head;
@@ -388,10 +398,20 @@ diff -urp tar-1.22-orig/src/extract.c tar-1.22/src/extract.c
  		  set_stat (source, &st1, NULL, 0, 0, SYMTYPE);
  		  valid_source = source;
  		}
-diff -urp tar-1.22-orig/src/list.c tar-1.22/src/list.c
---- tar-1.22-orig/src/list.c	2009-03-05 09:45:15.000000000 +0100
-+++ tar-1.22/src/list.c	2009-03-05 09:45:42.000000000 +0100
-@@ -567,6 +567,13 @@ decode_header (union block *header, stru
+@@ -1301,6 +1372,9 @@ apply_delayed_links (void)
+ 	  sources = next;
+ 	}
+ 
++   xheader_xattr_free (ds->xattr_map, ds->xattr_map_size);
++   free (ds->cntx_name);
++
+       {
+ 	struct delayed_link *next = ds->next;
+ 	free (ds);
+diff -urNp tar-1.22-orig/src/list.c tar-1.22/src/list.c
+--- tar-1.22-orig/src/list.c	2009-11-23 14:47:03.000000000 +0100
++++ tar-1.22/src/list.c	2009-11-23 14:48:00.000000000 +0100
+@@ -568,6 +568,13 @@ decode_header (union block *header, stru
    assign_string (&stat_info->gname,
  		 header->header.gname[0] ? header->header.gname : NULL);
  
@@ -405,9 +425,9 @@ diff -urp tar-1.22-orig/src/list.c tar-1.22/src/list.c
    if (format == OLDGNU_FORMAT && incremental_option)
      {
        stat_info->atime.tv_sec = TIME_FROM_HEADER (header->oldgnu_header.atime);
-diff -urp tar-1.22-orig/src/Makefile.am tar-1.22/src/Makefile.am
+diff -urNp tar-1.22-orig/src/Makefile.am tar-1.22/src/Makefile.am
 --- tar-1.22-orig/src/Makefile.am	2007-10-29 18:53:06.000000000 +0100
-+++ tar-1.22/src/Makefile.am	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/Makefile.am	2009-11-23 14:48:00.000000000 +0100
 @@ -20,7 +20,7 @@
  
  bin_PROGRAMS = tar
@@ -431,9 +451,9 @@ diff -urp tar-1.22-orig/src/Makefile.am tar-1.22/src/Makefile.am
  
 -tar_LDADD = $(LDADD) $(LIB_CLOCK_GETTIME)
 +tar_LDADD = $(LIBS) $(LDADD) $(LIB_CLOCK_GETTIME)
-diff -urp tar-1.22-orig/src/tar.c tar-1.22/src/tar.c
+diff -urNp tar-1.22-orig/src/tar.c tar-1.22/src/tar.c
 --- tar-1.22-orig/src/tar.c	2009-03-05 08:04:13.000000000 +0100
-+++ tar-1.22/src/tar.c	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/tar.c	2009-11-23 14:48:00.000000000 +0100
 @@ -246,7 +246,8 @@ tar_set_quoting_style (char *arg)
  
  enum
@@ -592,9 +612,9 @@ diff -urp tar-1.22-orig/src/tar.c tar-1.22/src/tar.c
    free (st->sparse_map);
    free (st->dumpdir);
    xheader_destroy (&st->xhdr);
-diff -urp tar-1.22-orig/src/tar.h tar-1.22/src/tar.h
+diff -urNp tar-1.22-orig/src/tar.h tar-1.22/src/tar.h
 --- tar-1.22-orig/src/tar.h	2007-06-27 15:30:32.000000000 +0200
-+++ tar-1.22/src/tar.h	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/tar.h	2009-11-23 14:48:00.000000000 +0100
 @@ -276,6 +276,14 @@ struct xheader
    uintmax_t string_length;
  };
@@ -636,9 +656,522 @@ diff -urp tar-1.22-orig/src/tar.h tar-1.22/src/tar.h
    /* Extended headers */
    struct xheader xhdr;
    
-diff -urp tar-1.22-orig/src/xheader.c tar-1.22/src/xheader.c
+diff -urNp tar-1.22-orig/src/xattrs.c tar-1.22/src/xattrs.c
+--- tar-1.22-orig/src/xattrs.c	1970-01-01 01:00:00.000000000 +0100
++++ tar-1.22/src/xattrs.c	2009-11-23 14:48:33.000000000 +0100
+@@ -0,0 +1,491 @@
++/* Create a tar archive.
++
++   Copyright (C) 2006 Free Software Foundation, Inc.
++
++   Written by James Antill, on 2006-07-27.
++
++   This program is free software; you can redistribute it and/or modify it
++   under the terms of the GNU General Public License as published by the
++   Free Software Foundation; either version 2, or (at your option) any later
++   version.
++
++   This program is distributed in the hope that it will be useful, but
++   WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
++   Public License for more details.
++
++   You should have received a copy of the GNU General Public License along
++   with this program; if not, write to the Free Software Foundation, Inc.,
++   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
++
++#include <system.h>
++
++#include <quotearg.h>
++
++#include "common.h"
++
++
++#ifndef HAVE_SELINUX_SELINUX_H
++# undef HAVE_LIBSELINUX
++#endif
++
++#ifndef HAVE_ATTR_XATTR_H
++# undef HAVE_XATTRS
++#endif
++
++#ifndef HAVE_SYS_ACL_H
++# undef HAVE_LIBACL
++#endif
++
++#ifdef HAVE_SELINUX_SELINUX_H
++# include <selinux/selinux.h>
++#endif
++
++#ifdef HAVE_ATTR_XATTR_H
++# include <attr/xattr.h>
++#endif
++
++#ifdef HAVE_SYS_ACL_H
++# include <sys/acl.h>
++#endif
++
++
++#if 0 /* unused by xattr's atm. */
++static void xattrs__fd_get(struct tar_stat_info *st,
++                           char const *file_name, int fd, const char *attr,
++                           char **ret_ptr, size_t *ret_len)
++{
++#ifdef HAVE_XATTRS
++  static ssize_t asz = 1024;
++  ssize_t ret = 0;
++  static char *val = NULL;
++  
++  if (!val) val = xmalloc (asz);
++  
++  while (((ret = fgetxattr (fd, attr, val, asz)) == -1) &&
++         (errno == ERANGE))
++    {
++      asz <<= 1;
++      val = xrealloc (val, asz);
++    }
++  
++  if (ret != -1)
++    {
++      *ret_ptr = xmemdup (val, ret + 1);
++      *ret_len = ret;
++    }
++  else if (errno != ENOATTR)
++    call_arg_warn ("fgetxattr", file_name);
++#endif
++}
++#endif
++
++static void xattrs__acls_get_a(struct tar_stat_info *st,
++                               char const *file_name, int fd,
++                               char **ret_ptr, size_t *ret_len)
++{ /* "system.posix_acl_access" */
++#ifdef HAVE_LIBACL
++  char *val = NULL;
++  ssize_t len;
++  acl_t acl;
++
++  if (fd != -1)
++  {
++    if ((acl = acl_get_fd (fd)) == (acl_t)NULL)
++    {
++      if (errno != ENOTSUP)
++        call_arg_warn ("acl_get_fd", file_name);
++      return;
++    }
++  }
++  else if ((acl = acl_get_file (file_name, ACL_TYPE_ACCESS)) == (acl_t)NULL)
++  {
++    if (errno != ENOTSUP)
++      call_arg_warn ("acl_get_file", file_name);
++    return;
++  }
++  
++  
++  val = acl_to_text(acl, &len);
++  acl_free (acl);
++  
++  if (val == NULL)
++  {
++    call_arg_warn ("acl_to_text", file_name);
++    return;
++  }
++  
++  *ret_ptr = xstrdup (val);
++  *ret_len = len;
++  
++  acl_free (val);
++#endif
++}
++
++static void xattrs__acls_get_d(struct tar_stat_info *st,
++                               char const *file_name,
++                               char **ret_ptr, size_t *ret_len)
++{ /* "system.posix_acl_default" */
++#ifdef HAVE_LIBACL
++  char *val = NULL;
++  ssize_t len;
++  acl_t acl;
++  
++  if ((acl = acl_get_file (file_name, ACL_TYPE_DEFAULT)) == (acl_t)NULL)
++  {
++    if (errno != ENOTSUP)
++      call_arg_warn ("acl_get_file", file_name);
++    return;
++  }
++  
++  val = acl_to_text(acl, &len);
++  acl_free (acl);
++  
++  if (val == NULL)
++  {
++    call_arg_warn ("acl_to_text", file_name);
++    return;
++  }
++  
++  *ret_ptr = xstrdup (val);
++  *ret_len = len;
++  
++  acl_free (val);
++#endif
++}
++
++void xattrs_acls_get(struct tar_stat_info *st, char const *file_name, int fd,
++                     int xisfile)
++{
++  if (acls_option > 0)
++    {
++#ifndef HAVE_LIBACL
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("ACL support requested, but not available")));
++      done = 1;
++#endif
++      xattrs__acls_get_a (st, file_name, fd,
++                          &st->acls_a_ptr, &st->acls_a_len);
++      if (!xisfile)
++        xattrs__acls_get_d (st, file_name,
++                            &st->acls_d_ptr, &st->acls_d_len);
++    }
++}
++
++void xattrs_selinux_get(struct tar_stat_info *st, char const *file_name, int fd)
++{
++  if (selinux_context_option > 0)
++  {
++#ifndef HAVE_LIBSELINUX
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("SELinux support requested, but not available")));
++      done = 1;
++#else
++    if (fd == -1)
++    {
++      if ((lgetfilecon (file_name, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
++        call_arg_warn ("lgetfilecon", file_name);
++    }
++    else if ((fgetfilecon (fd, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
++      call_arg_warn ("fgetfilecon", file_name);
++#endif
++  }
++}
++
++void xattrs_xattrs_get(struct tar_stat_info *st, char const *file_name, int fd)
++{
++  if (xattrs_option > 0)
++    { /* get all xattrs ... this include security.* and system.* if
++         available. We filter them here, but we have to filter them
++         in xattrs_xattrs_set() anyway.
++      */
++      static ssize_t xsz = 1024;
++      static char *xatrs = NULL;
++      ssize_t xret = -1;
++
++#ifndef HAVE_XATTRS
++      static int done = 0;
++      if ((xattrs_option > 0) && !done)
++          WARN ((0, 0, _("Xattr support requested, but not available")));
++      done = 1;
++#else
++
++      if (!xatrs) xatrs = xmalloc (xsz);
++              
++      while (((fd == -1) ? 
++              ((xret = llistxattr (file_name, xatrs, xsz)) == -1) :
++              ((xret = flistxattr (fd, xatrs, xsz)) == -1)) &&
++             (errno == ERANGE))
++        {
++          xsz <<= 1;
++          xatrs = xrealloc (xatrs, xsz);
++        }
++
++      if (xret == -1)
++        call_arg_warn ((fd == -1) ? "llistxattrs" : "flistxattrs", file_name);
++      else
++        {
++          const char *attr = xatrs;
++          static ssize_t asz = 1024;
++          static char *val = NULL;
++          
++          if (!val) val = xmalloc (asz);
++          
++          while (xret > 0)
++            {
++              size_t len = strlen (attr);
++              ssize_t aret = 0;
++              
++              if (strncmp (attr, "user.", strlen("user.")) &&
++                  strncmp (attr, "trusted.", strlen("trusted.")))
++                goto next_attr; /* only store normal xattrs */
++              
++              while (((fd == -1) ?
++                      ((aret = lgetxattr (file_name, attr, val, asz)) == -1) :
++                      ((aret = fgetxattr (fd, attr, val, asz)) == -1)) &&
++                     (errno == ERANGE))
++                {
++                  asz <<= 1;
++                  val = xrealloc (val, asz);
++                }
++              
++              if (aret != -1)
++                xheader_xattr_add (st, attr, val, aret);
++              else if (errno != ENOATTR)
++                call_arg_warn ((fd==-1) ? "lgetxattr" : "fgetxattr", file_name);
++              
++             next_attr:
++              attr += len + 1;
++              xret -= len + 1;
++            }
++        }
++#endif
++    }
++}
++
++static void xattrs__fd_set(struct tar_stat_info const *st,
++                           char const *file_name, char typeflag,
++                           const char *attr,
++                           const char *ptr, size_t len)
++{
++#ifdef HAVE_XATTRS
++  if (ptr)
++    {
++      const char *sysname = "setxattr";
++      int ret = -1;
++
++      if (typeflag != SYMTYPE)
++        ret = setxattr (file_name, attr, ptr, len, 0);
++      else
++        {
++          sysname = "lsetxattr";
++          ret = lsetxattr (file_name, attr, ptr, len, 0);
++        }
++
++      /* do not print warnings when SELinux is disabled */
++      if ((ret == -1) && (errno != EPERM) && (errno != ENOTSUP))
++        call_arg_error(sysname, file_name);
++    }
++#endif
++}
++
++/* convert unix permissions into an ACL ... needed due to "default" ACLs */
++#ifdef HAVE_LIBACL
++static acl_t perms2acl(int perms)
++{
++  char val[] = "user::---,group::---,other::---";
++  /*            0123456789 123456789 123456789 123456789 */
++
++   /* user */
++  if (perms & 0400) val[ 6] = 'r';
++  if (perms & 0200) val[ 7] = 'w';
++  if (perms & 0100) val[ 8] = 'x';
++
++  /* group */
++  if (perms & 0040) val[17] = 'r';
++  if (perms & 0020) val[18] = 'w';
++  if (perms & 0010) val[19] = 'x';
++
++  /* other */
++  if (perms & 0004) val[28] = 'r';
++  if (perms & 0002) val[29] = 'w';
++  if (perms & 0001) val[30] = 'x';
++  
++  return (acl_from_text (val));
++}
++#endif
++
++static char *skip_to_ext_fields(char *ptr)
++{
++  ptr += strcspn(ptr, ":,\n"); /* skip tag name. Ie. user/group/default/mask */
++
++  if (*ptr != ':')
++    return (ptr); /* error? no user/group field */
++  ++ptr;
++  
++  ptr += strcspn(ptr, ":,\n"); /* skip user/group name */
++
++  if (*ptr != ':')
++    return (ptr); /* error? no perms field */
++  ++ptr;
++  
++  ptr += strcspn(ptr, ":,\n"); /* skip perms */
++
++  if (*ptr != ':')
++    return (ptr); /* no extra fields */
++
++  return (ptr);
++}
++
++/* The POSIX draft allows extra fields after the three main ones. Star
++   uses this to add a fourth field for user/group which is the numeric ID.
++   We just skip all extra fields atm. */
++static const char *fixup_extra_acl_fields(const char *ptr)
++{
++  char *src = (char *)ptr;
++  char *dst = (char *)ptr;
++
++  while (*src)
++  {
++    const char *old = src;
++    size_t len = 0;
++
++    src = skip_to_ext_fields(src);
++    len = src - old;
++    if (old != dst) memmove(dst, old, len);
++    dst += len;
++
++    if (*src == ':') /* We have extra fields, skip them all */
++      src += strcspn(src, "\n,");
++    
++    if ((*src == '\n') || (*src == ','))
++      *dst++ = *src++; /* also done when dst == src, but that's ok */
++  }
++  if (src != dst)
++    *dst = 0;
++  
++  return ptr;
++}
++
++static void xattrs__acls_set(struct tar_stat_info const *st,
++                             char const *file_name, int type,
++                             const char *ptr, size_t len)
++{ /* "system.posix_acl_access" */
++#ifdef HAVE_LIBACL
++  acl_t acl;
++
++  if (ptr)
++    {
++      /* assert (strlen (ptr) == len); */
++      ptr = fixup_extra_acl_fields(ptr);
++      
++      acl = acl_from_text (ptr);
++      acls_option = 1;
++    }
++  else if (acls_option > 0)
++    acl = perms2acl (st->stat.st_mode);
++  else
++    return; /* don't call acl functions unless we first hit an ACL, or
++               --acls was passed explicitly */
++  
++  if (acl == (acl_t)NULL)
++    {
++      call_arg_warn ("acl_from_text", file_name);
++      return;
++    }
++  
++  if (acl_set_file (file_name, type, acl) == -1)
++    {
++      if (errno != ENOTSUP)
++        call_arg_warn ("acl_set_file", file_name);
++    }
++  acl_free (acl);
++#endif
++}
++
++void xattrs_acls_set(struct tar_stat_info const *st,
++                     char const *file_name, char typeflag)
++{
++  if ((acls_option >= 0) && (typeflag != SYMTYPE))
++    {
++#ifndef HAVE_LIBACL
++      static int done = 0;
++      if (!done)
++        WARN ((0, 0, _("ACL support requested, but not available")));
++      done = 1;
++#else
++      xattrs__acls_set (st, file_name, ACL_TYPE_ACCESS,
++                        st->acls_a_ptr, st->acls_a_len);
++      if ((typeflag == DIRTYPE) || (typeflag == GNUTYPE_DUMPDIR))
++        xattrs__acls_set (st, file_name, ACL_TYPE_DEFAULT,
++                          st->acls_d_ptr, st->acls_d_len);
++#endif
++    }
++}
++
++void xattrs_selinux_set(struct tar_stat_info const *st,
++                        char const *file_name, char typeflag)
++{
++  if ((selinux_context_option >= 0) && st->cntx_name)
++    {
++      const char *sysname = "setfilecon";
++      int ret = -1;
++
++#ifndef HAVE_LIBSELINUX
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("SELinux support requested, but not available")));
++      done = 1;
++#else
++      if (typeflag != SYMTYPE)
++        ret = setfilecon (file_name, st->cntx_name);
++      else
++        {
++          sysname = "lsetfilecon";
++          ret = lsetfilecon (file_name, st->cntx_name);
++        }
++
++      if ((ret == -1) && (errno == EPERM))
++        call_arg_warn(sysname, file_name);
++      else if ((ret == -1) && (errno != EOPNOTSUPP))
++        call_arg_error(sysname, file_name);
++#endif
++    }
++}
++
++void xattrs_xattrs_set(struct tar_stat_info const *st,
++                       char const *file_name, char typeflag)
++{
++  if ((xattrs_option >= 0) && st->xattr_map_size)
++    {
++      size_t scan = 0;
++
++#ifndef HAVE_XATTRS
++      static int done = 0;
++      if (!done)
++          WARN ((0, 0, _("Xattr support requested, but not available")));
++      done = 1;
++#else
++      while (scan < st->xattr_map_size)
++        {
++          char *keyword = st->xattr_map[scan].xkey;
++
++          /* assert (!memcpy (keyword, "SCHILY.xattr.", strlen("SCHILY.xattr."))); */
++          keyword += strlen("SCHILY.xattr.");
++
++          if (strncmp (keyword, "user.", strlen("user.")) &&
++              strncmp (keyword, "trusted.", strlen("trusted.")))
++            continue; /* don't try and set anything but normal xattrs */
++            
++          /* should we ignore trusted.* EPERM errors when not root ? */
++          xattrs__fd_set (st, file_name, typeflag, keyword,
++                          st->xattr_map[scan].xval_ptr,
++                          st->xattr_map[scan].xval_len);
++      
++          ++scan;
++        }
++#endif
++    }
++}
+diff -urNp tar-1.22-orig/src/xattrs.h tar-1.22/src/xattrs.h
+--- tar-1.22-orig/src/xattrs.h	1970-01-01 01:00:00.000000000 +0100
++++ tar-1.22/src/xattrs.h	2009-11-23 14:48:00.000000000 +0100
+@@ -0,0 +1,14 @@
++
++extern void xattrs_acls_get(struct tar_stat_info *st,
++                            char const *file_name, int fd, int xisfile);
++extern void xattrs_selinux_get(struct tar_stat_info *st,
++                               char const *file_name, int fd);
++extern void xattrs_xattrs_get(struct tar_stat_info *st,
++                              char const *file_name, int fd);
++
++extern void xattrs_acls_set(struct tar_stat_info const *st,
++                            char const *file_name, char typeflag);
++extern void xattrs_selinux_set(struct tar_stat_info const *st,
++                               char const *file_name, char typeflag);
++extern void xattrs_xattrs_set(struct tar_stat_info const *st,
++                              char const *file_name, char typeflag);
+diff -urNp tar-1.22-orig/src/xheader.c tar-1.22/src/xheader.c
 --- tar-1.22-orig/src/xheader.c	2008-11-30 13:30:54.000000000 +0100
-+++ tar-1.22/src/xheader.c	2009-03-05 09:45:42.000000000 +0100
++++ tar-1.22/src/xheader.c	2009-11-23 14:48:00.000000000 +0100
 @@ -417,6 +417,74 @@ xheader_write_global (struct xheader *xh
    free (name);
  }
@@ -938,517 +1471,3 @@ diff -urp tar-1.22-orig/src/xheader.c tar-1.22/src/xheader.c
 +  
    { NULL, NULL, NULL, false }
  };
-diff -up /dev/null tar-1.17/src/xattrs.c
---- /dev/null	2007-12-10 11:30:31.504001819 +0100
-+++ tar-1.17/src/xattrs.c	2007-12-10 15:31:54.000000000 +0100
-@@ -0,0 +1,491 @@
-+/* Create a tar archive.
-+
-+   Copyright (C) 2006 Free Software Foundation, Inc.
-+
-+   Written by James Antill, on 2006-07-27.
-+
-+   This program is free software; you can redistribute it and/or modify it
-+   under the terms of the GNU General Public License as published by the
-+   Free Software Foundation; either version 2, or (at your option) any later
-+   version.
-+
-+   This program is distributed in the hope that it will be useful, but
-+   WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-+   Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License along
-+   with this program; if not, write to the Free Software Foundation, Inc.,
-+   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
-+
-+#include <system.h>
-+
-+#include <quotearg.h>
-+
-+#include "common.h"
-+
-+
-+#ifndef HAVE_SELINUX_SELINUX_H
-+# undef HAVE_LIBSELINUX
-+#endif
-+
-+#ifndef HAVE_ATTR_XATTR_H
-+# undef HAVE_XATTRS
-+#endif
-+
-+#ifndef HAVE_SYS_ACL_H
-+# undef HAVE_LIBACL
-+#endif
-+
-+#ifdef HAVE_SELINUX_SELINUX_H
-+# include <selinux/selinux.h>
-+#endif
-+
-+#ifdef HAVE_ATTR_XATTR_H
-+# include <attr/xattr.h>
-+#endif
-+
-+#ifdef HAVE_SYS_ACL_H
-+# include <sys/acl.h>
-+#endif
-+
-+
-+#if 0 /* unused by xattr's atm. */
-+static void xattrs__fd_get(struct tar_stat_info *st,
-+                           char const *file_name, int fd, const char *attr,
-+                           char **ret_ptr, size_t *ret_len)
-+{
-+#ifdef HAVE_XATTRS
-+  static ssize_t asz = 1024;
-+  ssize_t ret = 0;
-+  static char *val = NULL;
-+  
-+  if (!val) val = xmalloc (asz);
-+  
-+  while (((ret = fgetxattr (fd, attr, val, asz)) == -1) &&
-+         (errno == ERANGE))
-+    {
-+      asz <<= 1;
-+      val = xrealloc (val, asz);
-+    }
-+  
-+  if (ret != -1)
-+    {
-+      *ret_ptr = xmemdup (val, ret + 1);
-+      *ret_len = ret;
-+    }
-+  else if (errno != ENOATTR)
-+    call_arg_warn ("fgetxattr", file_name);
-+#endif
-+}
-+#endif
-+
-+static void xattrs__acls_get_a(struct tar_stat_info *st,
-+                               char const *file_name, int fd,
-+                               char **ret_ptr, size_t *ret_len)
-+{ /* "system.posix_acl_access" */
-+#ifdef HAVE_LIBACL
-+  char *val = NULL;
-+  ssize_t len;
-+  acl_t acl;
-+
-+  if (fd != -1)
-+  {
-+    if ((acl = acl_get_fd (fd)) == (acl_t)NULL)
-+    {
-+      if (errno != ENOTSUP)
-+        call_arg_warn ("acl_get_fd", file_name);
-+      return;
-+    }
-+  }
-+  else if ((acl = acl_get_file (file_name, ACL_TYPE_ACCESS)) == (acl_t)NULL)
-+  {
-+    if (errno != ENOTSUP)
-+      call_arg_warn ("acl_get_file", file_name);
-+    return;
-+  }
-+  
-+  
-+  val = acl_to_text(acl, &len);
-+  acl_free (acl);
-+  
-+  if (val == NULL)
-+  {
-+    call_arg_warn ("acl_to_text", file_name);
-+    return;
-+  }
-+  
-+  *ret_ptr = xstrdup (val);
-+  *ret_len = len;
-+  
-+  acl_free (val);
-+#endif
-+}
-+
-+static void xattrs__acls_get_d(struct tar_stat_info *st,
-+                               char const *file_name,
-+                               char **ret_ptr, size_t *ret_len)
-+{ /* "system.posix_acl_default" */
-+#ifdef HAVE_LIBACL
-+  char *val = NULL;
-+  ssize_t len;
-+  acl_t acl;
-+  
-+  if ((acl = acl_get_file (file_name, ACL_TYPE_DEFAULT)) == (acl_t)NULL)
-+  {
-+    if (errno != ENOTSUP)
-+      call_arg_warn ("acl_get_file", file_name);
-+    return;
-+  }
-+  
-+  val = acl_to_text(acl, &len);
-+  acl_free (acl);
-+  
-+  if (val == NULL)
-+  {
-+    call_arg_warn ("acl_to_text", file_name);
-+    return;
-+  }
-+  
-+  *ret_ptr = xstrdup (val);
-+  *ret_len = len;
-+  
-+  acl_free (val);
-+#endif
-+}
-+
-+void xattrs_acls_get(struct tar_stat_info *st, char const *file_name, int fd,
-+                     int xisfile)
-+{
-+  if (acls_option > 0)
-+    {
-+#ifndef HAVE_LIBACL
-+      static int done = 0;
-+      if (!done)
-+          WARN ((0, 0, _("ACL support requested, but not available")));
-+      done = 1;
-+#endif
-+      xattrs__acls_get_a (st, file_name, fd,
-+                          &st->acls_a_ptr, &st->acls_a_len);
-+      if (!xisfile)
-+        xattrs__acls_get_d (st, file_name,
-+                            &st->acls_d_ptr, &st->acls_d_len);
-+    }
-+}
-+
-+void xattrs_selinux_get(struct tar_stat_info *st, char const *file_name, int fd)
-+{
-+  if (selinux_context_option > 0)
-+  {
-+#ifndef HAVE_LIBSELINUX
-+      static int done = 0;
-+      if (!done)
-+          WARN ((0, 0, _("SELinux support requested, but not available")));
-+      done = 1;
-+#else
-+    if (fd == -1)
-+    {
-+      if ((lgetfilecon (file_name, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
-+        call_arg_warn ("lgetfilecon", file_name);
-+    }
-+    else if ((fgetfilecon (fd, &st->cntx_name) == -1) && (errno != ENOTSUP) && (errno != ENODATA))
-+      call_arg_warn ("fgetfilecon", file_name);
-+#endif
-+  }
-+}
-+
-+void xattrs_xattrs_get(struct tar_stat_info *st, char const *file_name, int fd)
-+{
-+  if (xattrs_option > 0)
-+    { /* get all xattrs ... this include security.* and system.* if
-+         available. We filter them here, but we have to filter them
-+         in xattrs_xattrs_set() anyway.
-+      */
-+      static ssize_t xsz = 1024;
-+      static char *xatrs = NULL;
-+      ssize_t xret = -1;
-+
-+#ifndef HAVE_XATTRS
-+      static int done = 0;
-+      if ((xattrs_option > 0) && !done)
-+          WARN ((0, 0, _("Xattr support requested, but not available")));
-+      done = 1;
-+#else
-+
-+      if (!xatrs) xatrs = xmalloc (xsz);
-+              
-+      while (((fd == -1) ? 
-+              ((xret = listxattr (file_name, xatrs, xsz)) == -1) :
-+              ((xret = flistxattr (fd, xatrs, xsz)) == -1)) &&
-+             (errno == ERANGE))
-+        {
-+          xsz <<= 1;
-+          xatrs = xrealloc (xatrs, xsz);
-+        }
-+
-+      if (xret == -1)
-+        call_arg_warn ((fd == -1) ? "listxattrs" : "flistxattrs", file_name);
-+      else
-+        {
-+          const char *attr = xatrs;
-+          static ssize_t asz = 1024;
-+          static char *val = NULL;
-+          
-+          if (!val) val = xmalloc (asz);
-+          
-+          while (xret > 0)
-+            {
-+              size_t len = strlen (attr);
-+              ssize_t aret = 0;
-+              
-+              if (strncmp (attr, "user.", strlen("user.")) &&
-+                  strncmp (attr, "trusted.", strlen("trusted.")))
-+                goto next_attr; /* only store normal xattrs */
-+              
-+              while (((fd == -1) ? 
-+                      ((aret = getxattr (file_name, attr, val, asz)) == -1) :
-+                      ((aret = fgetxattr (fd, attr, val, asz)) == -1)) &&
-+                     (errno == ERANGE))
-+                {
-+                  asz <<= 1;
-+                  val = xrealloc (val, asz);
-+                }
-+              
-+              if (aret != -1)
-+                xheader_xattr_add (st, attr, val, aret);
-+              else if (errno != ENOATTR)
-+                call_arg_warn ("fgetxattr", file_name);
-+              
-+             next_attr:
-+              attr += len + 1;
-+              xret -= len + 1;
-+            }
-+        }
-+#endif
-+    }
-+}
-+
-+static void xattrs__fd_set(struct tar_stat_info const *st,
-+                           char const *file_name, char typeflag,
-+                           const char *attr,
-+                           const char *ptr, size_t len)
-+{
-+#ifdef HAVE_XATTRS
-+  if (ptr)
-+    {
-+      const char *sysname = "setxattr";
-+      int ret = -1;
-+
-+      if (typeflag != SYMTYPE)
-+        ret = setxattr (file_name, attr, ptr, len, 0);
-+      else
-+        {
-+          sysname = "lsetxattr";
-+          ret = lsetxattr (file_name, attr, ptr, len, 0);
-+        }
-+
-+      /* do not print warnings when SELinux is disabled */
-+      if ((ret == -1) && (errno != EPERM) && (errno != ENOTSUP))
-+        call_arg_error(sysname, file_name);
-+    }
-+#endif
-+}
-+
-+/* convert unix permissions into an ACL ... needed due to "default" ACLs */
-+#ifdef HAVE_LIBACL
-+static acl_t perms2acl(int perms)
-+{
-+  char val[] = "user::---,group::---,other::---";
-+  /*            0123456789 123456789 123456789 123456789 */
-+
-+   /* user */
-+  if (perms & 0400) val[ 6] = 'r';
-+  if (perms & 0200) val[ 7] = 'w';
-+  if (perms & 0100) val[ 8] = 'x';
-+
-+  /* group */
-+  if (perms & 0040) val[17] = 'r';
-+  if (perms & 0020) val[18] = 'w';
-+  if (perms & 0010) val[19] = 'x';
-+
-+  /* other */
-+  if (perms & 0004) val[28] = 'r';
-+  if (perms & 0002) val[29] = 'w';
-+  if (perms & 0001) val[30] = 'x';
-+  
-+  return (acl_from_text (val));
-+}
-+#endif
-+
-+static char *skip_to_ext_fields(char *ptr)
-+{
-+  ptr += strcspn(ptr, ":,\n"); /* skip tag name. Ie. user/group/default/mask */
-+
-+  if (*ptr != ':')
-+    return (ptr); /* error? no user/group field */
-+  ++ptr;
-+  
-+  ptr += strcspn(ptr, ":,\n"); /* skip user/group name */
-+
-+  if (*ptr != ':')
-+    return (ptr); /* error? no perms field */
-+  ++ptr;
-+  
-+  ptr += strcspn(ptr, ":,\n"); /* skip perms */
-+
-+  if (*ptr != ':')
-+    return (ptr); /* no extra fields */
-+
-+  return (ptr);
-+}
-+
-+/* The POSIX draft allows extra fields after the three main ones. Star
-+   uses this to add a fourth field for user/group which is the numeric ID.
-+   We just skip all extra fields atm. */
-+static const char *fixup_extra_acl_fields(const char *ptr)
-+{
-+  char *src = (char *)ptr;
-+  char *dst = (char *)ptr;
-+
-+  while (*src)
-+  {
-+    const char *old = src;
-+    size_t len = 0;
-+
-+    src = skip_to_ext_fields(src);
-+    len = src - old;
-+    if (old != dst) memmove(dst, old, len);
-+    dst += len;
-+
-+    if (*src == ':') /* We have extra fields, skip them all */
-+      src += strcspn(src, "\n,");
-+    
-+    if ((*src == '\n') || (*src == ','))
-+      *dst++ = *src++; /* also done when dst == src, but that's ok */
-+  }
-+  if (src != dst)
-+    *dst = 0;
-+  
-+  return ptr;
-+}
-+
-+static void xattrs__acls_set(struct tar_stat_info const *st,
-+                             char const *file_name, int type,
-+                             const char *ptr, size_t len)
-+{ /* "system.posix_acl_access" */
-+#ifdef HAVE_LIBACL
-+  acl_t acl;
-+
-+  if (ptr)
-+    {
-+      /* assert (strlen (ptr) == len); */
-+      ptr = fixup_extra_acl_fields(ptr);
-+      
-+      acl = acl_from_text (ptr);
-+      acls_option = 1;
-+    }
-+  else if (acls_option > 0)
-+    acl = perms2acl (st->stat.st_mode);
-+  else
-+    return; /* don't call acl functions unless we first hit an ACL, or
-+               --acls was passed explicitly */
-+  
-+  if (acl == (acl_t)NULL)
-+    {
-+      call_arg_warn ("acl_from_text", file_name);
-+      return;
-+    }
-+  
-+  if (acl_set_file (file_name, type, acl) == -1)
-+    {
-+      if (errno != ENOTSUP)
-+        call_arg_warn ("acl_set_file", file_name);
-+    }
-+  acl_free (acl);
-+#endif
-+}
-+
-+void xattrs_acls_set(struct tar_stat_info const *st,
-+                     char const *file_name, char typeflag)
-+{
-+  if ((acls_option >= 0) && (typeflag != SYMTYPE))
-+    {
-+#ifndef HAVE_LIBACL
-+      static int done = 0;
-+      if (!done)
-+        WARN ((0, 0, _("ACL support requested, but not available")));
-+      done = 1;
-+#else
-+      xattrs__acls_set (st, file_name, ACL_TYPE_ACCESS,
-+                        st->acls_a_ptr, st->acls_a_len);
-+      if ((typeflag == DIRTYPE) || (typeflag == GNUTYPE_DUMPDIR))
-+        xattrs__acls_set (st, file_name, ACL_TYPE_DEFAULT,
-+                          st->acls_d_ptr, st->acls_d_len);
-+#endif
-+    }
-+}
-+
-+void xattrs_selinux_set(struct tar_stat_info const *st,
-+                        char const *file_name, char typeflag)
-+{
-+  if ((selinux_context_option >= 0) && st->cntx_name)
-+    {
-+      const char *sysname = "setfilecon";
-+      int ret = -1;
-+
-+#ifndef HAVE_LIBSELINUX
-+      static int done = 0;
-+      if (!done)
-+          WARN ((0, 0, _("SELinux support requested, but not available")));
-+      done = 1;
-+#else
-+      if (typeflag != SYMTYPE)
-+        ret = setfilecon (file_name, st->cntx_name);
-+      else
-+        {
-+          sysname = "lsetfilecon";
-+          ret = lsetfilecon (file_name, st->cntx_name);
-+        }
-+
-+      if ((ret == -1) && (errno == EPERM))
-+        call_arg_warn(sysname, file_name);
-+      else if ((ret == -1) && (errno != EOPNOTSUPP))
-+        call_arg_error(sysname, file_name);
-+#endif
-+    }
-+}
-+
-+void xattrs_xattrs_set(struct tar_stat_info const *st,
-+                       char const *file_name, char typeflag)
-+{
-+  if ((xattrs_option >= 0) && st->xattr_map_size)
-+    {
-+      size_t scan = 0;
-+
-+#ifndef HAVE_XATTRS
-+      static int done = 0;
-+      if (!done)
-+          WARN ((0, 0, _("Xattr support requested, but not available")));
-+      done = 1;
-+#else
-+      while (scan < st->xattr_map_size)
-+        {
-+          char *keyword = st->xattr_map[scan].xkey;
-+
-+          /* assert (!memcpy (keyword, "SCHILY.xattr.", strlen("SCHILY.xattr."))); */
-+          keyword += strlen("SCHILY.xattr.");
-+
-+          if (strncmp (keyword, "user.", strlen("user.")) &&
-+              strncmp (keyword, "trusted.", strlen("trusted.")))
-+            continue; /* don't try and set anything but normal xattrs */
-+            
-+          /* should we ignore trusted.* EPERM errors when not root ? */
-+          xattrs__fd_set (st, file_name, typeflag, keyword,
-+                          st->xattr_map[scan].xval_ptr,
-+                          st->xattr_map[scan].xval_len);
-+      
-+          ++scan;
-+        }
-+#endif
-+    }
-+}
-+
-diff -up /dev/null tar-1.17/src/xattrs.h
---- /dev/null	2007-12-10 11:30:31.504001819 +0100
-+++ tar-1.17/src/xattrs.h	2007-12-10 15:31:54.000000000 +0100
-@@ -0,0 +1,14 @@
-+
-+extern void xattrs_acls_get(struct tar_stat_info *st,
-+                            char const *file_name, int fd, int xisfile);
-+extern void xattrs_selinux_get(struct tar_stat_info *st,
-+                               char const *file_name, int fd);
-+extern void xattrs_xattrs_get(struct tar_stat_info *st,
-+                              char const *file_name, int fd);
-+
-+extern void xattrs_acls_set(struct tar_stat_info const *st,
-+                            char const *file_name, char typeflag);
-+extern void xattrs_selinux_set(struct tar_stat_info const *st,
-+                               char const *file_name, char typeflag);
-+extern void xattrs_xattrs_set(struct tar_stat_info const *st,
-+                              char const *file_name, char typeflag);

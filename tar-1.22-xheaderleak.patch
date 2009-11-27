@@ -1,0 +1,11 @@
+diff -urNp tar-1.22-orig/src/xheader.c tar-1.22/src/xheader.c
+--- tar-1.22-orig/src/xheader.c	2009-11-23 15:29:22.000000000 +0100
++++ tar-1.22/src/xheader.c	2009-11-23 15:30:55.000000000 +0100
+@@ -722,7 +722,6 @@ xheader_read (struct xheader *xhdr, unio
+ {
+   size_t j = 0;
+ 
+-  xheader_init (xhdr);
+   size += BLOCKSIZE;
+   xhdr->size = size;
+   xhdr->buffer = xmalloc (size + 1);

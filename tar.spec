@@ -2,21 +2,36 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
+#Manpage for tar and gtar, a bit modified help2man generated manpage
 Source2: tar.1
+#Stop issuing lone zero block warnings
 Patch1: tar-1.14-loneZeroWarning.patch
+#Fix extracting sparse files to a filesystem like vfat,
+#when ftruncate may fail to grow the size of a file.(#179507)
 Patch2: tar-1.15.1-vfatTruncate.patch
+#Add support for selinux, acl and extended attributes
 Patch3: tar-1.19-xattrs.patch
+#change inclusion defaults of tar to "--wildcards --anchored
+#--wildcards-match-slash" for compatibility reasons (#206841)
 Patch4: tar-1.17-wildcards.patch
+#ignore errors from setting utime() for source file
+#on read-only filesystem (#500742)
 Patch5: tar-1.22-atime-rofs.patch
+#Report record size only if the archive refers to a device(#487760)
 Patch6: tar-1.22-shortreadbuffer.patch
+#Do not sigabrt with new gcc/glibc because of writing to
+#struct members of gnutar header at once via strcpy
 Patch7: tar-1.22-fortifysourcessigabrt.patch
+#fix memory leak in xheader (#518079)
 Patch8: tar-1.22-xheaderleak.patch
+#fix segfault in code_ns_fraction() with corrupted metadata (#531441)
+Patch9: tar-1.22-nsfraction.patch
 Prereq: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -45,6 +60,7 @@ the rmt package.
 %patch6 -p1 -b .shortread
 %patch7 -p1 -b .headerblackmagic
 %patch8 -p1 -b .xheaderleak
+%patch9 -p1 -b .nsfraction
 
 %build
 autoreconf
@@ -102,6 +118,11 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Dec 08 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-11
+- fix segfault with corrupted metadata in code_ns_fraction
+  (#531441)
+- commented patches and sources
+
 * Fri Nov 27 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-10
 - store xattrs for symlinks (#525992) - by Kamil Dudka
 - update tar(1) manpage (#539787)

@@ -32,7 +32,7 @@ Patch7: tar-1.22-fortifysourcessigabrt.patch
 Patch8: tar-1.22-xheaderleak.patch
 #fix segfault in code_ns_fraction() with corrupted metadata (#531441)
 Patch9: tar-1.22-nsfraction.patch
-Prereq: info
+Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): /sbin/install-info

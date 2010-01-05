@@ -2,7 +2,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -32,6 +32,9 @@ Patch7: tar-1.22-fortifysourcessigabrt.patch
 Patch8: tar-1.22-xheaderleak.patch
 #fix segfault in code_ns_fraction() with corrupted metadata (#531441)
 Patch9: tar-1.22-nsfraction.patch
+#update gnulib's utimens module to latest version to prevent utimens() bad file
+#descriptor failures with POSIX2008 glibc
+Patch10: tar-1.22-utimens.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -60,7 +63,8 @@ the rmt package.
 %patch6 -p1 -b .shortread
 %patch7 -p1 -b .headerblackmagic
 %patch8 -p1 -b .xheaderleak
-%patch9 -p1 -b .nsfraction
+#%patch9 -p1 -b .nsfraction #causing stack smashing, do not apply
+%patch10 -p1 -b .utimens
 
 %build
 autoreconf
@@ -118,6 +122,11 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Jan 05 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-12
+- do not fail with POSIX 2008 glibc futimens() (#552320)
+- temporarily disable fix for #531441, causing stack smashing
+  with newer glibc(#551206)
+
 * Tue Dec 08 2009 Ondrej Vasik <ovasik@redhat.com> 2:1.22-11
 - fix segfault with corrupted metadata in code_ns_fraction
   (#531441)

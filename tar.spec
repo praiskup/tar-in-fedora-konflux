@@ -1,8 +1,11 @@
+%if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
+%define WITH_SELINUX 1
+%endif
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -36,7 +39,10 @@ Patch9: tar-1.22-nsfraction.patch
 #descriptor failures with POSIX2008 glibc
 Patch10: tar-1.22-utimens.patch
 Requires: info
-BuildRequires: autoconf automake gzip texinfo gettext libacl-devel libselinux-devel gawk rsh
+BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
+%if %{WITH_SELINUX}
+BuildRequires: libselinux-devel
+%endif
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -68,7 +74,10 @@ the rmt package.
 
 %build
 autoreconf
-%configure --bindir=/bin --libexecdir=/sbin
+%configure --bindir=/bin --libexecdir=/sbin \
+%if %{WITH_SELINUX}
+  --with-selinux
+%endif
 make
 
 %install
@@ -122,6 +131,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Feb 01 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-13
+- allow build without SELinux support(#556679)
+
 * Tue Jan 05 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-12
 - do not fail with POSIX 2008 glibc futimens() (#552320)
 - temporarily disable fix for #531441, causing stack smashing

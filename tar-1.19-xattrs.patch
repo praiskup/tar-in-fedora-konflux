@@ -6,11 +6,11 @@ diff -urNp tar-1.22-orig/configure.ac tar-1.22/configure.ac
    sys/inet.h sys/io/trioctl.h \
    sys/mtio.h sys/time.h sys/tprintf.h sys/tape.h \
 -  unistd.h locale.h)
-+  unistd.h locale.h selinux/selinux.h attr/xattr.h sys/acl.h)
++  unistd.h locale.h attr/xattr.h sys/acl.h)
  
  AC_CHECK_HEADERS([sys/buf.h], [], [],
  [#if HAVE_SYS_PARAM_H
-@@ -88,6 +88,13 @@ gl_INIT
+@@ -88,6 +88,12 @@ gl_INIT
  tar_PAXUTILS
  
  AC_CHECK_FUNCS(fsync getdtablesize lstat mkfifo readlink symlink setlocale utimes)
@@ -18,21 +18,40 @@ diff -urNp tar-1.22-orig/configure.ac tar-1.22/configure.ac
 +               setxattr  fsetxattr  lsetxattr \
 +               listxattr flistxattr llistxattr,
 +               AC_DEFINE(HAVE_XATTRS,,[Define if we have a working extended attributes]),)
-+AC_CHECK_LIB(selinux, getfilecon)
 +AC_CHECK_LIB(acl, acl_get_fd)
 +
  AC_CHECK_DECLS([getgrgid],,, [#include <grp.h>])
  AC_CHECK_DECLS([getpwuid],,, [#include <pwd.h>])
  AC_CHECK_DECLS([time],,, [#include <time.h>])
-@@ -203,6 +210,8 @@ AC_DEFINE_UNQUOTED(DEFAULT_QUOTING_STYLE
+@@ -203,6 +209,7 @@ AC_DEFINE_UNQUOTED(DEFAULT_QUOTING_STYLE
  # Iconv
  AM_ICONV
  AC_CHECK_HEADERS(iconv.h)
-+AC_CHECK_HEADERS(selinux/selinux.h)
 +AC_CHECK_HEADERS(attr/xattr.h)
  AC_CHECK_TYPE(iconv_t,:,
                AC_DEFINE(iconv_t, int,
                          [Conversion descriptor type]),
+@@ -212,6 +219,20 @@ AC_CHECK_TYPE(iconv_t,:,
+ #endif
+ ])
+ 
++AC_ARG_WITH(selinux,
++	[AC_HELP_STRING([--with-selinux], [use SELinux support @<:@default=no@:>@])],
++	[with_selinux=$withval], [with_selinux=no])
++if test "$with_selinux" = "yes"; then
++	AC_CHECK_LIB(selinux, getfilecon,
++		[LIBSELINUX="-lselinux"
++		AC_SUBST(LIBSELINUX)
++		AC_CHECK_HEADERS(selinux/selinux.h, [],
++			[AC_MSG_ERROR([selinux/selinux.h is missing])])
++		AC_DEFINE(WITH_SELINUX, 1, [Build tar with SELinux support])
++		],
++		[AC_MSG_ERROR([libselinux not found])])
++fi
++
+ # Gettext.
+ AM_GNU_GETTEXT([external], [need-formatstring-macros])
+ AM_GNU_GETTEXT_VERSION([0.16])
 diff -urNp tar-1.22-orig/doc/tar.texi tar-1.22/doc/tar.texi
 --- tar-1.22-orig/doc/tar.texi	2009-03-05 08:04:13.000000000 +0100
 +++ tar-1.22/doc/tar.texi	2009-11-23 14:48:00.000000000 +0100

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -72,11 +72,12 @@ the rmt package.
 #%patch9 -p1 -b .nsfraction #causing stack smashing, do not apply
 %patch10 -p1 -b .utimens
 
-%build
 autoreconf
+
+%build
 %configure --bindir=/bin --libexecdir=/sbin \
 %if %{WITH_SELINUX}
-  --with-selinux
+  --enable-selinux
 %endif
 make
 
@@ -131,6 +132,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Feb 03 2010 Kamil Dudka <kdudka@redhat.com> 2:1.22-14
+- allow also build with SELinux support
+
 * Mon Feb 01 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-13
 - allow build without SELinux support(#556679)
 

@@ -1,7 +1,8 @@
-diff -urNp tar-1.22-orig/configure.ac tar-1.22/configure.ac
---- tar-1.22-orig/configure.ac	2009-03-05 08:01:58.000000000 +0100
-+++ tar-1.22/configure.ac	2009-11-23 14:48:00.000000000 +0100
-@@ -40,7 +40,7 @@ AC_CHECK_HEADERS_ONCE(fcntl.h linux/fd.h
+diff --git a/configure.ac b/configure.ac
+index 762f8e4..c442489 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,7 +40,7 @@ AC_CHECK_HEADERS_ONCE(fcntl.h linux/fd.h memory.h net/errno.h \
    sys/param.h sys/device.h sys/filio.h sys/gentape.h \
    sys/inet.h sys/io/trioctl.h \
    sys/mtio.h sys/time.h sys/tprintf.h sys/tape.h \
@@ -31,22 +32,19 @@ diff -urNp tar-1.22-orig/configure.ac tar-1.22/configure.ac
  AC_CHECK_TYPE(iconv_t,:,
                AC_DEFINE(iconv_t, int,
                          [Conversion descriptor type]),
-@@ -212,6 +219,20 @@ AC_CHECK_TYPE(iconv_t,:,
+@@ -212,6 +219,17 @@ AC_CHECK_TYPE(iconv_t,:,
  #endif
  ])
  
-+AC_ARG_WITH(selinux,
-+	[AC_HELP_STRING([--with-selinux], [use SELinux support @<:@default=no@:>@])],
-+	[with_selinux=$withval], [with_selinux=no])
-+if test "$with_selinux" = "yes"; then
-+	AC_CHECK_LIB(selinux, getfilecon,
-+		[LIBSELINUX="-lselinux"
-+		AC_SUBST(LIBSELINUX)
-+		AC_CHECK_HEADERS(selinux/selinux.h, [],
-+			[AC_MSG_ERROR([selinux/selinux.h is missing])])
-+		AC_DEFINE(WITH_SELINUX, 1, [Build tar with SELinux support])
-+		],
-+		[AC_MSG_ERROR([libselinux not found])])
++AC_ARG_ENABLE(selinux,
++  AC_HELP_STRING([--enable-selinux],
++    [enable SELinux support (disabled by default)]),
++  [selinux_enabled=$enableval],
++  [selinux_enabled=no])
++
++if test "x$selinux_enabled" = xyes; then
++  AC_CHECK_LIB(selinux, getfilecon)
++  AC_CHECK_HEADERS(selinux/selinux.h)
 +fi
 +
  # Gettext.

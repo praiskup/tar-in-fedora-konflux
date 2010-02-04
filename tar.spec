@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -69,7 +69,7 @@ the rmt package.
 %patch6 -p1 -b .shortread
 %patch7 -p1 -b .headerblackmagic
 %patch8 -p1 -b .xheaderleak
-#%patch9 -p1 -b .nsfraction #causing stack smashing, do not apply
+%patch9 -p1 -b .nsfraction
 %patch10 -p1 -b .utimens
 
 autoreconf
@@ -132,6 +132,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Feb 04 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-15
+- fix segfault with corrupted metadata in code_ns_fraction
+  (#531441)
+
 * Wed Feb 03 2010 Kamil Dudka <kdudka@redhat.com> 2:1.22-14
 - allow also build with SELinux support
 

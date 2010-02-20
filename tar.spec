@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -132,6 +132,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Feb 20 2010 Kamil Dudka <kdudka@redhat.com> 2:1.22-16
+- support for "lustre.*" extended attributes (#561855)
+
 * Thu Feb 04 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-15
 - fix segfault with corrupted metadata in code_ns_fraction
   (#531441)

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.22
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -38,6 +38,10 @@ Patch9: tar-1.22-nsfraction.patch
 #update gnulib's utimens module to latest version to prevent utimens() bad file
 #descriptor failures with POSIX2008 glibc
 Patch10: tar-1.22-utimens.patch
+#Fix potential place for overflow attack via rsh/ssh (#564368)
+Patch11: tar-1.22-rtapelib-overflow.patch
+#realloc within check_exclusion_tags() causes invalid write(#570591)
+Patch12: tar-1.22-exclusion-tags.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -71,6 +75,8 @@ the rmt package.
 %patch8 -p1 -b .xheaderleak
 %patch9 -p1 -b .nsfraction
 %patch10 -p1 -b .utimens
+%patch11 -p1 -b .overflow
+%patch12 -p1 -b .exclude
 
 autoreconf
 
@@ -132,6 +138,15 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Mar 10 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-17
+- CVE-2010-0624 tar, cpio: Heap-based buffer overflow
+  by expanding a specially-crafted archive (#572149)
+- realloc within check_exclusion_tags() caused invalid write
+  (#570591)
+- not closing file descriptors for excluded files/dirs with
+  exlude-tag... options could cause descriptor exhaustion
+  (#570591)
+
 * Sat Feb 20 2010 Kamil Dudka <kdudka@redhat.com> 2:1.22-16
 - support for "lustre.*" extended attributes (#561855)
 

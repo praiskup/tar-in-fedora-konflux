@@ -54,15 +54,15 @@
    /* Warn about implicit use of the wildcards in command line arguments.
       See TODO */
 -  warn_regex_usage = args.wildcards == default_wildcards;
-+  warn_regex_usage = 0; //args.wildcards == default_wildcards;
++  warn_regex_usage = 0; /* args.wildcards == default_wildcards; */
  
    /* Derive option values and check option consistency.  */
  
 --- tar-1.17/src/names.c.wildcards	2007-04-03 14:17:13.000000000 +0200
 +++ tar-1.17/src/names.c	2007-06-28 13:30:48.000000000 +0200
 @@ -812,10 +812,7 @@ collect_and_sort_names (void)
-       next_name = name->next;
-       if (name->found_count || name->dir_contents)
+     {
+       if (name->found_count || name->directory)
  	continue;
 -      if (name->matching_flags & EXCLUDE_WILDCARDS)
 -	/* NOTE: EXCLUDE_ANCHORED is not relevant here */
@@ -70,5 +70,16 @@
 -	continue;
 +
        chdir_do (name->change_dir);
+ 
        if (name->name[0] == 0)
- 	continue;
+diff -urNp tar-1.23-orig/tests/exclude01.at tar-1.23/tests/exclude01.at
+--- tar-1.23-orig/tests/exclude01.at	2010-01-26 12:30:20.000000000 +0100
++++ tar-1.23/tests/exclude01.at	2010-03-12 14:42:31.000000000 +0100
+@@ -59,6 +59,7 @@ testdir/dir2/file2
+ testdir/dir3/
+ NEXT
+ testdir/dir1/*
++testdir/dir1/file1
+ NEXT
+ testdir/dir1/*
+ NEXT

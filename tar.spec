@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.22
-Release: 17%{?dist}
+Version: 1.23
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -19,29 +19,16 @@ Patch1: tar-1.14-loneZeroWarning.patch
 #when ftruncate may fail to grow the size of a file.(#179507)
 Patch2: tar-1.15.1-vfatTruncate.patch
 #Add support for selinux, acl and extended attributes
-Patch3: tar-1.19-xattrs.patch
+Patch3: tar-1.23-xattrs.patch
 #change inclusion defaults of tar to "--wildcards --anchored
 #--wildcards-match-slash" for compatibility reasons (#206841)
 Patch4: tar-1.17-wildcards.patch
 #ignore errors from setting utime() for source file
 #on read-only filesystem (#500742)
 Patch5: tar-1.22-atime-rofs.patch
-#Report record size only if the archive refers to a device(#487760)
-Patch6: tar-1.22-shortreadbuffer.patch
 #Do not sigabrt with new gcc/glibc because of writing to
 #struct members of gnutar header at once via strcpy
-Patch7: tar-1.22-fortifysourcessigabrt.patch
-#fix memory leak in xheader (#518079)
-Patch8: tar-1.22-xheaderleak.patch
-#fix segfault in code_ns_fraction() with corrupted metadata (#531441)
-Patch9: tar-1.22-nsfraction.patch
-#update gnulib's utimens module to latest version to prevent utimens() bad file
-#descriptor failures with POSIX2008 glibc
-Patch10: tar-1.22-utimens.patch
-#Fix potential place for overflow attack via rsh/ssh (#564368)
-Patch11: tar-1.22-rtapelib-overflow.patch
-#realloc within check_exclusion_tags() causes invalid write(#570591)
-Patch12: tar-1.22-exclusion-tags.patch
+Patch6: tar-1.22-fortifysourcessigabrt.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -70,13 +57,7 @@ the rmt package.
 %patch3 -p1 -b .xattrs
 %patch4 -p1 -b .wildcards
 %patch5 -p1 -b .rofs
-%patch6 -p1 -b .shortread
-%patch7 -p1 -b .headerblackmagic
-%patch8 -p1 -b .xheaderleak
-%patch9 -p1 -b .nsfraction
-%patch10 -p1 -b .utimens
-%patch11 -p1 -b .overflow
-%patch12 -p1 -b .exclude
+%patch6 -p1 -b .fortify
 
 autoreconf
 
@@ -138,6 +119,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Mar 12 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-1
+- new upstream release 1.23, remove applied patches
+
 * Wed Mar 10 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.22-17
 - CVE-2010-0624 tar, cpio: Heap-based buffer overflow
   by expanding a specially-crafted archive (#572149)

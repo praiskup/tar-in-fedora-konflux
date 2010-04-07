@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -119,6 +119,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Apr 07 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-3
+- allow storing of extended attributes for fifo and block
+  or character devices files(#573147)
+ 
 * Mon Mar 15 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-2
 - update help2maned manpage
 

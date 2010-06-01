@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -29,6 +29,8 @@ Patch5: tar-1.22-atime-rofs.patch
 #Do not sigabrt with new gcc/glibc because of writing to
 #struct members of gnutar header at once via strcpy
 Patch6: tar-1.22-fortifysourcessigabrt.patch
+#oldarchive option was not working(#594044)
+Patch7: tar-1.23-oldarchive.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -58,6 +60,7 @@ the rmt package.
 %patch4 -p1 -b .wildcards
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .fortify
+%patch7 -p1 -b .oldarchive
 
 autoreconf
 
@@ -119,6 +122,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Jun 01 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-4
+- recognize old-archive/portability options(#594044)
+
 * Wed Apr 07 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-3
 - allow storing of extended attributes for fifo and block
   or character devices files(#573147)

@@ -1251,7 +1251,7 @@ diff -urNp tar-1.23-orig/src/xattrs.c tar-1.23/src/xattrs.c
 +
 +          if (strncmp (keyword, "user.", strlen("user.")) &&
 +              strncmp (keyword, "lustre.", strlen("lustre.")) &&
-+              strncmp (keyword, "trusted.", strlen("trusted."))
++              strncmp (keyword, "trusted.", strlen("trusted.")) &&
 +              strncmp (keyword, "security.NTACL", strlen("security.NTACL")))
 +            continue; /* don't try and set anything but normal xattrs */
 +

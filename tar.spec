@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -122,6 +122,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Aug 16 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-5
+- add support for security.NTACL xattrs (#621215)
+
 * Tue Jun 01 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-4
 - recognize old-archive/portability options(#594044)
 

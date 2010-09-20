@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -31,6 +31,10 @@ Patch5: tar-1.22-atime-rofs.patch
 Patch6: tar-1.22-fortifysourcessigabrt.patch
 #oldarchive option was not working(#594044)
 Patch7: tar-1.23-oldarchive.patch
+#fix exclusion of long file names with --xattrs (#634866)
+Patch8: tar-1.23-longnames.patch
+#do not crash with --listed-incremental (#635318)
+Patch9: tar-1.23-listedincremental.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -61,6 +65,8 @@ the rmt package.
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .fortify
 %patch7 -p1 -b .oldarchive
+%patch8 -p1 -b .longnames
+%patch9 -p1 -b .listedincremental
 
 autoreconf
 
@@ -122,6 +128,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Sep 20 2010 Kamil Dudka <kdudka@redhat.com> 2:1.23-6
+- fix exclusion of long file names with --xattrs (#634866)
+- do not crash with --listed-incremental (#635318)
+
 * Mon Aug 16 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-5
 - add support for security.NTACL xattrs (#621215)
 

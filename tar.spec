@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -35,6 +35,8 @@ Patch7: tar-1.23-oldarchive.patch
 Patch8: tar-1.23-longnames.patch
 #do not crash with --listed-incremental (#635318)
 Patch9: tar-1.23-listedincremental.patch
+#match non-stripped file names (#637085)
+Patch10: tar-1.23-stripcomponents.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -67,6 +69,7 @@ the rmt package.
 %patch7 -p1 -b .oldarchive
 %patch8 -p1 -b .longnames
 %patch9 -p1 -b .listedincremental
+%patch10 -p1 -b .stripcomponents
 
 autoreconf
 
@@ -113,7 +116,7 @@ fi
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog ChangeLog.1 NEWS README THANKS TODO
+%doc AUTHORS ChangeLog ChangeLog.1 COPYING NEWS README THANKS TODO
 %ifos linux
 /bin/tar
 /bin/gtar
@@ -128,6 +131,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Sep 24 2010 Kamil Dudka <kdudka@redhat.com> 2:1.23-7
+- match non-stripped file names (#637085)
+
 * Mon Sep 20 2010 Kamil Dudka <kdudka@redhat.com> 2:1.23-6
 - fix exclusion of long file names with --xattrs (#634866)
 - do not crash with --listed-incremental (#635318)

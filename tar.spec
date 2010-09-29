@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.23
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -131,6 +131,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Sep 29 2010 jkeating - 2:1.23-8
+- Rebuilt for gcc bug 634757
+
 * Fri Sep 24 2010 Kamil Dudka <kdudka@redhat.com> 2:1.23-7
 - match non-stripped file names (#637085)
 

@@ -4,13 +4,13 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.23
-Release: 8%{?dist}
+Version: 1.24
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
-Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2
-Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.bz2.sig
+Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
+Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
 #Manpage for tar and gtar, a bit modified help2man generated manpage
 Source2: tar.1
 #Stop issuing lone zero block warnings
@@ -19,7 +19,7 @@ Patch1: tar-1.14-loneZeroWarning.patch
 #when ftruncate may fail to grow the size of a file.(#179507)
 Patch2: tar-1.15.1-vfatTruncate.patch
 #Add support for selinux, acl and extended attributes
-Patch3: tar-1.23-xattrs.patch
+Patch3: tar-1.24-xattrs.patch
 #change inclusion defaults of tar to "--wildcards --anchored
 #--wildcards-match-slash" for compatibility reasons (#206841)
 Patch4: tar-1.17-wildcards.patch
@@ -31,12 +31,10 @@ Patch5: tar-1.22-atime-rofs.patch
 Patch6: tar-1.22-fortifysourcessigabrt.patch
 #oldarchive option was not working(#594044)
 Patch7: tar-1.23-oldarchive.patch
-#fix exclusion of long file names with --xattrs (#634866)
-Patch8: tar-1.23-longnames.patch
-#do not crash with --listed-incremental (#635318)
-Patch9: tar-1.23-listedincremental.patch
 #match non-stripped file names (#637085)
-Patch10: tar-1.23-stripcomponents.patch
+Patch8: tar-1.23-stripcomponents.patch
+#fix bug with -C and extracting directories
+Patch9: tar-1.24-extractingdirs.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -67,9 +65,8 @@ the rmt package.
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .fortify
 %patch7 -p1 -b .oldarchive
-%patch8 -p1 -b .longnames
-%patch9 -p1 -b .listedincremental
-%patch10 -p1 -b .stripcomponents
+%patch8 -p1 -b .stripcomponents
+%patch9 -p1 -b .extractC
 
 autoreconf
 
@@ -131,6 +128,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Oct 25 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.24-1
+- new upstream release 1.24, use .xz archive
+
 * Wed Sep 29 2010 jkeating - 2:1.23-8
 - Rebuilt for gcc bug 634757
 

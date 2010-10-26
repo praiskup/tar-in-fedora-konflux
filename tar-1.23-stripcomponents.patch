@@ -31,7 +31,7 @@ index 4cadab9..3a36b9b 100644
 +void transform_name_from_header(union block *header, struct tar_stat_info *);
  char const *tartime (struct timespec t, bool full_time);
  
- #define GID_FROM_HEADER(where) gid_from_header (where, sizeof (where))
+ #define OFF_FROM_HEADER(where) off_from_header (where, sizeof (where))
 diff --git a/src/list.c b/src/list.c
 index 1edd504..4e0e1a0 100644
 --- a/src/list.c
@@ -66,11 +66,11 @@ index 1edd504..4e0e1a0 100644
  	      switch (current_header->header.typeflag)
  		{
 @@ -659,7 +663,11 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
-           || stat_info->dumpdir)
- 	stat_info->is_dumpdir = true;
-     }
+   if (header->header.typeflag == GNUTYPE_VOLHDR)
+     /* Name transformations don't apply to volume headers. */
+     return;
 +}
- 
+   
 +void
 +transform_name_from_header(union block *header, struct tar_stat_info *stat_info)
 +{
@@ -86,7 +86,7 @@ index 1edd504..4e0e1a0 100644
    simple_print_header (&vstat, &vblk, 0);
    tar_stat_destroy (&vstat);
 @@ -1431,6 +1440,7 @@ test_archive_label ()
- 	
+     {
        decode_header (current_header,
  		     &current_stat_info, &current_format, 0);
 +      transform_name_from_header (current_header, &current_stat_info);
@@ -177,3 +177,15 @@ index ef70b99..8b533ed 100644
  
  m4_include([delete01.at])
  m4_include([delete02.at])
+diff -urNp tar-1.24-orig/tests/xform01.at tar-1.24/tests/xform01.at
+--- tar-1.24-orig/tests/xform01.at	2010-10-24 20:07:47.000000000 +0200
++++ tar-1.24/tests/xform01.at	2010-10-25 15:49:42.866904079 +0200
+@@ -29,7 +29,7 @@ AT_KEYWORDS([transform xform xform01 vol
+ AT_TAR_CHECK([
+ genfile --file file
+ tar -cf archive.tar -V /label/ file
+-tar tf archive.tar
++tar Ptf archive.tar
+ ],
+ [0],
+ [/label/

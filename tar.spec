@@ -35,6 +35,8 @@ Patch7: tar-1.23-oldarchive.patch
 Patch8: tar-1.24-stripcomponents.patch
 #fix bug with -C and extracting directories
 Patch9: tar-1.24-extractingdirs.patch
+#temporarily disable sigpipe.at patch (fails at build in koji, passes manually)
+Patch10: tar-sigpipe.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -67,6 +69,7 @@ the rmt package.
 %patch7 -p1 -b .oldarchive
 %patch9 -p1 -b .extractC
 %patch8 -p1 -b .stripcomponents
+%patch10 -p1 -b .fail
 
 autoreconf
 

@@ -32,7 +32,7 @@ Patch6: tar-1.22-fortifysourcessigabrt.patch
 #oldarchive option was not working(#594044)
 Patch7: tar-1.23-oldarchive.patch
 #match non-stripped file names (#637085)
-Patch8: tar-1.23-stripcomponents.patch
+Patch8: tar-1.24-stripcomponents.patch
 #fix bug with -C and extracting directories
 Patch9: tar-1.24-extractingdirs.patch
 Requires: info
@@ -65,8 +65,8 @@ the rmt package.
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .fortify
 %patch7 -p1 -b .oldarchive
-%patch8 -p1 -b .stripcomponents
 %patch9 -p1 -b .extractC
+%patch8 -p1 -b .stripcomponents
 
 autoreconf
 

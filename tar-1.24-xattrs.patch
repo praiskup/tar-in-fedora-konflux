@@ -361,13 +361,14 @@ diff -urNp tar-1.24-orig/src/extract.c tar-1.24/src/extract.c
    if (0 < same_owner_option && ! interdir)
      {
        /* Some systems allow non-root users to give files away.  Once this
-@@ -431,6 +455,29 @@ delay_set_stat (char const *file_name, s
+@@ -431,6 +455,36 @@ delay_set_stat (char const *file_name, s
    data->atflag = atflag;
    data->after_links = 0;
    data->change_dir = chdir_current;
 +  data->cntx_name = NULL;
-+  assign_string (&data->cntx_name, st->cntx_name);
-+  if (st->acls_a_ptr)
++  if (st)
++    assign_string (&data->cntx_name, st->cntx_name);
++  if (st && st->acls_a_ptr)
 +    {
 +      data->acls_a_ptr = xmemdup(st->acls_a_ptr, st->acls_a_len + 1);
 +      data->acls_a_len = st->acls_a_len;
@@ -377,7 +378,7 @@ diff -urNp tar-1.24-orig/src/extract.c tar-1.24/src/extract.c
 +      data->acls_a_ptr = NULL;
 +      data->acls_a_len = 0;
 +    }
-+  if (st->acls_d_ptr)
++  if (st && st->acls_d_ptr)
 +    {
 +      data->acls_d_ptr = xmemdup(st->acls_d_ptr, st->acls_d_len + 1);
 +      data->acls_d_len = st->acls_d_len;
@@ -387,7 +388,13 @@ diff -urNp tar-1.24-orig/src/extract.c tar-1.24/src/extract.c
 +      data->acls_d_ptr = NULL;
 +      data->acls_d_len = 0;
 +    }
-+  xheader_xattr_copy (st, &data->xattr_map, &data->xattr_map_size);
++  if (st)
++    xheader_xattr_copy (st, &data->xattr_map, &data->xattr_map_size);
++  else
++    {
++      data->xattr_map = NULL;
++      data->xattr_map_size = 0;
++    }
    strcpy (data->file_name, file_name);
    delayed_set_stat_head = data;
    if (must_be_dot_or_slash (file_name))
@@ -406,7 +413,7 @@ diff -urNp tar-1.24-orig/src/extract.c tar-1.24/src/extract.c
 +	   mode_t invert_permissions, char typeflag, int *file_created)
 +{
 +  int status = 0;
-+  int interdir_made = 0;
++  bool interdir_made = false;
 +
 +  if ((xattrs_option >= 0) && st->xattr_map_size) {
 +    mode_t mode = current_stat_info.stat.st_mode & MODE_RWX & ~ current_umask;

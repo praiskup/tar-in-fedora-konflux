@@ -4,7 +4,7 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.24
+Version: 1.25
 Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
@@ -26,17 +26,10 @@ Patch4: tar-1.17-wildcards.patch
 #ignore errors from setting utime() for source file
 #on read-only filesystem (#500742)
 Patch5: tar-1.22-atime-rofs.patch
-#Do not sigabrt with new gcc/glibc because of writing to
-#struct members of gnutar header at once via strcpy
-Patch6: tar-1.22-fortifysourcessigabrt.patch
 #oldarchive option was not working(#594044)
-Patch7: tar-1.23-oldarchive.patch
-#match non-stripped file names (#637085)
-Patch8: tar-1.24-stripcomponents.patch
-#fix bug with -C and extracting directories
-Patch9: tar-1.24-extractingdirs.patch
+Patch6: tar-1.23-oldarchive.patch
 #temporarily disable sigpipe.at patch (fails at build in koji, passes manually)
-Patch10: tar-sigpipe.patch
+Patch7: tar-sigpipe.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -65,11 +58,8 @@ the rmt package.
 %patch3 -p1 -b .xattrs
 %patch4 -p1 -b .wildcards
 %patch5 -p1 -b .rofs
-%patch6 -p1 -b .fortify
-%patch7 -p1 -b .oldarchive
-%patch9 -p1 -b .extractC
-%patch8 -p1 -b .stripcomponents
-%patch10 -p1 -b .fail
+%patch6 -p1 -b .oldarchive
+%patch7 -p1 -b .fail
 
 autoreconf
 
@@ -131,6 +121,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Nov 08 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.25-1
+- new upstream release 1.25
+
 * Mon Oct 25 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.24-1
 - new upstream release 1.24, use .xz archive
 

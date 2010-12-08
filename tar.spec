@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.25
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -32,6 +32,8 @@ Patch6: tar-1.23-oldarchive.patch
 Patch7: tar-sigpipe.patch
 #fix failure with --one-file-system and --listed-incremental when archiving / (#654718)
 Patch8: tar-1.25-listedincremental.patch
+#Correctly store long sparse file names in PAX archives (#656834)
+Patch9: tar-1.25-sparse-names.patch
 Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
@@ -63,6 +65,7 @@ the rmt package.
 %patch6 -p1 -b .oldarchive
 %patch7 -p1 -b .fail
 %patch8 -p1 -b .listed
+%patch9 -p1 -b .sparse
 
 autoreconf
 
@@ -124,6 +127,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Dec 08 2010 Kamil Dudka <kdudka@redhat.com> 2:1.25-3
+- correctly store long sparse file names in PAX archives (#656834)
+
 * Tue Nov 23 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.25-2
 - fix issue with --one-file-system and --listed-incremental
   (#654718)

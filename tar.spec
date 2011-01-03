@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.25
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -124,6 +124,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jan 03 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.25-3
+- mention that some compression options might not work if
+  the external program is not available(#666755)
+
 * Tue Nov 23 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.25-2
 - fix issue with --one-file-system and --listed-incremental
   (#654718)

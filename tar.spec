@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.25
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -34,7 +34,6 @@ Patch7: tar-sigpipe.patch
 Patch8: tar-1.25-listedincremental.patch
 #Correctly store long sparse file names in PAX archives (#656834)
 Patch9: tar-1.25-sparse-names.patch
-Requires: info
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -127,6 +126,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jan 20 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.25-5
+- drop unnecessary hard dependency on info package(#671157)
+
 * Mon Jan 03 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.25-4
 - mention that some compression options might not work if
   the external program is not available(#666755)

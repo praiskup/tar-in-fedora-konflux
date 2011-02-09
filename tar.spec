@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.25
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -126,6 +126,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.25-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Thu Jan 20 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.25-5
 - drop unnecessary hard dependency on info package(#671157)
 

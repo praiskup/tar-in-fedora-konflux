@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.25
-Release: 6%{?dist}
+Version: 1.26
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -30,10 +30,6 @@ Patch5: tar-1.22-atime-rofs.patch
 Patch6: tar-1.23-oldarchive.patch
 #temporarily disable sigpipe.at patch (fails at build in koji, passes manually)
 Patch7: tar-sigpipe.patch
-#fix failure with --one-file-system and --listed-incremental when archiving / (#654718)
-Patch8: tar-1.25-listedincremental.patch
-#Correctly store long sparse file names in PAX archives (#656834)
-Patch9: tar-1.25-sparse-names.patch
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -63,8 +59,6 @@ the rmt package.
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .oldarchive
 %patch7 -p1 -b .fail
-%patch8 -p1 -b .listed
-%patch9 -p1 -b .sparse
 
 autoreconf
 
@@ -126,6 +120,8 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Mar 12 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.26-1
+- new upstream release 1.26
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.25-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -30,6 +30,8 @@ Patch5: tar-1.22-atime-rofs.patch
 Patch6: tar-1.23-oldarchive.patch
 #temporarily disable sigpipe.at patch (fails at build in koji, passes manually)
 Patch7: tar-sigpipe.patch
+#partially revert upstream commit 4bde4f3 (#717684)
+Patch8: tar-1.24-openat-partial-revert.patch
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -59,6 +61,7 @@ the rmt package.
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .oldarchive
 %patch7 -p1 -b .fail
+%patch8 -p1 -b .openat
 
 autoreconf
 
@@ -120,6 +123,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Sep 26 2011 Kamil Dudka <kdudka@redhat.com> 2:1.26-2
+- restore basic functionality of --acl, --selinux, and --xattr (#717684)
+
 * Sat Mar 12 2011 Ondrej Vasik <ovasik@redhat.com> 2:1.26-1
 - new upstream release 1.26
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.25-6

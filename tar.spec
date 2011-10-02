@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -123,6 +123,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sun Oct  2 2011 Ville Skyttä <ville.skytta@iki.fi> - 2:1.26-3
+- Man page heading formatting fixes.
+
 * Mon Sep 26 2011 Kamil Dudka <kdudka@redhat.com> 2:1.26-2
 - restore basic functionality of --acl, --selinux, and --xattr (#717684)
 

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -32,6 +32,8 @@ Patch6: tar-1.23-oldarchive.patch
 Patch7: tar-sigpipe.patch
 #partially revert upstream commit 4bde4f3 (#717684)
 Patch8: tar-1.24-openat-partial-revert.patch
+# fix for bad cooperation of -C and -u options (#688567)
+Patch9: tar-1.26-update-with-change-directory.patch
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -62,6 +64,7 @@ the rmt package.
 %patch6 -p1 -b .oldarchive
 %patch7 -p1 -b .fail
 %patch8 -p1 -b .openat
+%patch9 -p1 -b .update_and_changedir
 
 autoreconf
 
@@ -123,6 +126,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Apr 04 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-5
+- fix for bad cooperation of the '-C' (change directory) and '-u' (update
+  package) options (#688567)
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 

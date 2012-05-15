@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -39,6 +39,7 @@ BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 BuildRequires: libselinux-devel
 %endif
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Provides: bundled(gnulib)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -126,6 +127,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue May 15 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-6
+- add virtual provides for bundled(gnulib) copylib (#821790)
+
 * Thu Apr 04 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-5
 - fix for bad cooperation of the '-C' (change directory) and '-u' (update
   package) options (#688567)

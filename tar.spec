@@ -34,6 +34,8 @@ Patch7: tar-sigpipe.patch
 Patch8: tar-1.24-openat-partial-revert.patch
 # fix for bad cooperation of -C and -u options (#688567)
 Patch9: tar-1.26-update-with-change-directory.patch
+# fix rawhide buildfailure with undefined gets
+Patch10: tar-1.26-stdio.in.patch
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -66,6 +68,7 @@ the rmt package.
 %patch7 -p1 -b .fail
 %patch8 -p1 -b .openat
 %patch9 -p1 -b .update_and_changedir
+%patch10 -p1 -b .gets
 
 autoreconf
 
@@ -130,6 +133,7 @@ fi
 * Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7
 - store&restore security.capability extended attributes category
   (#771927)
+- fix build failure with undefined gets
 
 * Tue May 15 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-6
 - add virtual provides for bundled(gnulib) copylib (#821790)

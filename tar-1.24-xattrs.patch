@@ -806,7 +806,7 @@ diff -urNp tar-1.24-orig/src/tar.h tar-1.24/src/tar.h
 diff -urNp tar-1.24-orig/src/xattrs.c tar-1.24/src/xattrs.c
 --- tar-1.24-orig/src/xattrs.c	1970-01-01 01:00:00.000000000 +0100
 +++ tar-1.24/src/xattrs.c	2010-10-25 10:24:52.568214736 +0200
-@@ -0,0 +1,489 @@
+@@ -0,0 +1,490 @@
 +/* Create a tar archive.
 +
 +   Copyright (C) 2006 Free Software Foundation, Inc.
@@ -1284,7 +1284,8 @@ diff -urNp tar-1.24-orig/src/xattrs.c tar-1.24/src/xattrs.c
 +          if (strncmp (keyword, "user.", strlen("user.")) &&
 +              strncmp (keyword, "lustre.", strlen("lustre.")) &&
 +              strncmp (keyword, "trusted.", strlen("trusted.")) &&
-+              strncmp (keyword, "security.NTACL", strlen("security.NTACL")))
++              strncmp (keyword, "security.NTACL", strlen("security.NTACL")) &&
++              strncmp (keyword, "security.capability", strlen("security.capability")))
 +            continue; /* don't try and set anything but normal xattrs */
 +
 +          xattrs__fd_set (st, file_name, typeflag, keyword,
@@ -1587,7 +1588,7 @@ diff -urNp tar-1.24-orig/src/xheader.c tar-1.24/src/xheader.c
  
    /* These may be present in a first global header of the archive.
       They provide the same functionality as GNUTYPE_MULTIVOL header.
-@@ -1561,11 +1704,41 @@ struct xhdr_tab const xhdr_tab[] = {
+@@ -1561,11 +1704,42 @@ struct xhdr_tab const xhdr_tab[] = {
       GNU.volume.offset keeps the offset of the start of this volume,
       otherwise kept in oldgnu_header.offset.  */
    { "GNU.volume.filename", volume_label_coder, volume_filename_decoder,
@@ -1628,6 +1629,7 @@ diff -urNp tar-1.24-orig/src/xheader.c tar-1.24/src/xheader.c
 +  { "SCHILY.xattr.trusted", xattr_coder, xattr_decoder, 0, true },
 +  { "SCHILY.xattr.lustre",  xattr_coder, xattr_decoder, 0, true },
 +  { "SCHILY.xattr.security.NTACL", xattr_coder, xattr_decoder, 0, true },
++  { "SCHILY.xattr.security.capability", xattr_coder, xattr_decoder, 0, true },
 +
 +  /* ignore everything else in the xattr namespaces... */
 +  { "SCHILY.xattr",         dummy_coder, dummy_decoder, 0, true },

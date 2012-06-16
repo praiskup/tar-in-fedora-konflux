@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -127,6 +127,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7
+- store&restore security.capability extended attributes category
+  (#771927)
+
 * Tue May 15 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-6
 - add virtual provides for bundled(gnulib) copylib (#821790)
 

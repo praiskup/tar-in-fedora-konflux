@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -130,6 +130,8 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jul 12 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-8
+- force the fchown() be called before xattrs_set() (#771927)
 * Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7
 - store&restore security.capability extended attributes category
   (#771927)

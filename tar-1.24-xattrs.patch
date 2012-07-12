@@ -368,17 +368,19 @@ diff -urNp tar-1.24-orig/src/extract.c tar-1.24/src/extract.c
      /* The desired target of the desired link.  */
      char target[1];
    };
-@@ -335,6 +355,10 @@ set_stat (char const *file_name,
- 	utime_error (file_name);
-     }
- 
+@@ -360,6 +380,12 @@ set_stat (char const *file_name,
+ 	    st->stat.st_mode & ~ current_umask,
+ 	    0 < same_permissions_option && ! interdir ? MODE_ALL : MODE_RWX,
+ 	    fd, current_mode, current_mode_mask, typeflag, atflag);
++
++  /* these three calls must be done *after* fd_chown() call because fd_chown
++     causes that linux capabilities becomes cleared */
 +  xattrs_acls_set(st, file_name, typeflag);
 +  xattrs_selinux_set(st, file_name, typeflag);
 +  xattrs_xattrs_set(st, file_name, typeflag);
-+
-   if (0 < same_owner_option && ! interdir)
-     {
-       /* Some systems allow non-root users to give files away.  Once this
+ }
+ 
+ /* For each entry H in the leading prefix of entries in HEAD that do
 @@ -431,6 +455,36 @@ delay_set_stat (char const *file_name, s
    data->atflag = atflag;
    data->after_links = 0;

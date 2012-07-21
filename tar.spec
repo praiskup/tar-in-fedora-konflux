@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -130,6 +130,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Thu Jul 12 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-8
 - force the fchown() be called before xattrs_set() (#771927)
 * Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7

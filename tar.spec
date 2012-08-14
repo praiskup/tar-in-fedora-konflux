@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -18,10 +18,10 @@ Patch1: tar-1.14-loneZeroWarning.patch
 #Fix extracting sparse files to a filesystem like vfat,
 #when ftruncate may fail to grow the size of a file.(#179507)
 Patch2: tar-1.15.1-vfatTruncate.patch
-#Add support for selinux, acl and extended attributes
-Patch3: tar-1.24-xattrs.patch
 #change inclusion defaults of tar to "--wildcards --anchored
 #--wildcards-match-slash" for compatibility reasons (#206841)
+#Add support for selinux, acl and extended attributes
+#Patch3: tar-1.24-xattrs.patch
 Patch4: tar-1.17-wildcards.patch
 #ignore errors from setting utime() for source file
 #on read-only filesystem (#500742)
@@ -36,7 +36,14 @@ Patch8: tar-1.24-openat-partial-revert.patch
 Patch9: tar-1.26-update-with-change-directory.patch
 # fix rawhide buildfailure with undefined gets
 Patch10: tar-1.26-stdio.in.patch
+# Prepare gnulib for xattrs and apply xattrs & acls & selinux (#850291)
+Patch11: tar-1.26-xattrs-gnulib-prepare.patch
+Patch12: tar-1.26-xattrs.patch
+
 BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
+# allow proper tests for extended attributes
+BuildRequires: attr acl coreutils policycoreutils
+
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
 %endif
@@ -61,7 +68,7 @@ the rmt package.
 %setup -q
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
-%patch3 -p1 -b .xattrs
+#%patch3 -p1 -b .xattrs
 %patch4 -p1 -b .wildcards
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .oldarchive
@@ -69,13 +76,15 @@ the rmt package.
 %patch8 -p1 -b .openat
 %patch9 -p1 -b .update_and_changedir
 %patch10 -p1 -b .gets
+%patch11 -p1 -b .xattrs_gnulib_prep
+%patch12 -p1 -b .xattrs2
 
 autoreconf
 
 %build
 %configure --bindir=/bin --libexecdir=/sbin \
-%if %{WITH_SELINUX}
-  --enable-selinux
+%if %{WITH_SELINUX} == 0
+  --without-selinux
 %endif
 make
 
@@ -130,11 +139,16 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Aug 21 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-10
+- prepare Gnulib for new xattrs (#850291)
+- new version of RH xattrs patch (#850291)
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
 * Thu Jul 12 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-8
 - force the fchown() be called before xattrs_set() (#771927)
+
 * Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7
 - store&restore security.capability extended attributes category
   (#771927)

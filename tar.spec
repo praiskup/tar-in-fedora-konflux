@@ -105,7 +105,7 @@ rm -f ${RPM_BUILD_ROOT}/sbin/rmt
 
 %check
 rm -f ${RPM_BUILD_ROOT}/test/testsuite
-make check
+TESTSUITEFLAGS=-v make check
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
@@ -142,6 +142,7 @@ fi
 * Tue Aug 21 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-10
 - prepare Gnulib for new xattrs (#850291)
 - new version of RH xattrs patch (#850291)
+- enable verbose mode in testsuite to allow better debugging on error
 
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -139,7 +139,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Tue Aug 21 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-10
+* Wed Aug 22 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-11
+- fix manpage to reflect #850291 related commit
+
+* Tue Aug 21 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-10
 - prepare Gnulib for new xattrs (#850291)
 - new version of RH xattrs patch (#850291)
 - enable verbose mode in testsuite to allow better debugging on error
@@ -147,7 +150,7 @@ fi
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
-* Thu Jul 12 2012 Pavel Raiskup <praiskup@redhat.com 2:1.26-8
+* Thu Jul 12 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-8
 - force the fchown() be called before xattrs_set() (#771927)
 
 * Sat Jun 16 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-7

@@ -159,10 +159,7 @@ extract files to standard output
 \fB\-\-to\-command\fR=\fICOMMAND\fR
 pipe extracted files to another program
 .IP
-Handling of file attributes:
-.TP
-\fB\-\-acls\fR
-Save the ACLs to the archive
+.SH \fBHandling of file attributes:\fR
 .TP
 \fB\-\-atime\-preserve\fR[=\fIMETHOD\fR]
 preserve access times on dumped files, either
@@ -187,9 +184,6 @@ set mtime for added files from DATE\-OR\-FILE
 \fB\-m\fR, \fB\-\-touch\fR
 don't extract file modified time
 .TP
-\fB\-\-no\-acls\fR
-Don't extract the ACLs from the archive
-.TP
 \fB\-\-no\-delay\-directory\-restore\fR
 cancel the effect of \fB\-\-delay\-directory\-restore\fR
 option
@@ -201,13 +195,6 @@ users)
 \fB\-\-no\-same\-permissions\fR
 apply the user's umask when extracting permissions
 from the archive (default for ordinary users)
-.TP
-\fB\-\-no\-selinux\fR
-Don't extract the SELinux context from the archive
-.TP
-\fB\-\-no\-xattrs\fR
-Don't extract the user/root xattrs from the
-archive
 .TP
 \fB\-\-numeric\-owner\fR
 always use numbers for user/group names
@@ -228,12 +215,32 @@ exists in the archive (default for superuser)
 .TP
 \fB\-s\fR, \fB\-\-preserve\-order\fR, \fB\-\-same\-order\fR
 sort names to extract to match archive
+.IP
+.SH \fBHandling of extended file attributes:\fR
+.TP
+\fB\-\-acls\fR
+Enable the POSIX ACLs support
+.TP
+\fB\-\-no\-acls\fR
+Disable the POSIX ACLs support
+.TP
+\fB\-\-no\-selinux\fR
+Disable the SELinux context support
+.TP
+\fB\-\-no\-xattrs\fR
+Disable extended attributes support
 .TP
 \fB\-\-selinux\fR
-Save the SELinux context to the archive
+Enable the SELinux context support
 .TP
 \fB\-\-xattrs\fR
-Save the user/root xattrs to the archive
+Enable extended attributes support
+.TP
+\fB\-\-xattrs\-exclude\fR=\fIMASK\fR
+specify the exclude pattern for xattr keys
+.TP
+\fB\-\-xattrs\-include\fR=\fIMASK\fR
+specify the include pattern for xattr keys
 .IP
 .SH \fBDevice selection and switching:\fR
 .TP
@@ -276,11 +283,12 @@ ignore zeroed blocks in archive (means EOF)
 NUMBER of bytes per record, multiple of 512
 .IP
 .SH \fBArchive format selection:\fR
-.TP
 \fB\-H\fR, \fB\-\-format\fR=\fIFORMAT\fR
+.RS
 create archive of the given format
-.IP
+.sp
 FORMAT is one of the following:
+.RS
 .TP
 gnu
 GNU tar 1.13.x format
@@ -299,6 +307,8 @@ POSIX 1003.1\-1988 (ustar) format
 .TP
 v7
 old V7 tar format
+.RE
+.RE
 .TP
 \fB\-\-old\-archive\fR, \fB\-\-portability\fR
 same as \fB\-\-format\fR=\fIv7\fR

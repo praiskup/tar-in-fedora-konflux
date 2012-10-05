@@ -1,10 +1,11 @@
-From 1975192b75aefe1d75360e47496725f2f7c589a8 Mon Sep 17 00:00:00 2001
+From 3a172f4a23be198bf79da30c38453c231b059500 Mon Sep 17 00:00:00 2001
 From: Pavel Raiskup <praiskup@redhat.com>
-Date: Tue, 14 Aug 2012 15:42:15 +0200
+Date: Fri, 5 Oct 2012 09:29:31 +0200
 Subject: [PATCH 1/2] Prepare gnulib for xattrs patch
 
 ---
- gnu/Makefile.am         |  98 +++++-
+ build-aux/snippet/unused-parameter.h |  38 ++
+ gnu/Makefile.am         | 123 ++++++-
  gnu/acl-internal.h      | 267 ++++++++++++++
  gnu/acl.h               |  30 ++
  gnu/acl_entries.c       |  77 ++++
@@ -24,7 +25,8 @@ Subject: [PATCH 1/2] Prepare gnulib for xattrs patch
  m4/gnulib-comp.m4       |  33 +-
  m4/selinux-context-h.m4 |  22 ++
  m4/selinux-selinux-h.m4 |  69 ++++
- 20 files changed, 3613 insertions(+), 7 deletions(-)
+ 21 files changed, 3676 insertions(+), 7 deletions(-)
+ create mode 100644 build-aux/snippet/unused-parameter.h
  create mode 100644 gnu/acl-internal.h
  create mode 100644 gnu/acl.h
  create mode 100644 gnu/acl_entries.c
@@ -44,8 +46,52 @@ Subject: [PATCH 1/2] Prepare gnulib for xattrs patch
  create mode 100644 m4/selinux-context-h.m4
  create mode 100644 m4/selinux-selinux-h.m4
 
+diff --git a/build-aux/snippet/unused-parameter.h b/build-aux/snippet/unused-parameter.h
+new file mode 100644
+index 0000000..6b60482
+--- /dev/null
++++ b/build-aux/snippet/unused-parameter.h
+@@ -0,0 +1,38 @@
++/* -*- buffer-read-only: t -*- vi: set ro: */
++/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
++/* A C macro for declaring that specific function parameters are not used.
++   Copyright (C) 2008-2012 Free Software Foundation, Inc.
++
++   This program is free software: you can redistribute it and/or modify it
++   under the terms of the GNU General Public License as published
++   by the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
++
++/* _GL_UNUSED_PARAMETER is a marker that can be appended to function parameter
++   declarations for parameters that are not used.  This helps to reduce
++   warnings, such as from GCC -Wunused-parameter.  The syntax is as follows:
++       type param _GL_UNUSED_PARAMETER
++   or more generally
++       param_decl _GL_UNUSED_PARAMETER
++   For example:
++       int param _GL_UNUSED_PARAMETER
++       int *(*param)(void) _GL_UNUSED_PARAMETER
++   Other possible, but obscure and discouraged syntaxes:
++       int _GL_UNUSED_PARAMETER *(*param)(void)
++       _GL_UNUSED_PARAMETER int *(*param)(void)
++ */
++#ifndef _GL_UNUSED_PARAMETER
++# if __GNUC__ >= 3 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)
++#  define _GL_UNUSED_PARAMETER __attribute__ ((__unused__))
++# else
++#  define _GL_UNUSED_PARAMETER
++# endif
++#endif
 diff --git a/gnu/Makefile.am b/gnu/Makefile.am
-index 06eb0d9..e5913db 100644
+index 06eb0d9..406999c 100644
 --- a/gnu/Makefile.am
 +++ b/gnu/Makefile.am
 @@ -1,6 +1,3 @@
@@ -65,16 +111,48 @@ index 06eb0d9..e5913db 100644
 +libgnu_a_SOURCES += set-mode-acl.c copy-acl.c file-has-acl.c
 +
 +EXTRA_DIST += acl-internal.h acl.h acl_entries.c
- 
-+EXTRA_libgnu_a_SOURCES += acl_entries.c
 +
++EXTRA_libgnu_a_SOURCES += acl_entries.c
+ 
 +## end   gnulib module acl
 +
 +## begin gnulib module alloca
  
  EXTRA_DIST += alloca.c
  
-@@ -1386,6 +1392,60 @@ EXTRA_libgnu_a_SOURCES += savedir.c
+@@ -179,6 +185,31 @@ EXTRA_DIST += $(top_srcdir)/build-aux/c++defs.h
+ 
+ ## end   gnulib module c++defs
+ 
++## begin gnulib module snippet/unused-parameter
++
++# The BUILT_SOURCES created by this Makefile snippet are not used via #include
++# statements but through direct file reference. Therefore this snippet must be
++# present in all Makefile.am that need it. This is ensured by the applicability
++# 'all' defined above.
++
++BUILT_SOURCES += unused-parameter.h
++# The unused-parameter.h that gets inserted into generated .h files is the same
++# as build-aux/snippet/unused-parameter.h, except that it has the copyright
++# header cut off.
++unused-parameter.h: $(top_srcdir)/build-aux/snippet/unused-parameter.h
++	$(AM_V_GEN)rm -f $@-t $@ && \
++	sed -n -e '/GL_UNUSED_PARAMETER/,$$p' \
++	  < $(top_srcdir)/build-aux/snippet/unused-parameter.h \
++	  > $@-t && \
++	mv $@-t $@
++MOSTLYCLEANFILES += unused-parameter.h unused-parameter.h-t
++
++UNUSED_PARAMETER_H=unused-parameter.h
++
++EXTRA_DIST += $(top_srcdir)/build-aux/snippet/unused-parameter.h
++
++## end   gnulib module snippet/unused-parameter
++
+ ## begin gnulib module c-ctype
+ 
+ libgnu_a_SOURCES += c-ctype.h c-ctype.c
+@@ -1386,6 +1417,60 @@ EXTRA_libgnu_a_SOURCES += savedir.c
  
  ## end   gnulib module savedir
  
@@ -135,7 +213,7 @@ index 06eb0d9..e5913db 100644
  ## begin gnulib module setenv
  
  
-@@ -2695,6 +2755,36 @@ libgnu_a_SOURCES += xalloc-die.c
+@@ -2695,6 +2780,36 @@ libgnu_a_SOURCES += xalloc-die.c
  
  ## end   gnulib module xalloc-die
  
@@ -3888,5 +3966,5 @@ index 0000000..ed5215b
 +  fi
 +])
 -- 
-1.7.11.2
+1.7.11.4
 

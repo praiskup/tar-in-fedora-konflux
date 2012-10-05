@@ -1,11 +1,11 @@
 %if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
-%define WITH_SELINUX 1
+%global WITH_SELINUX 1
 %endif
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -40,14 +40,13 @@ Patch10: tar-1.26-stdio.in.patch
 Patch11: tar-1.26-xattrs-gnulib-prepare.patch
 Patch12: tar-1.26-xattrs.patch
 
-BuildRequires: autoconf automake gzip texinfo gettext libacl-devel gawk rsh
+BuildRequires: autoconf automake texinfo gettext libacl-devel rsh
 # allow proper tests for extended attributes
-BuildRequires: attr acl coreutils policycoreutils
+BuildRequires: attr acl policycoreutils
 
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
 %endif
-Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Provides: bundled(gnulib)
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -68,7 +67,6 @@ the rmt package.
 %setup -q
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
-#%patch3 -p1 -b .xattrs
 %patch4 -p1 -b .wildcards
 %patch5 -p1 -b .rofs
 %patch6 -p1 -b .oldarchive
@@ -89,26 +87,25 @@ autoreconf
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make DESTDIR=$RPM_BUILD_ROOT bindir=/bin libexecdir=/sbin install
 
-ln -s tar ${RPM_BUILD_ROOT}/bin/gtar
+ln -s tar $RPM_BUILD_ROOT/bin/gtar
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
-mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
-install -c -p -m 0644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_mandir}/man1
-ln -s tar.1.gz ${RPM_BUILD_ROOT}%{_mandir}/man1/gtar.1
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
+install -c -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/man1
+ln -s tar.1.gz $RPM_BUILD_ROOT%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
-rm -f ${RPM_BUILD_ROOT}/sbin/rmt
+rm -f $RPM_BUILD_ROOT/sbin/rmt
 
 %find_lang %name
 
 %check
-rm -f ${RPM_BUILD_ROOT}/test/testsuite
+rm -f $RPM_BUILD_ROOT/test/testsuite
 TESTSUITEFLAGS=-v make check
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -f %{_infodir}/tar.info.gz ]; then
@@ -123,7 +120,6 @@ if [ $1 = 0 ]; then
 fi
 
 %files -f %{name}.lang
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog ChangeLog.1 COPYING NEWS README THANKS TODO
 %ifos linux
 /bin/tar
@@ -139,6 +135,16 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Oct 05 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-12
+- repair the xattr-gnulib-prepare patch to allow build tar without SELinux
+  support
+- fedora-review compliance -> remove trailing white-spaces, remove macro from
+  comment, remove BR of gawk;coreutils;gzip that should be covered automatically
+  by minimum build environment, do not `rm -rf' buildroot at the beginning of
+  install phase (needed only in EPEL), remove BuildRoot definition, remove
+  defattr macro, s/define/global/
+- do not use ${VAR} syntax for bash variables, use just $VAR
+
 * Wed Aug 22 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-11
 - fix manpage to reflect #850291 related commit
 
@@ -218,7 +224,7 @@ fi
 * Wed Apr 07 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-3
 - allow storing of extended attributes for fifo and block
   or character devices files(#573147)
- 
+
 * Mon Mar 15 2010 Ondrej Vasik <ovasik@redhat.com> 2:1.23-2
 - update help2maned manpage
 
@@ -395,7 +401,7 @@ fi
 - fix tar-1.15.1-xattrs.patch (#208701)
 
 * Tue Sep 19 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-17
-- start new epoch, downgrade to solid stable 1.15.1-16 (#206979), 
+- start new epoch, downgrade to solid stable 1.15.1-16 (#206979),
 - all patches are backported
 
 * Tue Sep 19 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.91-2
@@ -411,11 +417,11 @@ fi
 - add xattr support (#200925), patch from james.antill@redhat.com
 
 * Mon Jul 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-5
-- fix incompatibilities in appending files to the end 
+- fix incompatibilities in appending files to the end
   of an archive (#199515)
 
 * Tue Jul 18 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-4
-- fix problem with unpacking archives in a directory for which 
+- fix problem with unpacking archives in a directory for which
   one has write permission but does not own (such as /tmp) (#149686)
 
 * Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 1.15.90-3.1
@@ -425,14 +431,14 @@ fi
 - fix typo in tar.1 man page
 
 * Tue Apr 25 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-2
-- exclude listed02.at from testsuite again, because it 
+- exclude listed02.at from testsuite again, because it
   still fails on s390
 
 * Tue Apr 25 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.90-1
 - upgrade
 
 * Mon Apr 24 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-16
-- fix problem when options at the end of command line were 
+- fix problem when options at the end of command line were
   not recognized (#188707)
 
 * Thu Apr 13 2006 Peter Vrabec <pvrabec@redhat.com> 1.15.1-15
@@ -469,7 +475,7 @@ fi
 * Wed Jul 27 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-8
 - A file is dumpable if it is sparse and both --sparse
   and --totals are specified (#154882)
- 
+
 * Tue Jul 26 2005 Peter Vrabec <pvrabec@redhat.com> 1.15.1-7
 - exclude listed02.at from testsuite
 
@@ -656,11 +662,11 @@ fi
 * Mon Mar 29 1999 Jeff Johnson <jbj@redhat.com>
 - fix suspended tar with compression over pipe produces error (#390).
 
-* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com> 
+* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com>
 - auto rebuild in the new build environment (release 8)
 
 * Mon Mar 08 1999 Michael Maher <mike@redhat.com>
-- added patch for bad name cache. 
+- added patch for bad name cache.
 - FIXES BUG 320
 
 * Wed Feb 24 1999 Preston Brown <pbrown@redhat.com>

@@ -80,10 +80,11 @@ the rmt package.
 autoreconf
 
 %build
-%configure --bindir=/bin --libexecdir=/sbin \
 %if %{WITH_SELINUX} == 0
-  --without-selinux
+export CONFIGURE_PARAMS+="--without-selinux"
 %endif
+
+%configure --bindir=/bin --libexecdir=/sbin $CONFIGURE_PARAMS
 make
 
 %install
@@ -135,6 +136,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Oct 10 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-13
+- fix badly written macro for building --without-selinux
+
 * Fri Oct 05 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-12
 - repair the xattr-gnulib-prepare patch to allow build tar without SELinux
   support

@@ -73,7 +73,7 @@ the rmt package.
 %patch7 -p1 -b .fail
 %patch8 -p1 -b .openat
 %patch9 -p1 -b .update_and_changedir
-%patch10 -p1 -b .gets
+%patch10 -p1 -b .gets  %{?_rawbuild}
 %patch11 -p1 -b .xattrs_gnulib_prep
 %patch12 -p1 -b .xattrs2
 
@@ -138,6 +138,8 @@ fi
 %changelog
 * Wed Oct 10 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-13
 - fix badly written macro for building --without-selinux
+- allow to build tar in difference CoverityScan by forcing the '.gets' patch to
+  be applied even in the run without patches
 
 * Fri Oct 05 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-12
 - repair the xattr-gnulib-prepare patch to allow build tar without SELinux

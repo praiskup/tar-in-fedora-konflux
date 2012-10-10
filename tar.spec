@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 13%{?dist}
+Release: 12%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -39,7 +39,6 @@ Patch10: tar-1.26-stdio.in.patch
 # Prepare gnulib for xattrs and apply xattrs & acls & selinux (#850291)
 Patch11: tar-1.26-xattrs-gnulib-prepare.patch
 Patch12: tar-1.26-xattrs.patch
-Patch13: tar-1.26-xattrs-equal-sign.patch
 
 BuildRequires: autoconf automake texinfo gettext libacl-devel rsh
 # allow proper tests for extended attributes
@@ -77,7 +76,6 @@ the rmt package.
 %patch10 -p1 -b .gets  %{?_rawbuild}
 %patch11 -p1 -b .xattrs_gnulib_prep
 %patch12 -p1 -b .xattrs2
-%patch13 -p1 -b .xattrs-equal-sign
 
 autoreconf
 

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -39,6 +39,8 @@ Patch10: tar-1.26-stdio.in.patch
 # Prepare gnulib for xattrs and apply xattrs & acls & selinux (#850291)
 Patch11: tar-1.26-xattrs-gnulib-prepare.patch
 Patch12: tar-1.26-xattrs.patch
+# fix regression with --keep-old-files option (#799252)
+Patch13: tar-1.26-add-skip-old-files-option.patch
 
 BuildRequires: autoconf automake texinfo gettext libacl-devel rsh
 # allow proper tests for extended attributes
@@ -76,6 +78,7 @@ the rmt package.
 %patch10 -p1 -b .gets  %{?_rawbuild}
 %patch11 -p1 -b .xattrs_gnulib_prep
 %patch12 -p1 -b .xattrs2
+%patch13 -p1 -b .skip-old-files
 
 autoreconf
 
@@ -136,6 +139,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Oct 18 2012 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-14
+- fix bad behaviour of --keep-old-files and add --skip-old-files option
+  (#799252)
+
 * Wed Oct 10 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-13
 - fix badly written macro for building --without-selinux
 - allow to build tar in difference CoverityScan by forcing the '.gets' patch to

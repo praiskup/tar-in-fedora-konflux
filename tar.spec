@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -139,6 +139,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Nov 29 2012 Ondrej Vasik <ovasik@redhat.com> - 2:1.26-15
+- add missing --full-time option to manpage
+
 * Thu Oct 18 2012 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-14
 - fix bad behaviour of --keep-old-files and add --skip-old-files option
   (#799252)

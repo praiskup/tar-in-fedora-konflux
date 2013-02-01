@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -139,6 +139,13 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Feb 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-16
+- make the info documentation more visible in manpage (#903666)
+- sync tar.1 manpage with actual --help output (e.g. added --skip-old-files)
+- add the last_help2man_run file to git repo to allow more easily find changes
+  in --help in future
+- make the DEFAULTS section to be more visible in man page
+
 * Thu Nov 29 2012 Ondrej Vasik <ovasik@redhat.com> - 2:1.26-15
 - add missing --full-time option to manpage
 

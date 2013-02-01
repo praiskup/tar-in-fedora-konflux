@@ -106,7 +106,7 @@ rm -f $RPM_BUILD_ROOT/sbin/rmt
 
 %check
 rm -f $RPM_BUILD_ROOT/test/testsuite
-TESTSUITEFLAGS=-v make check
+make check || TESTSUITEFLAGS=-v make check
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -145,6 +145,7 @@ fi
 - add the last_help2man_run file to git repo to allow more easily find changes
   in --help in future
 - make the DEFAULTS section to be more visible in man page
+- verbose 'make check' only when some fail happened (append to koji build.log)
 
 * Thu Nov 29 2012 Ondrej Vasik <ovasik@redhat.com> - 2:1.26-15
 - add missing --full-time option to manpage

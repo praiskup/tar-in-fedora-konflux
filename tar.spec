@@ -86,7 +86,7 @@ the rmt package.
 %patch12 -p1 -b .xattrs2
 %patch13 -p1 -b .skip-old-files
 
-autoreconf
+autoreconf -v
 
 %build
 %if %{WITH_SELINUX} == 0
@@ -149,6 +149,7 @@ fi
 %changelog
 * Mon Feb 18 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-17
 - add possibility to 'rpmbuild' without %%check phase
+- make the autoreconf phase verbose
 
 * Fri Feb 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-16
 - make the info documentation more visible in manpage (#903666)

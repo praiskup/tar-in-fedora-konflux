@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -42,9 +42,15 @@ Patch12: tar-1.26-xattrs.patch
 # fix regression with --keep-old-files option (#799252)
 Patch13: tar-1.26-add-skip-old-files-option.patch
 
+# run "make check" by default
+%bcond_without check
+
 BuildRequires: autoconf automake texinfo gettext libacl-devel rsh
-# allow proper tests for extended attributes
+
+%if %{with check}
+# cover needs of tar's testsuite
 BuildRequires: attr acl policycoreutils
+%endif
 
 %if %{WITH_SELINUX}
 BuildRequires: libselinux-devel
@@ -105,8 +111,10 @@ rm -f $RPM_BUILD_ROOT/sbin/rmt
 %find_lang %name
 
 %check
+%if %{with check}
 rm -f $RPM_BUILD_ROOT/test/testsuite
 make check || TESTSUITEFLAGS=-v make check
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -139,6 +147,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Feb 18 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-17
+- add possibility to 'rpmbuild' without %%check phase
+
 * Fri Feb 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-16
 - make the info documentation more visible in manpage (#903666)
 - sync tar.1 manpage with actual --help output (e.g. added --skip-old-files)

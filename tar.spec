@@ -61,6 +61,15 @@ Patch7: tar-1.26-stdio.in.patch
 # ~> upstream (7a5a3708c)
 Patch8: tar-1.26-add-skip-old-files-option.patch
 
+# Prepare included gnulib library for SELinux support.
+# -> Related to the next patch.
+Patch9:  tar-1.26-selinux-gnulib.patch
+
+# Add support for extended attributes, SELinux and POSIX ACLs.
+# ~> Original implementation #200925
+# ~> http://lists.gnu.org/archive/html/bug-tar/2012-08/msg00012.html
+# ~> upstream (b997c90f9, 696338043, d36f5a3cc, 085cace18, up-to ~> 83701a590)
+Patch10: tar-1.26-xattrs.patch
 
 # run "make check" by default
 %bcond_without check
@@ -101,6 +110,8 @@ the rmt package.
 %patch6 -p1 -b .update_and_changedir
 %patch7 -p1 -b .gets  %{?_rawbuild}
 %patch8 -p1 -b .skip-old-files
+%patch9 -p1 -b .selinux-gnulib-prep
+%patch10 -p1 -b .xattrs-selinux-acls
 
 autoreconf -v
 
@@ -170,6 +181,7 @@ fi
 - remove patches which we don't need now (xattrs - will be updated, sigpipe -
   test should work now, partial revert of *at() conversion was done because of
   incompatible xattr patch)
+- add upstream up2date xattr patch
 
 * Fri Feb 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-16
 - make the info documentation more visible in manpage (#903666)

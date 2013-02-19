@@ -9,38 +9,58 @@ Release: 17%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
+
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
-#Manpage for tar and gtar, a bit modified help2man generated manpage
+# Manpage for tar and gtar, a bit modified help2man generated manpage
 Source2: tar.1
-#Stop issuing lone zero block warnings
+
+# Stop issuing lone zero block warnings.
+# ~> https://bugzilla.redhat.com/show_bug.cgi?id=135601
+# ~> downstream
 Patch1: tar-1.14-loneZeroWarning.patch
-#Fix extracting sparse files to a filesystem like vfat,
-#when ftruncate may fail to grow the size of a file.(#179507)
+
+# Fix extracting sparse files to a file system like vfat, when ftruncate may fail
+# to grow the size of a file.
+# ~> #179507,
+# ~> http://lists.gnu.org/archive/html/bug-tar/2006-02/msg00000.html
+# ~> still downtream (do we need this now? ftruncate & vfat works is now OK)
 Patch2: tar-1.15.1-vfatTruncate.patch
-#change inclusion defaults of tar to "--wildcards --anchored
-#--wildcards-match-slash" for compatibility reasons (#206841)
-#Add support for selinux, acl and extended attributes
-#Patch3: tar-1.24-xattrs.patch
-Patch4: tar-1.17-wildcards.patch
-#ignore errors from setting utime() for source file
-#on read-only filesystem (#500742)
-Patch5: tar-1.22-atime-rofs.patch
-#oldarchive option was not working(#594044)
-Patch6: tar-1.23-oldarchive.patch
-#temporarily disable sigpipe.at patch (fails at build in koji, passes manually)
-Patch7: tar-sigpipe.patch
-#partially revert upstream commit 4bde4f3 (#717684)
-Patch8: tar-1.24-openat-partial-revert.patch
-# fix for bad cooperation of -C and -u options (#688567)
-Patch9: tar-1.26-update-with-change-directory.patch
-# fix rawhide buildfailure with undefined gets
-Patch10: tar-1.26-stdio.in.patch
-# Prepare gnulib for xattrs and apply xattrs & acls & selinux (#850291)
-Patch11: tar-1.26-xattrs-gnulib-prepare.patch
-Patch12: tar-1.26-xattrs.patch
-# fix regression with --keep-old-files option (#799252)
-Patch13: tar-1.26-add-skip-old-files-option.patch
+
+# Change inclusion defaults of tar to
+# "--wildcards --anchored --wildcards-match-slash" for compatibility reasons.
+# ~> #206841
+# ~> downstream (compatibility)
+Patch3: tar-1.17-wildcards.patch
+
+# Ignore errors from setting utime() for source file on read-only file-system.
+# ~> #500742
+# ~> http://lists.gnu.org/archive/html/bug-tar/2009-06/msg00016.html
+# ~> still downstream
+Patch4: tar-1.22-atime-rofs.patch
+
+# The --old-archive option was not working.
+# ~> #594044
+# ~> http://lists.gnu.org/archive/html/bug-tar/2010-05/msg00015.html
+# ~> upstream (2a61a37)
+Patch5: tar-1.23-oldarchive.patch
+
+# Fix for bad cooperation of -C and -u options.
+# ~> #688567
+# ~> http://lists.gnu.org/archive/html/bug-tar/2012-02/msg00007.html
+# ~> still downstream
+Patch6: tar-1.26-update-with-change-directory.patch
+
+# Fix rawhide build failure with undefined gets.
+# ~> upstream (gnulib)
+Patch7: tar-1.26-stdio.in.patch
+
+# Fix regression with --keep-old-files option.
+# ~> #799252
+# ~> http://lists.gnu.org/archive/html/bug-tar/2011-11/msg00043.html
+# ~> upstream (7a5a3708c)
+Patch8: tar-1.26-add-skip-old-files-option.patch
+
 
 # run "make check" by default
 %bcond_without check
@@ -75,16 +95,12 @@ the rmt package.
 %setup -q
 %patch1 -p1 -b .loneZeroWarning
 %patch2 -p1 -b .vfatTruncate
-%patch4 -p1 -b .wildcards
-%patch5 -p1 -b .rofs
-%patch6 -p1 -b .oldarchive
-%patch7 -p1 -b .fail
-%patch8 -p1 -b .openat
-%patch9 -p1 -b .update_and_changedir
-%patch10 -p1 -b .gets  %{?_rawbuild}
-%patch11 -p1 -b .xattrs_gnulib_prep
-%patch12 -p1 -b .xattrs2
-%patch13 -p1 -b .skip-old-files
+%patch3 -p1 -b .wildcards
+%patch4 -p1 -b .rofs
+%patch5 -p1 -b .oldarchive
+%patch6 -p1 -b .update_and_changedir
+%patch7 -p1 -b .gets  %{?_rawbuild}
+%patch8 -p1 -b .skip-old-files
 
 autoreconf -v
 
@@ -150,6 +166,10 @@ fi
 * Mon Feb 18 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-17
 - add possibility to 'rpmbuild' without %%check phase
 - make the autoreconf phase verbose
+- re-create older patches (avoid offset warnings during patching)
+- remove patches which we don't need now (xattrs - will be updated, sigpipe -
+  test should work now, partial revert of *at() conversion was done because of
+  incompatible xattr patch)
 
 * Fri Feb 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-16
 - make the info documentation more visible in manpage (#903666)

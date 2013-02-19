@@ -1,6 +1,8 @@
---- tar-1.15.1/src/system.c.vfatTruncate	2004-09-06 07:31:00.000000000 -0400
-+++ tar-1.15.1/src/system.c	2006-02-03 14:40:51.000000000 -0500
-@@ -272,8 +272,25 @@
+diff --git a/src/system.c b/src/system.c
+index ba4ac2d..ea88cd6 100644
+--- a/src/system.c
++++ b/src/system.c
+@@ -231,8 +231,25 @@ sys_compare_links (struct stat *link_data, struct stat *stat_data)
  int
  sys_truncate (int fd)
  {

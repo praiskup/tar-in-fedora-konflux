@@ -1,7 +1,8 @@
-diff -urNp tar-1.26-orig/gnu/stdio.in.h tar-1.26/gnu/stdio.in.h
---- tar-1.26-orig/gnu/stdio.in.h
-+++ tar-1.26/gnu/stdio.in.h
-@@ -139,7 +139,9 @@ _GL_WARN_ON_USE (fflush, "fflush is not 
+diff --git a/gnu/stdio.in.h b/gnu/stdio.in.h
+index 465a9c9..b703457 100644
+--- a/gnu/stdio.in.h
++++ b/gnu/stdio.in.h
+@@ -164,7 +164,9 @@ _GL_WARN_ON_USE (fflush, "fflush is not always POSIX compliant - "
     so any use of gets warrants an unconditional warning.  Assume it is
     always declared, since it is required by C89.  */
  #undef gets

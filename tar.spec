@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -71,6 +71,11 @@ Patch9:  tar-1.26-selinux-gnulib.patch
 # ~> upstream (b997c90f9, 696338043, d36f5a3cc, 085cace18, up-to ~> 83701a590)
 Patch10: tar-1.26-xattrs.patch
 
+# Fix problem with bit UIDs/GIDs (> 2^21) and --posix format.
+# ~> #913406
+# ~> upstream (it is part of df7b55a8f6354e)
+Patch11: tar-1.26-posix-biguid.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -112,6 +117,7 @@ the rmt package.
 %patch8 -p1 -b .skip-old-files
 %patch9 -p1 -b .selinux-gnulib-prep
 %patch10 -p1 -b .xattrs-selinux-acls
+%patch11 -p1 -b .big_uid_gid
 
 autoreconf -v
 
@@ -174,6 +180,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Feb 20 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-18
+- fix problems with big uids/gids and pax format (> 2^21) (#913406)
+
 * Mon Feb 18 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-17
 - add possibility to 'rpmbuild' without %%check phase
 - make the autoreconf phase verbose

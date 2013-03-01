@@ -190,6 +190,7 @@ fi
 * Fri Mar 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-19
 - fix creating sparse pax archives containing files of effective
   size >8GB (#516309)
+- silence rpmlint (fix bad dates in changelog based on git log dates)
 
 * Wed Feb 20 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-18
 - fix problems with big uids/gids and pax format (> 2^21) (#913406)
@@ -255,7 +256,7 @@ fi
 * Tue May 15 2012 Ondrej Vasik <ovasik@redhat.com> 2:1.26-6
 - add virtual provides for bundled(gnulib) copylib (#821790)
 
-* Thu Apr 04 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-5
+* Thu Apr 05 2012 Pavel Raiskup <praiskup@redhat.com> 2:1.26-5
 - fix for bad cooperation of the '-C' (change directory) and '-u' (update
   package) options (#688567)
 
@@ -464,7 +465,7 @@ fi
 * Tue Feb 06 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-26
 - fix spec file to meet Fedora standards (#226478)
 
-* Mon Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-25
+* Mon Jan 22 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-25
 - fix non-failsafe install-info use in scriptlets (#223718)
 
 * Wed Jan 03 2007 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-24
@@ -473,7 +474,7 @@ fi
 * Tue Dec 12 2006 Florian La Roche <laroche@redhat.com> 2:1.15.1-23
 - fix CVE-2006-6097 GNU tar directory traversal (#216937)
 
-* Sat Dec 10 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-22
+* Sun Dec 10 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-22
 - fix some rpmlint spec file issues
 
 * Wed Oct 25 2006 Peter Vrabec <pvrabec@redhat.com> 2:1.15.1-21

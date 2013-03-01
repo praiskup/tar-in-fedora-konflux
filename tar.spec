@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -76,6 +76,12 @@ Patch10: tar-1.26-xattrs.patch
 # ~> upstream (it is part of df7b55a8f6354e)
 Patch11: tar-1.26-posix-biguid.patch
 
+# Allow store sparse files of effective size >8GB into pax archives
+# ~> #516309
+# ~> http://lists.gnu.org/archive/html/bug-tar/2013-01/msg00001.html
+# ~> already upstream (2f6c03cba)
+Patch12: tar-1.26-pax-big-sparse-files.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -118,6 +124,7 @@ the rmt package.
 %patch9 -p1 -b .selinux-gnulib-prep
 %patch10 -p1 -b .xattrs-selinux-acls
 %patch11 -p1 -b .big_uid_gid
+%patch12 -p1 -b .pax-sparse-big-files
 
 autoreconf -v
 
@@ -180,6 +187,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Mar 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-19
+- fix creating sparse pax archives containing files of effective
+  size >8GB (#516309)
+
 * Wed Feb 20 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-18
 - fix problems with big uids/gids and pax format (> 2^21) (#913406)
 

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 19%{?dist}
+Release: 20%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -82,6 +82,12 @@ Patch11: tar-1.26-posix-biguid.patch
 # ~> already upstream (2f6c03cba)
 Patch12: tar-1.26-pax-big-sparse-files.patch
 
+# Fix: Allow extracting single volume in a multi-volume archive
+# ~> #919897
+# ~> http://lists.gnu.org/archive/html/bug-tar/2013-03/msg00002.html
+# ~> upstream (beca89bc)
+Patch13: tar-1.26-allow-extract-single-volume.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -125,6 +131,7 @@ the rmt package.
 %patch10 -p1 -b .xattrs-selinux-acls
 %patch11 -p1 -b .big_uid_gid
 %patch12 -p1 -b .pax-sparse-big-files
+%patch13 -p1 -b .extract-single-volume
 
 autoreconf -v
 
@@ -187,6 +194,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-20
+- allow extracting single volume from multi-volume archive (#919897)
+
 * Fri Mar 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-19
 - fix creating sparse pax archives containing files of effective
   size >8GB (#516309)

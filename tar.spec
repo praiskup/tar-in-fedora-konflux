@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 20%{?dist}
+Release: 21%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -197,7 +197,7 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-20
+* Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-21
 - allow extracting single volume from multi-volume archive (#919897)
 - usrmove: /bin/tar ~> /usr/bin/tar, selinux handling edit
 - add possibility to pass arguments to commands called from tar (#819187)

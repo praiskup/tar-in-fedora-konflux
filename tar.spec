@@ -88,6 +88,12 @@ Patch12: tar-1.26-pax-big-sparse-files.patch
 # ~> upstream (beca89bc)
 Patch13: tar-1.26-allow-extract-single-volume.patch
 
+# Allow to pass arguments to commands called from tar
+# ~> resolves #819187 (now we can use ./configure --with-lzma)
+# ~> http://lists.gnu.org/archive/html/bug-tar/2013-02/msg00003.html
+# ~> upstream: 7b5e803963
+Patch14: tar-1.26-command-args.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -134,6 +140,7 @@ the rmt package.
 %patch11 -p1 -b .big_uid_gid
 %patch12 -p1 -b .pax-sparse-big-files
 %patch13 -p1 -b .extract-single-volume
+%patch14 -p1 -b .command-args
 
 autoreconf -v
 
@@ -142,7 +149,8 @@ autoreconf -v
 %global CONFIGURE_SELINUX --without-selinux
 %endif
 
-%configure %{?CONFIGURE_SELINUX}
+%configure %{?CONFIGURE_SELINUX} \
+    --with-lzma="xz --format=lzma"
 make
 
 %install
@@ -192,6 +200,7 @@ fi
 * Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-20
 - allow extracting single volume from multi-volume archive (#919897)
 - usrmove: /bin/tar ~> /usr/bin/tar, selinux handling edit
+- add possibility to pass arguments to commands called from tar (#819187)
 
 * Fri Mar 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-19
 - fix creating sparse pax archives containing files of effective

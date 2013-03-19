@@ -102,6 +102,8 @@ BuildRequires: attr acl policycoreutils
 BuildRequires: libselinux-devel
 %endif
 Provides: bundled(gnulib)
+Provides: /bin/tar
+Provides: /bin/gtar
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -136,24 +138,24 @@ the rmt package.
 autoreconf -v
 
 %build
-%if %{WITH_SELINUX} == 0
-export CONFIGURE_PARAMS+="--without-selinux"
+%if ! %{WITH_SELINUX}
+%global CONFIGURE_SELINUX --without-selinux
 %endif
 
-%configure --bindir=/bin --libexecdir=/sbin $CONFIGURE_PARAMS
+%configure %{?CONFIGURE_SELINUX}
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT bindir=/bin libexecdir=/sbin install
+make DESTDIR=$RPM_BUILD_ROOT install
 
-ln -s tar $RPM_BUILD_ROOT/bin/gtar
+ln -s tar $RPM_BUILD_ROOT%{_bindir}/gtar
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 install -c -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/man1
 ln -s tar.1.gz $RPM_BUILD_ROOT%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
-rm -f $RPM_BUILD_ROOT/sbin/rmt
+rm -f $RPM_BUILD_ROOT%{_libexecdir}/rmt
 
 %find_lang %name
 
@@ -180,22 +182,16 @@ fi
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog ChangeLog.1 COPYING NEWS README THANKS TODO
-%ifos linux
-/bin/tar
-/bin/gtar
+%{_bindir}/tar
+%{_bindir}/gtar
 %{_mandir}/man1/tar.1*
 %{_mandir}/man1/gtar.1*
-%else
-%{_bindir}/*
-%{_libexecdir}/*
-%{_mandir}/man*/*
-%endif
-
 %{_infodir}/tar.info*
 
 %changelog
 * Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-20
 - allow extracting single volume from multi-volume archive (#919897)
+- usrmove: /bin/tar ~> /usr/bin/tar, selinux handling edit
 
 * Fri Mar 01 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-19
 - fix creating sparse pax archives containing files of effective

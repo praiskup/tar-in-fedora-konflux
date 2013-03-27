@@ -98,6 +98,11 @@ Patch14: tar-1.26-command-args.patch
 # ~> #926610 (downstream)
 Patch15: tar-1.26-arm-config-sub-guess.patch
 
+# Silence gcc warnings
+# ~> upstream tar: 17f99bc6f, 5bb0433
+# ~> upstream paxutils: 0b3d84a0
+Patch999: tar-1.26-silence-gcc.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -146,6 +151,7 @@ the rmt package.
 %patch13 -p1 -b .extract-single-volume
 %patch14 -p1 -b .command-args
 %patch15 -p1 -b .arm-config-guess-sub
+%patch999 -p1 -b .silence-gcc
 
 autoreconf -v
 
@@ -205,6 +211,7 @@ fi
 * Tue Mar 26 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-22
 - enable build for arm64 (#926610)
 - fix the NAME part in manual page (copied from texinfo)
+- silence gcc warnings (lint fixes without risk from upstream) for RPMDiff
 
 * Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-21
 - allow extracting single volume from multi-volume archive (#919897)

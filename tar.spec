@@ -204,6 +204,7 @@ fi
 %changelog
 * Tue Mar 26 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-22
 - enable build for arm64 (#926610)
+- fix the NAME part in manual page (copied from texinfo)
 
 * Tue Mar 19 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-21
 - allow extracting single volume from multi-volume archive (#919897)

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 22%{?dist}
+Release: 23%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -161,7 +161,7 @@ autoreconf -v
 %endif
 
 %configure %{?CONFIGURE_SELINUX} \
-    --with-lzma="xz --format=lzma"
+    --with-lzma="xz --format=lzma" DEFAULT_RMT_DIR=%{_sbindir}
 make
 
 %install
@@ -174,7 +174,7 @@ install -c -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/man1
 ln -s tar.1.gz $RPM_BUILD_ROOT%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
-rm -f $RPM_BUILD_ROOT%{_libexecdir}/rmt
+rm -f $RPM_BUILD_ROOT%{_sbindir}/rmt
 
 %find_lang %name
 
@@ -208,6 +208,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue May 28 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-23
+- again search for 'rmt' binary in %%{_sbindir} on target host
+
 * Tue Mar 26 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-22
 - enable build for arm64 (#926610)
 - fix the NAME part in manual page (copied from texinfo)

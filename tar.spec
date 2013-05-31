@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 23%{?dist}
+Release: 24%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -161,7 +161,9 @@ autoreconf -v
 %endif
 
 %configure %{?CONFIGURE_SELINUX} \
-    --with-lzma="xz --format=lzma" DEFAULT_RMT_DIR=%{_sbindir}
+    --with-lzma="xz --format=lzma" \
+    DEFAULT_RMT_DIR=%{_sbindir} \
+    RSH=/usr/bin/ssh
 make
 
 %install
@@ -208,6 +210,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu May 30 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-24
+- use /usr/bin/ssh as the default remote shell binary (#969015)
+
 * Tue May 28 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-23
 - again search for 'rmt' binary in %%{_sbindir} on target host
 

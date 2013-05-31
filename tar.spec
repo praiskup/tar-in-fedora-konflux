@@ -98,6 +98,13 @@ Patch14: tar-1.26-command-args.patch
 # ~> #926610 (downstream)
 Patch15: tar-1.26-arm-config-sub-guess.patch
 
+# Do not print xattrs/selinux/acls when --no-xattrs/--no-acls/--no-selinux
+# options are used during -tvv output.  (TODO: merge this with xattrs patch
+# once becomes upstream)
+# ~> downstream (yet)
+# ~> proposal: http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
+Patch16: tar-1.26-xattrs-printing.patch
+
 # Silence gcc warnings
 # ~> upstream tar: 17f99bc6f, 5bb0433
 # ~> upstream paxutils: 0b3d84a0
@@ -151,6 +158,7 @@ the rmt package.
 %patch13 -p1 -b .extract-single-volume
 %patch14 -p1 -b .command-args
 %patch15 -p1 -b .arm-config-guess-sub
+%patch16 -p1 -b .print-xattrs-fix
 %patch999 -p1 -b .silence-gcc
 
 autoreconf -v
@@ -212,6 +220,7 @@ fi
 %changelog
 * Thu May 30 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-24
 - use /usr/bin/ssh as the default remote shell binary (#969015)
+- do not verbose-print xattrs when --no-xattrs option is used
 
 * Tue May 28 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-23
 - again search for 'rmt' binary in %%{_sbindir} on target host

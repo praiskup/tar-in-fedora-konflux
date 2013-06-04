@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 24%{?dist}
+Release: 25%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -101,6 +101,12 @@ Patch14: tar-1.26-command-args.patch
 # ~> proposal: http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
 Patch15: tar-1.26-xattrs-printing.patch
 
+# Use a birthtime instead of ctime.
+# ~> upstream (189e43 & 49bd10)
+# ~> http://lists.gnu.org/archive/html/bug-tar/2011-06/msg00000.html
+# ~> http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00022.html
+Patch16: tar-1.26-fix-symlink-eating-bug.patch
+
 # Silence gcc warnings
 # ~> upstream tar: 17f99bc6f, 5bb0433
 # ~> upstream paxutils: 0b3d84a0
@@ -154,6 +160,7 @@ the rmt package.
 %patch13 -p1 -b .extract-single-volume
 %patch14 -p1 -b .command-args
 %patch15 -p1 -b .print-xattrs-fix
+%patch16 -p1 -b .birthtime
 %patch999 -p1 -b .silence-gcc
 
 autoreconf -v
@@ -213,6 +220,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Jun 04 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-25
+- fix "symlink eating" bug (already fixed in upstream git)
+
 * Thu May 30 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-24
 - use /usr/bin/ssh as the default remote shell binary (#969015)
 - do not verbose-print xattrs when --no-xattrs option is used

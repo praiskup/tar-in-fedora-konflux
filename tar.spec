@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 25%{?dist}
+Release: 26%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -141,7 +141,7 @@ remote archives, and the ability to perform incremental and full
 backups.
 
 If you want to use tar for remote backups, you also need to install
-the rmt package.
+the rmt package on the remote box.
 
 %prep
 %setup -q
@@ -172,7 +172,7 @@ autoreconf -v
 
 %configure %{?CONFIGURE_SELINUX} \
     --with-lzma="xz --format=lzma" \
-    DEFAULT_RMT_DIR=%{_sbindir} \
+    DEFAULT_RMT_DIR=%{_sysconfdir} \
     RSH=/usr/bin/ssh
 make
 
@@ -186,7 +186,7 @@ install -c -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/man1
 ln -s tar.1.gz $RPM_BUILD_ROOT%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
-rm -f $RPM_BUILD_ROOT%{_sbindir}/rmt
+rm -f $RPM_BUILD_ROOT%{_sysconfdir}/rmt
 
 %find_lang %name
 
@@ -220,6 +220,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Thu Jun 20 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-26
+- the /etc/rmt seems to be the best place where to look for rmt binary (see the
+  commit message in Fedora's cpio.git for more info)
+
 * Tue Jun 04 2013 Pavel Raiskup <praiskup@redhat.com> - 2:1.26-25
 - fix "symlink eating" bug (already fixed in upstream git)
 

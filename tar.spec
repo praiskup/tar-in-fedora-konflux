@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 26%{?dist}
+Release: 27%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -220,6 +220,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-27
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Thu Jun 20 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-26
 - the /etc/rmt seems to be the best place where to look for rmt binary (see the
   commit message in Fedora's cpio.git for more info)

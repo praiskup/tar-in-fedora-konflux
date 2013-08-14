@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.26
-Release: 27%{?dist}
+Release: 28%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -107,6 +107,11 @@ Patch15: tar-1.26-xattrs-printing.patch
 # ~> http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00022.html
 Patch16: tar-1.26-fix-symlink-eating-bug.patch
 
+# Add documentation which was not yet pushed upstream
+# ~> downstream
+# ~> #996753
+Patch17: tar-1.26-docu-xattrs.patch
+
 # Silence gcc warnings
 # ~> upstream tar: 17f99bc6f, 5bb0433
 # ~> upstream paxutils: 0b3d84a0
@@ -161,6 +166,7 @@ the rmt package on the remote box.
 %patch14 -p1 -b .command-args
 %patch15 -p1 -b .print-xattrs-fix
 %patch16 -p1 -b .birthtime
+%patch17 -p1 -b .xattrs-documentation
 %patch999 -p1 -b .silence-gcc
 
 autoreconf -v
@@ -220,6 +226,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Aug 14 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-28
+- add documenation for xattrs-like options (#996753)
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-27
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 

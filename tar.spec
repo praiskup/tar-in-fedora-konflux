@@ -112,6 +112,13 @@ Patch16: tar-1.26-fix-symlink-eating-bug.patch
 # ~> #996753
 Patch17: tar-1.26-docu-xattrs.patch
 
+# The --xattrs-include or --xattrs-exclude options should imply --xattrs.
+# ~> still downstream
+#    http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
+# ~> #965969
+
+Patch18: tar-1.26-xattrs-include-implies-xattrs.patch
+
 # Silence gcc warnings
 # ~> upstream tar: 17f99bc6f, 5bb0433
 # ~> upstream paxutils: 0b3d84a0
@@ -167,6 +174,7 @@ the rmt package on the remote box.
 %patch15 -p1 -b .print-xattrs-fix
 %patch16 -p1 -b .birthtime
 %patch17 -p1 -b .xattrs-documentation
+%patch18 -p1 -b .xattrs-if-xattrs-include
 %patch999 -p1 -b .silence-gcc
 
 autoreconf -v
@@ -226,8 +234,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Wed Aug 14 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-28
+* Mon Sep 09 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-28
 - add documenation for xattrs-like options (#996753)
+- the --xattrs-include implies --xattrs now (#965969)
 
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.26-27
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild

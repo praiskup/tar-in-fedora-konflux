@@ -163,7 +163,7 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Wed Oct 09 2013 Ondrej Vasik <ovaisk@redhat.com> - 1.27-1
+* Wed Oct 09 2013 Ondrej Vasik <ovasik@redhat.com> - 1.27-1
 - new upstream release 1.27 (#1016288)
 
 * Mon Sep 09 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-28

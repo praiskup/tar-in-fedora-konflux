@@ -2,16 +2,6 @@ diff --git a/doc/tar.texi b/doc/tar.texi
 index d678db9..ab8a0c8 100644
 --- a/doc/tar.texi
 +++ b/doc/tar.texi
-@@ -37,7 +37,8 @@ This manual is for @acronym{GNU} @command{tar} (version
- from archives.
- 
- Copyright @copyright{} 1992, 1994, 1995, 1996, 1997, 1999, 2000, 2001,
--2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
-+2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Free Software
-+Foundation, Inc.
- 
- @quotation
- Permission is granted to copy, distribute and/or modify this document
 @@ -162,6 +163,7 @@ How to Create Archives
  How to List Archives
  
@@ -146,8 +136,8 @@ index d678db9..ab8a0c8 100644
  @section How to Extract Members from an Archive
  @cindex Extraction
 @@ -2371,6 +2484,10 @@ Normally when creating an archive, @command{tar} strips an initial
- @samp{/} from member names.  This option disables that behavior.
- @xref{absolute}.
+ treats names specially if they have initial @samp{/} or internal
+ @samp{..}.  This option disables that behavior.  @xref{absolute}.
  
 +@opsummary{acls}
 +@item --acls
@@ -214,9 +204,9 @@ index d678db9..ab8a0c8 100644
  @item --wildcards
  Use wildcards when matching member names with patterns.
 @@ -4218,6 +4359,11 @@ tar (child): trying gzip
- This means that @command{tar} first tried to decompress
- @file{archive.Z} using @command{compress}, and, when that
- failed, switched to @command{gzip}.
+ @cindex @samp{Record size = %lu blocks}, warning message
+ @item record-size
+ @samp{Record size = %lu blocks}
 +@kwindex xattr-write
 +@item xattr-write
 +@samp{%s: Cannot set '%s' extended attribute for file '%s'}

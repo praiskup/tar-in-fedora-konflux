@@ -33,4 +33,4 @@ index 5a4bf72..bdf6ba0 100644
 +  if (xattrs_option > 0 && st->xattr_map_size)
      {
        int i;
-       
+ 

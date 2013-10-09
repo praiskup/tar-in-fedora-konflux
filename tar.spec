@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.26
-Release: 28%{?dist}
+Version: 1.27
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -39,90 +39,30 @@ Patch3: tar-1.17-wildcards.patch
 # ~> still downstream
 Patch4: tar-1.22-atime-rofs.patch
 
-# The --old-archive option was not working.
-# ~> #594044
-# ~> http://lists.gnu.org/archive/html/bug-tar/2010-05/msg00015.html
-# ~> upstream (2a61a37)
-Patch5: tar-1.23-oldarchive.patch
-
 # Fix for bad cooperation of -C and -u options.
 # ~> #688567
 # ~> http://lists.gnu.org/archive/html/bug-tar/2012-02/msg00007.html
 # ~> still downstream
-Patch6: tar-1.26-update-with-change-directory.patch
-
-# Fix rawhide build failure with undefined gets.
-# ~> upstream (gnulib)
-Patch7: tar-1.26-stdio.in.patch
-
-# Fix regression with --keep-old-files option.
-# ~> #799252
-# ~> http://lists.gnu.org/archive/html/bug-tar/2011-11/msg00043.html
-# ~> upstream (7a5a3708c)
-Patch8: tar-1.26-add-skip-old-files-option.patch
-
-# Prepare included gnulib library for SELinux support.
-# -> Related to the next patch.
-Patch9:  tar-1.26-selinux-gnulib.patch
-
-# Add support for extended attributes, SELinux and POSIX ACLs.
-# ~> Original implementation #200925
-# ~> http://lists.gnu.org/archive/html/bug-tar/2012-08/msg00012.html
-# ~> upstream (b997c90f9, 696338043, d36f5a3cc, 085cace18, up-to ~> 83701a590)
-Patch10: tar-1.26-xattrs.patch
-
-# Fix problem with bit UIDs/GIDs (> 2^21) and --posix format.
-# ~> #913406
-# ~> upstream (it is part of df7b55a8f6354e)
-Patch11: tar-1.26-posix-biguid.patch
-
-# Allow store sparse files of effective size >8GB into pax archives
-# ~> #516309
-# ~> http://lists.gnu.org/archive/html/bug-tar/2013-01/msg00001.html
-# ~> already upstream (2f6c03cba)
-Patch12: tar-1.26-pax-big-sparse-files.patch
-
-# Fix: Allow extracting single volume in a multi-volume archive
-# ~> #919897
-# ~> http://lists.gnu.org/archive/html/bug-tar/2013-03/msg00002.html
-# ~> upstream (beca89bc)
-Patch13: tar-1.26-allow-extract-single-volume.patch
-
-# Allow to pass arguments to commands called from tar
-# ~> resolves #819187 (now we can use ./configure --with-lzma)
-# ~> http://lists.gnu.org/archive/html/bug-tar/2013-02/msg00003.html
-# ~> upstream: 7b5e803963
-Patch14: tar-1.26-command-args.patch
+Patch5: tar-1.26-update-with-change-directory.patch
 
 # Do not print xattrs/selinux/acls when --no-xattrs/--no-acls/--no-selinux
 # options are used during -tvv output.  (TODO: merge this with xattrs patch
 # once becomes upstream)
 # ~> downstream (yet)
 # ~> proposal: http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
-Patch15: tar-1.26-xattrs-printing.patch
-
-# Use a birthtime instead of ctime.
-# ~> upstream (189e43 & 49bd10)
-# ~> http://lists.gnu.org/archive/html/bug-tar/2011-06/msg00000.html
-# ~> http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00022.html
-Patch16: tar-1.26-fix-symlink-eating-bug.patch
+Patch6: tar-1.26-xattrs-printing.patch
 
 # Add documentation which was not yet pushed upstream
 # ~> downstream
 # ~> #996753
-Patch17: tar-1.26-docu-xattrs.patch
+Patch7: tar-1.26-docu-xattrs.patch
 
 # The --xattrs-include or --xattrs-exclude options should imply --xattrs.
 # ~> still downstream
 #    http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
 # ~> #965969
 
-Patch18: tar-1.26-xattrs-include-implies-xattrs.patch
-
-# Silence gcc warnings
-# ~> upstream tar: 17f99bc6f, 5bb0433
-# ~> upstream paxutils: 0b3d84a0
-Patch999: tar-1.26-silence-gcc.patch
+Patch8: tar-1.26-xattrs-include-implies-xattrs.patch
 
 # run "make check" by default
 %bcond_without check
@@ -161,21 +101,10 @@ the rmt package on the remote box.
 %patch2 -p1 -b .vfatTruncate
 %patch3 -p1 -b .wildcards
 %patch4 -p1 -b .rofs
-%patch5 -p1 -b .oldarchive
-%patch6 -p1 -b .update_and_changedir
-%patch7 -p1 -b .gets  %{?_rawbuild}
-%patch8 -p1 -b .skip-old-files
-%patch9 -p1 -b .selinux-gnulib-prep
-%patch10 -p1 -b .xattrs-selinux-acls
-%patch11 -p1 -b .big_uid_gid
-%patch12 -p1 -b .pax-sparse-big-files
-%patch13 -p1 -b .extract-single-volume
-%patch14 -p1 -b .command-args
-%patch15 -p1 -b .print-xattrs-fix
-%patch16 -p1 -b .birthtime
-%patch17 -p1 -b .xattrs-documentation
-%patch18 -p1 -b .xattrs-if-xattrs-include
-%patch999 -p1 -b .silence-gcc
+%patch5 -p1 -b .update_and_changedir
+%patch6 -p1 -b .print-xattrs-fix
+%patch7 -p1 -b .xattrs-documentation
+%patch8 -p1 -b .xattrs-if-xattrs-include
 
 autoreconf -v
 
@@ -234,6 +163,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Oct 09 2013 Ondrej Vasik <ovaisk@redhat.com> - 1.27-1
+- new upstream release 1.27 (#1016288)
+
 * Mon Sep 09 2013 Pavel Raiskup <praiskup@redhat.com> - 1.26-28
 - add documenation for xattrs-like options (#996753)
 - the --xattrs-include implies --xattrs now (#965969)

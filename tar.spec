@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.27
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -64,6 +64,12 @@ Patch7: tar-1.26-docu-xattrs.patch
 
 Patch8: tar-1.26-xattrs-include-implies-xattrs.patch
 
+# If the 'st_size' != 0 && count(blocks) == 0 && st_size < size(block), this
+# does not necessarily must be a sparse file.
+# ~> upstream (paxutils):  986382a0bb3261
+# ~> #1024095
+Patch9: tar-1.27-sparse-stat-detection.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -105,6 +111,7 @@ the rmt package on the remote box.
 %patch6 -p1 -b .print-xattrs-fix
 %patch7 -p1 -b .xattrs-documentation
 %patch8 -p1 -b .xattrs-if-xattrs-include
+%patch9 -p1 -b .sparse-stat-detection
 
 autoreconf -v
 
@@ -163,6 +170,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Oct 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27-2
+- sparse file detection based on fstat() fix (#1024095)
+
 * Wed Oct 09 2013 Ondrej Vasik <ovasik@redhat.com> - 1.27-1
 - new upstream release 1.27 (#1016288)
 

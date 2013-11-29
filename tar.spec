@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.27.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -163,6 +163,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Nov 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-2
+- sync manual page contents with help2man output
+
 * Mon Nov 18 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-1
 - minor version update to 1.27.1
 

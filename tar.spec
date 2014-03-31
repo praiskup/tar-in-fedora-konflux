@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.27.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -61,8 +61,13 @@ Patch7: tar-1.26-docu-xattrs.patch
 # ~> still downstream
 #    http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
 # ~> #965969
-
 Patch8: tar-1.26-xattrs-include-implies-xattrs.patch
+
+# Document exclude mistakes with --no-wildcards-match-slash & --anchored
+# ~> downstream
+#    http://www.mail-archive.com/bug-tar@gnu.org/msg04488.html
+# ~> related to #903666
+Patch9: tar-1.27.1-document-exclude-mistakes.patch
 
 # run "make check" by default
 %bcond_without check
@@ -105,6 +110,7 @@ the rmt package on the remote box.
 %patch6 -p1 -b .print-xattrs-fix
 %patch7 -p1 -b .xattrs-documentation
 %patch8 -p1 -b .xattrs-if-xattrs-include
+%patch9 -p1 -b .document-exclude-mistakes
 
 autoreconf -v
 
@@ -163,6 +169,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Mar 31 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-3
+- document --exclude mistakes (#903666)
+
 * Fri Nov 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-2
 - sync manual page contents with help2man output
 

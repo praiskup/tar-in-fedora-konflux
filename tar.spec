@@ -69,6 +69,12 @@ Patch8: tar-1.26-xattrs-include-implies-xattrs.patch
 # ~> related to #903666
 Patch9: tar-1.27.1-document-exclude-mistakes.patch
 
+# Extract default ACLs which are stored in archive if --acls is passed.
+# ~> upstream (7fe7adcbb985)
+#    http://www.mail-archive.com/bug-tar@gnu.org/msg04355.html
+# ~> #1082603
+Patch10: tar-1.27.1-default-acls.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -111,6 +117,7 @@ the rmt package on the remote box.
 %patch7 -p1 -b .xattrs-documentation
 %patch8 -p1 -b .xattrs-if-xattrs-include
 %patch9 -p1 -b .document-exclude-mistakes
+%patch10 -p1 -b .default-acls
 
 autoreconf -v
 
@@ -171,6 +178,7 @@ fi
 %changelog
 * Mon Mar 31 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-3
 - document --exclude mistakes (#903666)
+- fix default ACLs propagation (#1082603)
 
 * Fri Nov 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-2
 - sync manual page contents with help2man output

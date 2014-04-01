@@ -88,6 +88,13 @@ Patch11: tar-1.27.1-sparse-inf-loops.patch
 # ~> #916995
 Patch12: tar-1.27.1-big-sparse-listing.patch
 
+# Fix inf. loop in -T handling (v1.27.{0,1} only, thus fc21 only)
+# ~> uptream (commit 8528958)
+#    http://www.mail-archive.com/bug-tar@gnu.org/msg04470.html
+# ~> (#1083066)
+Patch13: tar-1.27.1-T-eternal-loop.patch
+
+
 # run "make check" by default
 %bcond_without check
 
@@ -133,6 +140,7 @@ the rmt package on the remote box.
 %patch10 -p1 -b .default-acls
 %patch11 -p1 -b .inf-loops-in-sparse
 %patch12 -p1 -b .big-sparse
+%patch13 -p1 -b .T-eternal-loop
 
 autoreconf -v
 

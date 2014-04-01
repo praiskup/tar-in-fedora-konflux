@@ -81,6 +81,13 @@ Patch10: tar-1.27.1-default-acls.patch
 # ~> #1082608
 Patch11: tar-1.27.1-sparse-inf-loops.patch
 
+# --posix & big (effective) sparse files can not be listed
+# ~> dowstream
+#    http://www.mail-archive.com/bug-tar%40gnu.org/msg03909.html
+#    http://www.mail-archive.com/bug-tar@gnu.org/msg04489.html
+# ~> #916995
+Patch12: tar-1.27.1-big-sparse-listing.patch
+
 # run "make check" by default
 %bcond_without check
 
@@ -125,6 +132,7 @@ the rmt package on the remote box.
 %patch9 -p1 -b .document-exclude-mistakes
 %patch10 -p1 -b .default-acls
 %patch11 -p1 -b .inf-loops-in-sparse
+%patch12 -p1 -b .big-sparse
 
 autoreconf -v
 
@@ -183,10 +191,11 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Mon Mar 31 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-3
+* Tue Apr 01 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-3
 - document --exclude mistakes (#903666)
 - fix default ACLs propagation (#1082603)
 - infinite loop(s) in sparse-file handling (#1082608)
+- fix listing (and --verify) for big sparse files (#916995)
 
 * Fri Nov 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-2
 - sync manual page contents with help2man output

@@ -94,6 +94,12 @@ Patch12: tar-1.27.1-big-sparse-listing.patch
 # ~> (#1083066)
 Patch13: tar-1.27.1-T-eternal-loop.patch
 
+# Refuse to read/write archive from/to terminal input/output (enhancement fc21+)
+# ~> upstream (commits b0902369e7 & 7808b69)
+#    http://lists.gnu.org/archive/html/bug-tar/2014-03/msg00030.html
+# ~> #1083075
+Patch14: tar-1.27.1-dont-read-write-terminal.patch
+
 
 # run "make check" by default
 %bcond_without check
@@ -141,6 +147,7 @@ the rmt package on the remote box.
 %patch11 -p1 -b .inf-loops-in-sparse
 %patch12 -p1 -b .big-sparse
 %patch13 -p1 -b .T-eternal-loop
+%patch14 -p1 -b .terminal-input-output
 
 autoreconf -v
 
@@ -204,6 +211,8 @@ fi
 - fix default ACLs propagation (#1082603)
 - infinite loop(s) in sparse-file handling (#1082608)
 - fix listing (and --verify) for big sparse files (#916995)
+- fix eternal loop in -T option (#1083066)
+- don't read/write archive from/to terminal (#1083075)
 
 * Fri Nov 29 2013 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-2
 - sync manual page contents with help2man output

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.27.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -160,7 +160,7 @@ autoreconf -v
     --with-lzma="xz --format=lzma" \
     DEFAULT_RMT_DIR=%{_sysconfdir} \
     RSH=/usr/bin/ssh
-make
+make %{?_smp_mflags}
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
@@ -206,6 +206,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon May 12 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-4
+- enable parallel build
+
 * Tue Apr 01 2014 Pavel Raiskup <praiskup@redhat.com> - 1.27.1-3
 - document --exclude mistakes (#903666)
 - fix default ACLs propagation (#1082603)

@@ -4,102 +4,25 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.27.1
-Release: 5%{?dist}
+Version: 1.28
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
 Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
-# Manpage for tar and gtar, a bit modified help2man generated manpage
-Source2: tar.1
 
-# Stop issuing lone zero block warnings.
-# ~> https://bugzilla.redhat.com/show_bug.cgi?id=135601
-# ~> downstream
-Patch1: tar-1.14-loneZeroWarning.patch
-
-# Fix extracting sparse files to a file system like vfat, when ftruncate may fail
-# to grow the size of a file.
-# ~> #179507,
-# ~> http://lists.gnu.org/archive/html/bug-tar/2006-02/msg00000.html
-# ~> still downtream (do we need this now? ftruncate & vfat works is now OK)
-Patch2: tar-1.15.1-vfatTruncate.patch
-
-# Change inclusion defaults of tar to
-# "--wildcards --anchored --wildcards-match-slash" for compatibility reasons.
-# ~> #206841
-# ~> downstream (compatibility)
-Patch3: tar-1.17-wildcards.patch
-
-# Ignore errors from setting utime() for source file on read-only file-system.
-# ~> #500742
-# ~> http://lists.gnu.org/archive/html/bug-tar/2009-06/msg00016.html
-# ~> still downstream
-Patch4: tar-1.22-atime-rofs.patch
-
-# Fix for bad cooperation of -C and -u options.
-# ~> #688567
-# ~> http://lists.gnu.org/archive/html/bug-tar/2012-02/msg00007.html
-# ~> still downstream
-Patch5: tar-1.26-update-with-change-directory.patch
-
-# Do not print xattrs/selinux/acls when --no-xattrs/--no-acls/--no-selinux
-# options are used during -tvv output.  (TODO: merge this with xattrs patch
-# once becomes upstream)
-# ~> downstream (yet)
-# ~> proposal: http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
-Patch6: tar-1.26-xattrs-printing.patch
-
-# Add documentation which was not yet pushed upstream
-# ~> downstream
-# ~> #996753
-Patch7: tar-1.26-docu-xattrs.patch
-
-# The --xattrs-include or --xattrs-exclude options should imply --xattrs.
-# ~> still downstream
-#    http://lists.gnu.org/archive/html/bug-tar/2013-05/msg00020.html
-# ~> #965969
-Patch8: tar-1.26-xattrs-include-implies-xattrs.patch
-
-# Document exclude mistakes with --no-wildcards-match-slash & --anchored
-# ~> downstream
-#    http://www.mail-archive.com/bug-tar@gnu.org/msg04488.html
-# ~> related to #903666
-Patch9: tar-1.27.1-document-exclude-mistakes.patch
-
-# Extract default ACLs which are stored in archive if --acls is passed.
-# ~> upstream (7fe7adcbb985)
-#    http://www.mail-archive.com/bug-tar@gnu.org/msg04355.html
-# ~> #1082603
-Patch10: tar-1.27.1-default-acls.patch
-
-# Fix for infinite loops during sparse file handling
-# ~> dostream
-#    http://www.mail-archive.com/bug-tar@gnu.org/msg04432.html
-# ~> #1082608
-Patch11: tar-1.27.1-sparse-inf-loops.patch
-
-# --posix & big (effective) sparse files can not be listed
-# ~> dowstream
-#    http://www.mail-archive.com/bug-tar%40gnu.org/msg03909.html
-#    http://www.mail-archive.com/bug-tar@gnu.org/msg04489.html
-# ~> #916995
-Patch12: tar-1.27.1-big-sparse-listing.patch
-
-# Fix inf. loop in -T handling (v1.27.{0,1} only, thus fc21 only)
-# ~> uptream (commit 8528958)
-#    http://www.mail-archive.com/bug-tar@gnu.org/msg04470.html
-# ~> (#1083066)
-Patch13: tar-1.27.1-T-eternal-loop.patch
-
-# Refuse to read/write archive from/to terminal input/output (enhancement fc21+)
-# ~> upstream (commits b0902369e7 & 7808b69)
-#    http://lists.gnu.org/archive/html/bug-tar/2014-03/msg00030.html
-# ~> #1083075
-Patch14: tar-1.27.1-dont-read-write-terminal.patch
-
+# Note that all patches are documented in patch files (git format-patch format)
+Patch1:  tar-1.28-loneZeroWarning.patch
+Patch2:  tar-1.28-vfatTruncate.patch
+Patch3:  tar-1.28-wildcards.patch
+Patch4:  tar-1.28-atime-rofs.patch
+Patch5:  tar-1.28-update-with-change-directory.patch
+Patch7:  tar-1.28-docu-xattrs.patch
+Patch9:  tar-1.28-document-exclude-mistakes.patch
+Patch11: tar-1.28-sparse-inf-loops.patch
+Patch12: tar-1.28-big-sparse-listing.patch
 
 # run "make check" by default
 %bcond_without check
@@ -133,22 +56,7 @@ If you want to use tar for remote backups, you also need to install
 the rmt package on the remote box.
 
 %prep
-%setup -q
-%patch1 -p1 -b .loneZeroWarning
-%patch2 -p1 -b .vfatTruncate
-%patch3 -p1 -b .wildcards
-%patch4 -p1 -b .rofs
-%patch5 -p1 -b .update_and_changedir
-%patch6 -p1 -b .print-xattrs-fix
-%patch7 -p1 -b .xattrs-documentation
-%patch8 -p1 -b .xattrs-if-xattrs-include
-%patch9 -p1 -b .document-exclude-mistakes
-%patch10 -p1 -b .default-acls
-%patch11 -p1 -b .inf-loops-in-sparse
-%patch12 -p1 -b .big-sparse
-%patch13 -p1 -b .T-eternal-loop
-%patch14 -p1 -b .terminal-input-output
-
+%autosetup -p1
 autoreconf -v
 
 %build
@@ -168,11 +76,11 @@ make DESTDIR=$RPM_BUILD_ROOT install
 ln -s tar $RPM_BUILD_ROOT%{_bindir}/gtar
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-install -c -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{_mandir}/man1
 ln -s tar.1.gz $RPM_BUILD_ROOT%{_mandir}/man1/gtar.1
 
 # XXX Nuke unpackaged files.
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/rmt
+rm -f $RPM_BUILD_ROOT%{_mandir}/man8/rmt.8*
 
 %find_lang %name
 
@@ -206,6 +114,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Jul 28 2014 Pavel Raiskup <praiskup@redhat.com> - 1.28-1
+- rebase to new upstream tarball, per release notes:
+  https://savannah.gnu.org/forum/forum.php?forum_id=8037
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.27.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 

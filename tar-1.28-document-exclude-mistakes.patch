@@ -1,22 +1,24 @@
-commit 2c7692bd81946100244f022fdfa47e91afd44632 (document_exclude_mistake)
-Author:     Pavel Raiskup <praiskup@redhat.com>
-AuthorDate: Mon Mar 31 14:22:56 2014 +0200
-Commit:     Pavel Raiskup <praiskup@redhat.com>
-CommitDate: Mon Mar 31 14:30:02 2014 +0200
+From 18112ded916cf62b3bd3c0ffb9530e4ade3d2209 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Mon, 28 Jul 2014 08:16:33 +0200
+Subject: [PATCH 7/9] Document exclude mistakes with
 
-    docs: document common mistake with --exclude
-    
-    The default settings of --exclude wildcard matching leads usually
-    to --no-wildcards-match-slash option but there is not obvious that
-    users should also turn --anchored option on.
-    
-    * doc/tar.texi: Describe.
+.. usually with  --no-wildcards-match-slash & --anchored options.
+
+Upstream bugreport (still downstream):
+http://www.mail-archive.com/bug-tar@gnu.org/msg04488.html
+
+Related: #903666
+
+---
+ doc/tar.texi | 67 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 diff --git a/doc/tar.texi b/doc/tar.texi
-index e3df0c9..395f24c 100644
+index a000f3f..2695d22 100644
 --- a/doc/tar.texi
 +++ b/doc/tar.texi
-@@ -7906,6 +7906,73 @@ The following table summarizes pattern-matching default values:
+@@ -8051,6 +8051,73 @@ The following table summarizes pattern-matching default values:
  @item Exclusion @tab @option{--wildcards --no-anchored --wildcards-match-slash}
  @end multitable
  
@@ -90,3 +92,6 @@ index e3df0c9..395f24c 100644
  @node quoting styles
  @section Quoting Member Names
  
+-- 
+1.9.3
+

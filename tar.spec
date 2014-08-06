@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.28
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -106,7 +106,9 @@ if [ $1 = 0 ]; then
 fi
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog ChangeLog.1 COPYING NEWS README THANKS TODO
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%doc AUTHORS ChangeLog ChangeLog.1 NEWS README THANKS TODO
 %{_bindir}/tar
 %{_bindir}/gtar
 %{_mandir}/man1/tar.1*
@@ -114,6 +116,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed Aug  6 2014 Tom Callaway <spot@fedoraproject.org> - 2:1.28-2
+- fix license handling
+
 * Mon Jul 28 2014 Pavel Raiskup <praiskup@redhat.com> - 1.28-1
 - rebase to new upstream tarball, per release notes:
   https://savannah.gnu.org/forum/forum.php?forum_id=8037

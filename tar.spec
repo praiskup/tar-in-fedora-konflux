@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.28
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -23,6 +23,8 @@ Patch7:  tar-1.28-docu-xattrs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.28-big-sparse-listing.patch
+Patch13: tar-1.28-T-matchflags.patch
+Patch14: tar-1.28-T-recursion-tests.patch
 
 # run "make check" by default
 %bcond_without check
@@ -116,6 +118,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Jun 26 2015 Pavel Raiskup <praiskup@redhat.com> - 1.28-6
+- fix --files-from and -T cooperation (rhbz#1230762)
+
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.28-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 

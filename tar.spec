@@ -25,7 +25,7 @@ Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.28-big-sparse-listing.patch
 Patch13: tar-1.28-T-matchflags.patch
 Patch14: tar-1.28-T-recursion-tests.patch
-Patch15: tar-1.27-T-tests-false-failure.patch
+Patch15: tar-1.28-T-tests-false-failure.patch
 
 # run "make check" by default
 %bcond_without check

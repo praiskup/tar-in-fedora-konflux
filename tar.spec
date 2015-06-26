@@ -25,6 +25,7 @@ Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.28-big-sparse-listing.patch
 Patch13: tar-1.28-T-matchflags.patch
 Patch14: tar-1.28-T-recursion-tests.patch
+Patch15: tar-1.27-T-tests-false-failure.patch
 
 # run "make check" by default
 %bcond_without check
@@ -120,6 +121,7 @@ fi
 %changelog
 * Fri Jun 26 2015 Pavel Raiskup <praiskup@redhat.com> - 1.28-6
 - fix --files-from and -T cooperation (rhbz#1230762)
+- avoid two testsuite false alarms related to --files-from option
 
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2:1.28-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild

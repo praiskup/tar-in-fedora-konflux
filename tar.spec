@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.28
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -119,6 +119,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.28-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
 * Fri Jun 26 2015 Pavel Raiskup <praiskup@redhat.com> - 1.28-6
 - fix --files-from and -T cooperation (rhbz#1230762)
 - avoid two testsuite false alarms related to --files-from option

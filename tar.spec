@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.28
-Release: 7%{?dist}
+Version: 1.29
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -16,16 +16,11 @@ Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
 # Note that all patches are documented in patch files (git format-patch format)
 Patch1:  tar-1.28-loneZeroWarning.patch
 Patch2:  tar-1.28-vfatTruncate.patch
-Patch3:  tar-1.28-wildcards.patch
+Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch5:  tar-1.28-update-with-change-directory.patch
-Patch7:  tar-1.28-docu-xattrs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
-Patch12: tar-1.28-big-sparse-listing.patch
-Patch13: tar-1.28-T-matchflags.patch
-Patch14: tar-1.28-T-recursion-tests.patch
-Patch15: tar-1.28-T-tests-false-failure.patch
 
 # run "make check" by default
 %bcond_without check
@@ -119,6 +114,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue May 17 2016 Pavel Raiskup <praiskup@redhat.com> - 1.29-1
+- new upstream release 1.29 (rhbz#1336607)
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.28-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 

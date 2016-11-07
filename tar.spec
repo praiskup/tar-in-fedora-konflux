@@ -1,11 +1,12 @@
 %if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
 %global WITH_SELINUX 1
 %endif
+
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.29
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -106,7 +107,7 @@ fi
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%doc AUTHORS ChangeLog ChangeLog.1 NEWS README THANKS TODO
+%doc AUTHORS README THANKS
 %{_bindir}/tar
 %{_bindir}/gtar
 %{_mandir}/man1/tar.1*
@@ -114,6 +115,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Nov  7 2016 Peter Robinson <pbrobinson@fedoraproject.org> 1.29-2
+- Drop large docs, minor specs cleanups
+
 * Tue May 17 2016 Pavel Raiskup <praiskup@redhat.com> - 1.29-1
 - new upstream release 1.29 (rhbz#1336607)
 

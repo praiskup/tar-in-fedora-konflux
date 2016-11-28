@@ -6,7 +6,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.29
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -58,6 +58,12 @@ the rmt package on the remote box.
 %autosetup -p1
 autoreconf -v
 
+# Keep only entries related to the latest release.
+mv ChangeLog{,~}
+awk 'stop = false; /^2014-07-27/ { stop = true; exit }; { print }' \
+    < ChangeLog~ > ChangeLog
+
+
 %build
 %if ! %{WITH_SELINUX}
 %global CONFIGURE_SELINUX --without-selinux
@@ -107,7 +113,7 @@ fi
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%doc AUTHORS README THANKS
+%doc AUTHORS README THANKS NEWS ChangeLog
 %{_bindir}/tar
 %{_bindir}/gtar
 %{_mandir}/man1/tar.1*
@@ -115,6 +121,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Nov 28 2016 Pavel Raiskup <praiskup@redhat.com> - 1.29-3
+- revert back some docs
+
 * Mon Nov  7 2016 Peter Robinson <pbrobinson@fedoraproject.org> 1.29-2
 - Drop large docs, minor specs cleanups
 

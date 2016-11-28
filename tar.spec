@@ -22,6 +22,7 @@ Patch4:  tar-1.28-atime-rofs.patch
 Patch5:  tar-1.28-update-with-change-directory.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
+Patch12: tar-1.29-create-and-xattrs-exclude.patch
 
 # run "make check" by default
 %bcond_without check
@@ -123,6 +124,7 @@ fi
 %changelog
 * Mon Nov 28 2016 Pavel Raiskup <praiskup@redhat.com> - 1.29-3
 - revert back some docs
+- fix --create to use --xattrs-include/exclude (rhbz#1341787)
 
 * Mon Nov  7 2016 Peter Robinson <pbrobinson@fedoraproject.org> 1.29-2
 - Drop large docs, minor specs cleanups

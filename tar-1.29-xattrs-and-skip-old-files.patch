@@ -175,7 +175,7 @@ index 0000000..a834981
 +setfattr -n user.test -v OurFileValue dir/file
 +setfattr -n user.test -v OurFileValue dir/file2
 +
-+tar --xattrs -cf archive.tar dir
++tar --xattrs --no-recursion -cf archive.tar dir dir/file dir/file2
 +
 +setfattr -n user.test -v OurDirValue2 dir
 +setfattr -n user.test -v OurFileValue2 dir/file

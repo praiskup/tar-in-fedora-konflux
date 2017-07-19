@@ -6,7 +6,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.29
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -24,6 +24,7 @@ Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.29-create-and-xattrs-exclude.patch
 Patch13: tar-1.29-xattrs-and-skip-old-files.patch
+Patch14: tar-1.29-add-file-option.patch
 
 # run "make check" by default
 %bcond_without check
@@ -123,6 +124,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed May 24 2017 Tomas Repik <trepik@redhat.com> - 2:1.29-5
+- fix --add-file option (rhbz#1436030)
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.29-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

@@ -4,9 +4,9 @@
 
 Summary: A GNU file archiving program
 Name: tar
-Epoch: 2
-Version: 1.29
-Release: 7%{?dist}
+Epoch: 1
+Version: 1.30
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -19,12 +19,8 @@ Patch1:  tar-1.28-loneZeroWarning.patch
 Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
-Patch5:  tar-1.28-update-with-change-directory.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
-Patch12: tar-1.29-create-and-xattrs-exclude.patch
-Patch13: tar-1.29-xattrs-and-skip-old-files.patch
-Patch14: tar-1.29-add-file-option.patch
 
 # run "make check" by default
 %bcond_without check
@@ -124,6 +120,10 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Mon Dec 18 2017 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
+- rebase to latest upstream release, per release notes
+  http://lists.gnu.org/archive/html/info-gnu/2017-12/msg00011.html
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.29-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 

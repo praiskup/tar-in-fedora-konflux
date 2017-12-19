@@ -21,6 +21,7 @@ Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
+Patch12: tar-1.30-tests-difflink.patch
 
 # run "make check" by default
 %bcond_without check
@@ -120,6 +121,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Tue Dec 19 2017 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
+- testsuite fix per upstream report
+
 * Mon Dec 18 2017 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
 - rebase to latest upstream release, per release notes
   http://lists.gnu.org/archive/html/info-gnu/2017-12/msg00011.html

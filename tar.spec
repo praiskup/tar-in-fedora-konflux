@@ -22,6 +22,7 @@ Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.30-tests-difflink.patch
+Patch13: tar-1.30-tests-dirrem.patch
 
 # run "make check" by default
 %bcond_without check
@@ -130,8 +131,8 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
-* Tue Dec 19 2017 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
-- testsuite fix per upstream report
+* Thu Jan 04 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
+- testsuite fixes per upstream reports
 
 * Mon Dec 18 2017 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
 - rebase to latest upstream release, per release notes

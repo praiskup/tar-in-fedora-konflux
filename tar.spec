@@ -4,9 +4,9 @@
 
 Summary: A GNU file archiving program
 Name: tar
-Epoch: 1
+Epoch: 2
 Version: 1.30
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -131,6 +131,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Jan 06 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 2:1.30-2
+- Return Epoch back
+
 * Thu Jan 04 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-1
 - testsuite fixes per upstream reports
 

@@ -105,9 +105,6 @@ make check || (
 )
 %endif
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
 if [ -f %{_infodir}/tar.info.gz ]; then
    /sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir || :

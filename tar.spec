@@ -6,7 +6,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.30
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -27,7 +27,7 @@ Patch13: tar-1.30-tests-dirrem.patch
 # run "make check" by default
 %bcond_without check
 
-BuildRequires: autoconf automake texinfo gettext libacl-devel rsh
+BuildRequires: autoconf automake texinfo gettext libacl-devel
 
 %if %{with check}
 # cover needs of tar's testsuite
@@ -128,6 +128,9 @@ fi
 %{_infodir}/tar.info*
 
 %changelog
+* Wed May 23 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-4
+- drop BuildRequires: rsh, we anyways use ./configure RSH=%%_bindir/ssh
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.30-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 

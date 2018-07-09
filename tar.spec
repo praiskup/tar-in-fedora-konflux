@@ -27,6 +27,7 @@ Patch13: tar-1.30-tests-dirrem.patch
 # run "make check" by default
 %bcond_without check
 
+BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
 
 %if %{with check}

@@ -41,8 +41,6 @@ BuildRequires: libselinux-devel
 Provides: bundled(gnulib)
 Provides: /bin/tar
 Provides: /bin/gtar
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 
 %description
 The GNU tar program saves many files together in one archive and can
@@ -105,18 +103,6 @@ make check || (
     false
 )
 %endif
-
-%post
-if [ -f %{_infodir}/tar.info.gz ]; then
-   /sbin/install-info %{_infodir}/tar.info.gz %{_infodir}/dir || :
-fi
-
-%preun
-if [ $1 = 0 ]; then
-   if [ -f %{_infodir}/tar.info.gz ]; then
-      /sbin/install-info --delete %{_infodir}/tar.info.gz %{_infodir}/dir || :
-   fi
-fi
 
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}

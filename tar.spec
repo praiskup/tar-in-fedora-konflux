@@ -6,7 +6,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.30
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -115,6 +115,9 @@ make check || (
 %{_infodir}/tar.info*
 
 %changelog
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.30-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Wed May 23 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-4
 - drop BuildRequires: rsh, we anyways use ./configure RSH=%%_bindir/ssh
 

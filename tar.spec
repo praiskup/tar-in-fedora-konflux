@@ -1,12 +1,11 @@
-%if %{?WITH_SELINUX:0}%{!?WITH_SELINUX:1}
-%global WITH_SELINUX 1
-%endif
+%bcond_without selinux
+%bcond_without check
 
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.30
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -24,9 +23,6 @@ Patch11: tar-1.28-sparse-inf-loops.patch
 Patch12: tar-1.30-tests-difflink.patch
 Patch13: tar-1.30-tests-dirrem.patch
 
-# run "make check" by default
-%bcond_without check
-
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
 
@@ -35,7 +31,7 @@ BuildRequires: autoconf automake texinfo gettext libacl-devel
 BuildRequires: attr acl policycoreutils
 %endif
 
-%if %{WITH_SELINUX}
+%if %{with selinux}
 BuildRequires: libselinux-devel
 %endif
 Provides: bundled(gnulib)
@@ -54,6 +50,7 @@ backups.
 If you want to use tar for remote backups, you also need to install
 the rmt package on the remote box.
 
+
 %prep
 %autosetup -p1
 autoreconf -v
@@ -65,18 +62,17 @@ awk 'stop = false; /^2014-07-27/ { stop = true; exit }; { print }' \
 
 
 %build
-%if ! %{WITH_SELINUX}
-%global CONFIGURE_SELINUX --without-selinux
-%endif
-
-%configure %{?CONFIGURE_SELINUX} \
+%configure \
+    %{!?with_selinux:--without-selinux} \
     --with-lzma="xz --format=lzma" \
     DEFAULT_RMT_DIR=%{_sysconfdir} \
     RSH=/usr/bin/ssh
-make %{?_smp_mflags}
+
+%make_build
+
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+%make_install
 
 ln -s tar $RPM_BUILD_ROOT%{_bindir}/gtar
 rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
@@ -88,6 +84,7 @@ rm -f $RPM_BUILD_ROOT%{_sysconfdir}/rmt
 rm -f $RPM_BUILD_ROOT%{_mandir}/man8/rmt.8*
 
 %find_lang %name
+
 
 %check
 %if %{with check}
@@ -104,6 +101,7 @@ make check || (
 )
 %endif
 
+
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
 %license COPYING
@@ -114,7 +112,11 @@ make check || (
 %{_mandir}/man1/gtar.1*
 %{_infodir}/tar.info*
 
+
 %changelog
+* Tue Aug 07 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-6
+- use %%bcond_* for selinux, use %%make_* macros
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.30-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

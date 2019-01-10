@@ -86,7 +86,7 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/man8/rmt.8*
 %check
 %if %{with check}
 rm -f $RPM_BUILD_ROOT/test/testsuite
-make check || (
+make check TESTSUITEFLAGS='-k \!dirrem01,\!dirrem02' || (
     # get the error log
     set +x
     find -name testsuite.log | while read line; do

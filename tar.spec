@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.30
-Release: 6%{?dist}
+Version: 1.31
+Release: 1%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -19,9 +19,6 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
-Patch11: tar-1.28-sparse-inf-loops.patch
-Patch12: tar-1.30-tests-difflink.patch
-Patch13: tar-1.30-tests-dirrem.patch
 
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
@@ -114,6 +111,10 @@ make check || (
 
 
 %changelog
+* Thu Jan 10 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-1
+- the latest upstream release, per release notes
+  http://lists.gnu.org/archive/html/info-gnu/2019-01/msg00001.html
+
 * Tue Aug 07 2018 Pavel Raiskup <praiskup@redhat.com> - 1.30-6
 - use %%bcond_* for selinux, use %%make_* macros
 

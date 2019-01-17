@@ -1,0 +1,81 @@
+From f86722c34c92f265bc9a20cb171d2fcfeab7d341 Mon Sep 17 00:00:00 2001
+From: Sergey Poznyakoff <gray@gnu.org>
+Date: Mon, 14 Jan 2019 12:26:59 +0200
+Subject: [PATCH] Fix expected output in dirrem tests.
+
+In both tests, the "file changed as we read it" warning might be
+produced for dir/sub, depending on the ctime resolution and timing.
+The problem was fixed by 64b43fdf70d82c39eb2ca900cd4f8e49, but regressed
+after e7cd377f7801d42aa8e07addff93d2150666c237, which removed 1 second
+delays between each pair of checkpoints. Since the presense or absense
+of this warning is irrelevant for the test, it is now suppressed.
+
+* tests/dirrem01.at: Suppress the file-changed warning.
+* tests/dirrem02.at: Likewise.
+---
+ tests/dirrem01.at | 15 ++++++++++-----
+ tests/dirrem02.at |  5 +++--
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/tests/dirrem01.at b/tests/dirrem01.at
+index 0a9c9e5..24bf392 100644
+--- a/tests/dirrem01.at
++++ b/tests/dirrem01.at
+@@ -27,9 +27,13 @@
+ # it prints a warning and exits with TAREXIT_DIFFERS.
+ #
+ # This test checks whether this behaviour is mimicked for directories, too.
+-
+-# Remark: This file is based on 'filerem01.at', which is the test-case for
+-# a vanishing file.
++#
++# Notes:
++#   1. This file is based on 'filerem01.at', which is the test-case for
++#   a vanishing file.
++#   2. Depending on the stat.st_ctime resolution, the "file changed as we
++#   read it" warning might be issued for dir/sub. The test takes care to
++#   suppress it.
+ 
+ AT_SETUP([directory removed before reading])
+ AT_KEYWORDS([create incremental listed dirchange dirrem dirrem01])
+@@ -48,13 +52,14 @@ esac
+ 
+ genfile --run --checkpoint=$CPT --unlink dir/sub/file2 --unlink dir/sub -- \
+        tar --blocking-factor=1 -c -f archive.tar \
+-       --listed-incremental db -v dir >/dev/null
++       --listed-incremental db \
++       --warning=no-file-changed \
++       -v dir >/dev/null
+ ],
+ [1],
+ [ignore],
+ [tar: dir: Directory is new
+ tar: dir/sub: Directory is new
+-tar: dir/sub: file changed as we read it
+ tar: dir/sub: File removed before we read it
+ ],[],[],[gnu,posix])
+ 
+diff --git a/tests/dirrem02.at b/tests/dirrem02.at
+index c314484..3c63bbe 100644
+--- a/tests/dirrem02.at
++++ b/tests/dirrem02.at
+@@ -45,13 +45,14 @@ esac
+ 
+ genfile --run --checkpoint=$CPT --unlink dir/sub/file2 --unlink dir/sub -- \
+        tar --blocking-factor=1 -c -f archive.tar \
+-       --listed-incremental db -v dir dir/sub >/dev/null
++       --listed-incremental db \
++       --warning=no-file-changed \
++       -v dir dir/sub >/dev/null
+ ],
+ [2],
+ [ignore],
+ [tar: dir: Directory is new
+ tar: dir/sub: Directory is new
+-tar: dir/sub: file changed as we read it
+ tar: dir/sub: Cannot open: No such file or directory
+ tar: Exiting with failure status due to previous errors
+ ],[],[],[gnu,posix])
+-- 
+2.20.1
+

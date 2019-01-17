@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.31
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
@@ -19,6 +19,7 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
+Patch10: tar-1.31-dirrem-tests.patch
 
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
@@ -86,7 +87,8 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/man8/rmt.8*
 %check
 %if %{with check}
 rm -f $RPM_BUILD_ROOT/test/testsuite
-make check TESTSUITEFLAGS='-k \!dirrem01,\!dirrem02' || (
+# make check TESTSUITEFLAGS='-k \!dirrem01,\!dirrem02' || (
+make check || (
     # get the error log
     set +x
     find -name testsuite.log | while read line; do
@@ -111,6 +113,9 @@ make check TESTSUITEFLAGS='-k \!dirrem01,\!dirrem02' || (
 
 
 %changelog
+* Thu Jan 17 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-2
+- backport fix for dirrem tests, and reenable them again
+
 * Thu Jan 10 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-1
 - the latest upstream release, per release notes
   http://lists.gnu.org/archive/html/info-gnu/2019-01/msg00001.html

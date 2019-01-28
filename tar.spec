@@ -7,7 +7,6 @@ Epoch: 2
 Version: 1.31
 Release: 2%{?dist}
 License: GPLv3+
-Group: Applications/Archiving
 URL: http://www.gnu.org/software/tar/
 
 Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz

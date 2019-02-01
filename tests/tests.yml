@@ -1,0 +1,10 @@
+# This package uses external repositories for maintaining CI test cases.
+# Please don't edit this file if possible.
+
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    repositories:
+    - repo: https://src.fedoraproject.org/tests/tar.git
+      dest: tar
+      fmf_filter: "tier: 1, 2"

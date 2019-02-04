@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.31
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 URL: http://www.gnu.org/software/tar/
 
@@ -19,6 +19,7 @@ Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch10: tar-1.31-dirrem-tests.patch
+Patch11: tar-1.31-racy-compress-tests.patch
 
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
@@ -112,6 +113,9 @@ make check || (
 
 
 %changelog
+* Mon Feb 04 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-4
+- fix racy compress: gzip test
+
 * Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.31-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 

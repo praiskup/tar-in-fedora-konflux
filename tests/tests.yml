@@ -7,4 +7,10 @@
     repositories:
     - repo: https://src.fedoraproject.org/tests/tar.git
       dest: tar
+      # TODO: https://src.fedoraproject.org/rpms/tar/blob/master/f/tests/tests.yml
       fmf_filter: "tier: 1, 2"
+    # TODO: https://src.fedoraproject.org/rpms/tar/blob/master/f/tests/tests.yml
+    tags:
+    - classic
+    - container
+    - atomic

@@ -7,9 +7,9 @@
     repositories:
     - repo: https://src.fedoraproject.org/tests/tar.git
       dest: tar
-      # TODO: https://src.fedoraproject.org/rpms/tar/blob/master/f/tests/tests.yml
+      # TODO: minimize: https://pagure.io/standard-test-roles/issue/294
       fmf_filter: "tier: 1, 2"
-    # TODO: https://src.fedoraproject.org/rpms/tar/blob/master/f/tests/tests.yml
+    # TODO: minimize: https://pagure.io/standard-test-roles/issue/294
     tags:
     - classic
     - container

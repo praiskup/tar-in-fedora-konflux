@@ -4,8 +4,8 @@
 Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.31
-Release: 4%{?dist}
+Version: 1.32
+Release: 1%{?dist}
 License: GPLv3+
 URL: http://www.gnu.org/software/tar/
 
@@ -18,8 +18,6 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
-Patch10: tar-1.31-dirrem-tests.patch
-Patch11: tar-1.31-racy-compress-tests.patch
 
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
@@ -113,6 +111,10 @@ make check || (
 
 
 %changelog
+* Mon Feb 25 2019 Pavel Raiskup <praiskup@redhat.com> - 1.32-1
+- the latest upstream release, per release notes
+  http://lists.gnu.org/archive/html/info-gnu/2019-02/msg00010.html
+
 * Mon Feb 04 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-4
 - fix racy compress: gzip test
 

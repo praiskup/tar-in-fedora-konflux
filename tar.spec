@@ -31,6 +31,7 @@ BuildRequires: attr acl policycoreutils
 BuildRequires: libselinux-devel
 %endif
 Provides: bundled(gnulib)
+Provides: bundled(paxutils)
 Provides: /bin/tar
 Provides: /bin/gtar
 
@@ -114,6 +115,7 @@ make check || (
 * Mon Feb 25 2019 Pavel Raiskup <praiskup@redhat.com> - 1.32-1
 - the latest upstream release, per release notes
   http://lists.gnu.org/archive/html/info-gnu/2019-02/msg00010.html
+- admit that we bundle paxutils project
 
 * Mon Feb 04 2019 Pavel Raiskup <praiskup@redhat.com> - 1.31-4
 - fix racy compress: gzip test

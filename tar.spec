@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.32
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 URL: http://www.gnu.org/software/tar/
 
@@ -112,6 +112,9 @@ make check || (
 
 
 %changelog
+* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Mon Feb 25 2019 Pavel Raiskup <praiskup@redhat.com> - 1.32-1
 - the latest upstream release, per release notes
   http://lists.gnu.org/archive/html/info-gnu/2019-02/msg00010.html

@@ -5,7 +5,7 @@ Summary: A GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.32
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 URL: http://www.gnu.org/software/tar/
 
@@ -18,6 +18,7 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
+Patch10: tar-1.32-testsuite-fix.patch
 
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
@@ -112,6 +113,9 @@ make check || (
 
 
 %changelog
+* Wed Feb 05 2020 Than Ngo <than@redhat.com> - 2:1.32-4
+- Skip the test if genfile is unable to create
+
 * Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.32-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 

@@ -21,6 +21,7 @@ Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch10: tar-1.32-testsuite-fix.patch
 Patch11: tar-1.32-bugfix-sparse-diff-mode.patch
 
+BuildRequires: make
 BuildRequires:  gcc
 BuildRequires: autoconf automake texinfo gettext libacl-devel
 

@@ -1,16 +1,16 @@
 %bcond_without selinux
 %bcond_without check
 
-Summary: A GNU file archiving program
+Summary: GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.32
 Release: 6%{?dist}
 License: GPLv3+
-URL: http://www.gnu.org/software/tar/
+URL: https://www.gnu.org/software/tar/
 
-Source0: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
-Source1: ftp://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
+Source0: https://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
+Source1: https://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
 
 # Note that all patches are documented in patch files (git format-patch format)
 Patch1:  tar-1.28-loneZeroWarning.patch
@@ -104,7 +104,6 @@ make check || (
 
 
 %files -f %{name}.lang
-%{!?_licensedir:%global license %%doc}
 %license COPYING
 %doc AUTHORS README THANKS NEWS ChangeLog
 %{_bindir}/tar

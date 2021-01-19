@@ -18,6 +18,7 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
+Patch10: tar-1.33-fix-capabilities-test.patch
 
 BuildRequires: make
 BuildRequires:  gcc

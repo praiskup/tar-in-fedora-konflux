@@ -40,15 +40,15 @@ diff --git a/src/names.c b/src/names.c
 index 037b869..d96ad71 100644
 --- a/src/names.c
 +++ b/src/names.c
-@@ -137,7 +137,7 @@ static struct argp_option names_options[] = {
-   {"no-ignore-case", NO_IGNORE_CASE_OPTION, 0, 0,
-    N_("case sensitive matching (default)"), GRID+1 },
-   {"wildcards", WILDCARDS_OPTION, 0, 0,
--   N_("use wildcards (default for exclusion)"), GRID+1 },
-+   N_("use wildcards (default)"), GRID+1 },
+@@ -146,7 +146,7 @@ static struct argp_option names_options[] = {
    {"no-wildcards", NO_WILDCARDS_OPTION, 0, 0,
-    N_("verbatim string matching"), GRID+1 },
+    N_("verbatim string matching"), GRID_MATCH },
    {"wildcards-match-slash", WILDCARDS_MATCH_SLASH_OPTION, 0, 0,
+-   N_("wildcards match '/' (default for exclusion)"), GRID_MATCH },
++   N_("wildcards match '/' (default)"), GRID_MATCH },
+   {"no-wildcards-match-slash", NO_WILDCARDS_MATCH_SLASH_OPTION, 0, 0,
+    N_("wildcards do not match '/'"), GRID_MATCH },
+ 
 @@ -195,8 +195,7 @@ names_parse_opt (int key, char *arg, struct argp_state *state)
  /* Wildcard matching settings */
  enum wildcards

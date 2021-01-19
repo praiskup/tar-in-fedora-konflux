@@ -4,13 +4,13 @@
 Summary: GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.32
-Release: 6%{?dist}
+Version: 1.33
+Release: 1%{?dist}
 License: GPLv3+
 URL: https://www.gnu.org/software/tar/
 
-Source0: https://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz
-Source1: https://ftp.gnu.org/pub/gnu/tar/tar-%{version}.tar.xz.sig
+Source0: https://ftp.gnu.org/gnu/tar/tar-%{version}.tar.xz
+Source1: https://ftp.gnu.org/gnu/tar/tar-%{version}.tar.xz.sig
 
 # Note that all patches are documented in patch files (git format-patch format)
 Patch1:  tar-1.28-loneZeroWarning.patch
@@ -18,8 +18,6 @@ Patch2:  tar-1.28-vfatTruncate.patch
 Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
-Patch10: tar-1.32-testsuite-fix.patch
-Patch11: tar-1.32-bugfix-sparse-diff-mode.patch
 
 BuildRequires: make
 BuildRequires:  gcc
@@ -114,6 +112,9 @@ make check || (
 
 
 %changelog
+* Thu Jan 07 2021 Pavel Raiskup <praiskup@redhat.com> - 1.33-1
+- new upstream release (see the packaged NEWS file)
+
 * Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.32-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 

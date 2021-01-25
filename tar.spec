@@ -5,7 +5,7 @@ Summary: GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.33
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 URL: https://www.gnu.org/software/tar/
 
@@ -19,6 +19,7 @@ Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch10: tar-1.33-fix-capabilities-test.patch
+Patch11: tar-1.33-fix-read-header-mem-leak.patch
 
 BuildRequires: make
 BuildRequires:  gcc
@@ -113,6 +114,9 @@ make check || (
 
 
 %changelog
+* Mon Jan 25 2021 Ondrej Dubaj <odubaj@redhat.com> - 1.33-2
+- Fixed memory leak in read_header() in list.c (#1917631)
+
 * Thu Jan 07 2021 Pavel Raiskup <praiskup@redhat.com> - 1.33-1
 - new upstream release (see the packaged NEWS file)
 

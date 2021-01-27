@@ -5,7 +5,7 @@ Summary: GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.33
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv3+
 URL: https://www.gnu.org/software/tar/
 
@@ -114,6 +114,9 @@ make check || (
 
 
 %changelog
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.33-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Mon Jan 25 2021 Ondrej Dubaj <odubaj@redhat.com> - 1.33-2
 - Fixed memory leak in read_header() in list.c (#1917631)
 

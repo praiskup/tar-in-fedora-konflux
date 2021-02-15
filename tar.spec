@@ -4,8 +4,8 @@
 Summary: GNU file archiving program
 Name: tar
 Epoch: 2
-Version: 1.33
-Release: 3%{?dist}
+Version: 1.34
+Release: 1%{?dist}
 License: GPLv3+
 URL: https://www.gnu.org/software/tar/
 
@@ -19,7 +19,6 @@ Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch10: tar-1.33-fix-capabilities-test.patch
-Patch11: tar-1.33-fix-read-header-mem-leak.patch
 
 BuildRequires: make
 BuildRequires:  gcc
@@ -114,6 +113,9 @@ make check || (
 
 
 %changelog
+* Sat Feb 13 2021 Ondrej Dubaj <odubaj@redhat.com> - 1.34-1
+- Rebase to version 1.34
+
 * Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.33-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 

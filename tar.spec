@@ -5,7 +5,7 @@ Summary: GNU file archiving program
 Name: tar
 Epoch: 2
 Version: 1.34
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 URL: https://www.gnu.org/software/tar/
 
@@ -113,6 +113,9 @@ make check || (
 
 
 %changelog
+* Sat Jul 23 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.34-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.34-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 

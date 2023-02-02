@@ -1,0 +1,45 @@
+Avoid an implicit declaration of utime in the configure script.  This
+ensures that the package continues to build with future compilers
+which do not support such implicit declarations by default.
+
+This is a downstream-only patch.  Upstream, the configure file is
+generated correctly since the following gnulib commit:
+
+commit c20ba6929e5ac4a9cc72cd2b1f2d938e219adb01
+Author: Bruno Haible <bruno@clisp.org>
+Date:   Sat Jan 23 22:10:25 2021 +0100
+
+    utime: Fix configure test (regression 2020-12-04).
+    
+    Reported by Ryan Schmidt <wget@ryandesign.com> via Tim Rühsen in
+    <https://lists.gnu.org/archive/html/bug-gnulib/2021-01/msg00282.html>.
+    
+    * m4/utime.m4 (gl_FUNC_UTIME): In the test program, include <utime.h>,
+    not <time.h>.
+
+diff --git a/configure b/configure
+index 129500e018d38aa5..7ed132239c78d2ac 100755
+--- a/configure
++++ b/configure
+@@ -36685,7 +36685,7 @@ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <stddef.h>
+-                 #include <time.h>
++#include <utime.h>
+ 
+ int
+ main ()
+diff --git a/m4/utime.m4 b/m4/utime.m4
+index 03df7b7282500c73..bdff29d85982cd68 100644
+--- a/m4/utime.m4
++++ b/m4/utime.m4
+@@ -34,7 +34,7 @@ AC_DEFUN([gl_FUNC_UTIME],
+            AC_RUN_IFELSE(
+              [AC_LANG_PROGRAM(
+                [[#include <stddef.h>
+-                 #include <time.h>
++                 #include <utime.h>
+                ]],
+                [[int result = 0;
+                  if (!utime ("conftest.tmp/", NULL))

@@ -24,6 +24,7 @@ Patch3:  tar-1.29-wildcards.patch
 Patch4:  tar-1.28-atime-rofs.patch
 Patch9:  tar-1.28-document-exclude-mistakes.patch
 Patch10: tar-1.33-fix-capabilities-test.patch
+Patch11: tar-1.35-add-forgotten-tests-from-upstream.patch
 
 BuildRequires: autoconf
 BuildRequires: automake

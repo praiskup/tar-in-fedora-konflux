@@ -1,6 +1,6 @@
-From 71769b9ea3c12b7fbb39fee2e9f4a4c1c36c0d0b Mon Sep 17 00:00:00 2001
-From: rpm-build <rpm-build>
-Date: Mon, 28 Jul 2014 08:13:31 +0200
+From c4d06365aef1539853e1dd41c539173809760cd0 Mon Sep 17 00:00:00 2001
+From: Lukas Javorsky <ljavorsk@redhat.com>
+Date: Tue, 18 Jul 2023 12:27:38 +0000
 Subject: [PATCH 4/9] utime & read-only FS
 
 Ignore errors from setting utime() for source file on read-only
@@ -16,13 +16,13 @@ http://lists.gnu.org/archive/html/bug-tar/2009-06/msg00016.html
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/src/create.c b/src/create.c
-index e2f4ede..f644f23 100644
+index d20178c..b31fbe5 100644
 --- a/src/create.c
 +++ b/src/create.c
-@@ -1824,7 +1824,8 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
+@@ -1851,7 +1851,8 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
  	    }
  	  else if (atime_preserve_option == replace_atime_preserve
- 		   && fd && (is_dir || original_size != 0)
+ 		   && timespec_cmp (st->atime, get_stat_atime (&st2)) != 0
 -		   && set_file_atime (fd, parentfd, name, st->atime) != 0)
 +		   && set_file_atime (fd, parentfd, name, st->atime) != 0
 +		   && errno != EROFS )
@@ -30,5 +30,5 @@ index e2f4ede..f644f23 100644
  	}
  
 -- 
-1.9.3
+2.41.0
 

@@ -123,7 +123,7 @@ make check || (
 
 
 %changelog
-* Tue Jul 18 2023 Lukas Javorsky <ljavorsk@redhat.com> - 2:1.35-1
+* Tue Jul 25 2023 Lukas Javorsky <ljavorsk@redhat.com> - 2:1.35-1
 - Rebase to version 1.35
 
 * Sat Jul 22 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2:1.34-9
